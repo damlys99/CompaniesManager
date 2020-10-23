@@ -44,8 +44,12 @@ public class User {
         return this.dateOfBirth;
     }
 
-    public boolean isDeleted(){
+    public boolean getIsDeleted(){
         return this.isDeleted;
+    }
+
+    public void delete(){
+        this.isDeleted = true;
     }
 
 }

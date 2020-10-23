@@ -1,4 +1,4 @@
-package com.example.uniprogramming;
+/*package com.example.uniprogramming;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -39,3 +39,4 @@ public class DatabaseSeeder implements CommandLineRunner {
         usersRepository.saveAll(users);
     }
 }
+*/
