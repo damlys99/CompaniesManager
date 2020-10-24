@@ -12,4 +12,5 @@ public interface UsersRepository extends CrudRepository<User, Long>{
     List<User> findAllByIsDeletedIsFalse();
     User findById(long id);
     List<User> findAllByIsDeletedIsFalse(Pageable page);
+    Long countByIsDeletedIsFalse();
 }

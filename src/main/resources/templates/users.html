@@ -10,7 +10,7 @@
         <script type="text/javascript" src="../static/app/users.controller.js" th:src="@{/app/users.controller.js}"></script>
     </head>
     <body ng-app="app" ng-controller="UsersController as vm">
-        <div class="container">
+        <div class="container cont">
             <table class="table">
                 <tr>
                     <th>Name</th><th>Surname</th><th>Date of Birth</th>
@@ -21,12 +21,28 @@
                     <td>{{user.dateOfBirth}}</td>
                 </tr>
             </table>
-            <div class="btn-group" role="group">
+        </div>
+            <!--<div class="btn-group" role="group">
                 <button ng-click="vm.prevPage(vm.pageNum)" type="button" class="btn btn-secondary">&laquo</button>
             <span class="align-middle" style="font-size:x-large; width:200px; text-align:center;">{{vm.pageNum}}</span>
             <button ng-click="vm.nextPage(vm.pageNum)" type="button" class="btn btn-secondary">&raquo</button>
+                <mat-paginator></mat-paginator>
+            </div> -->
+            <footer class="footer">
+            <div class="text-center">
+                <div class="btn-group" role="group" id="leftg">
+                <button class="btn btn-primary" ng-disabled="vm.pageNum <=1" ng-click="vm.prevPage(vm.pageNum)">&laquo</button>
+                <button class="btn disabled">{{vm.pageNum}}</button>
+                <button class="btn btn-primary" ng-disabled="vm.pageNum >= vm.pages"  ng-click="vm.nextPage(vm.pageNum)">&raquo</button>
+                </div>
+                <div class="btn-group" role="group" id="rightg">
+                <input type="number" class="form-control" id="goto" style="color:#6c757d" ng-model="name" maxlength="3"  min="1" max="{{vm.pages}}">
+                    <button class="btn btn-primary" ng-click="vm.goTo(name)">Go</button>
+                </div>
             </div>
-        </div>
+            </footer>
+
+
 
     </body>
 </html>

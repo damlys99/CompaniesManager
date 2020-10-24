@@ -1,0 +1,28 @@
+footer{
+    position: absolute;
+    bottom:0;
+    left:0;
+    width:100%;
+    padding-bottom: 2rem;
+}
+#leftg{
+    padding-right:1rem;
+}
+#rigthtg{
+    padding-left:1rem;
+}
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+#goto{
+    width:3.1rem;
+}
