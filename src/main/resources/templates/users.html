@@ -1,18 +1,32 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Index</title>
-    <link rel="stylesheet" href="../static/bootstrap.css" th:href="@{/bootstrap.css}" />
-    <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}" />
-</head>
-<body>
-<table>
-    <tr th:each="user: ${users}">
-        <td th:text="${user.name}">Anonymous</td>
-        <td th:text="${user.surname}">Anonymous</td>
-        <td th:text="${user.dateOfBirth}">1900-01-01</td>
-    </tr>
-</table>
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <title>Users</title>
+        <link rel="stylesheet" href="../static/bootstrap.css" th:href="@{/bootstrap.css}" />
+        <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}" />
+        <script type="text/javascript" src="../static/angular.min.js" th:src="@{/angular.min.js}" ></script>
+        <script type="text/javascript" src="../static/app/app.module.js" th:src="@{/app/app.module.js}"></script>
+        <script type="text/javascript" src="../static/app/users.controller.js" th:src="@{/app/users.controller.js}"></script>
+    </head>
+    <body ng-app="app" ng-controller="UsersController as vm">
+        <div class="container">
+            <table class="table">
+                <tr>
+                    <th>Name</th><th>Surname</th><th>Date of Birth</th>
+                </tr>
+                <tr ng-repeat="user in vm.users">
+                    <td>{{user.name}}</td>
+                    <td>{{user.surname}}</td>
+                    <td>{{user.dateOfBirth}}</td>
+                </tr>
+            </table>
+            <div class="btn-group" role="group">
+                <button ng-click="vm.prevPage(vm.pageNum)" type="button" class="btn btn-secondary">&laquo</button>
+            <span class="align-middle" style="font-size:x-large; width:200px; text-align:center;">{{vm.pageNum}}</span>
+            <button ng-click="vm.nextPage(vm.pageNum)" type="button" class="btn btn-secondary">&raquo</button>
+            </div>
+        </div>
+
+    </body>
 </html>
