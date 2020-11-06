@@ -27,23 +27,23 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception{
         http.httpBasic()
                 .and().authorizeRequests()
-                .antMatchers("/**").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/users/**").hasAnyRole("ADMIN", "USER")
                 .antMatchers("/api/**").hasAnyRole("ADMIN")
-                .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")
-                .defaultSuccessUrl("/home")
                 .failureUrl("/login?error=true")
                 .permitAll()
                 .and()
                 .logout()
                 .logoutSuccessUrl("/login?logout=true")
                 .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
                 .permitAll()
                 .and()
                 .csrf()
                 .disable();
+
     }
 
     @Bean

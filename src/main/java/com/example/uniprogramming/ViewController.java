@@ -44,10 +44,10 @@ public class ViewController {
                             Model model) {
         String errorMessge = null;
         if(error != null) {
-            errorMessge = "Username or Password is incorrect !!";
+            errorMessge = "Username or password is incorrect!";
         }
         if(logout != null) {
-            errorMessge = "You have been successfully logged out !!";
+            errorMessge = "You have been successfully logged out!";
         }
         model.addAttribute("errorMessge", errorMessge);
         return "login";

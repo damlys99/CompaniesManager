@@ -1,0 +1,37 @@
+html,body {
+    height:100%;
+    width:100%;
+    background-color: #ccccff;
+}
+#errormsg{
+    color:red;
+    padding-top:10px;
+}
+#login-cont{
+    margin: 50px auto auto;
+    width:300px;
+    height:auto;
+    background-color:#f8f9fa;
+    text-align: center;
+    padding-top:15px;
+    border-radius:15px;
+    box-shadow: 0 15px 20px 12px grey;
+}
+.input-group{
+    margin-left:auto;
+    margin-right:auto;
+    width:75%;
+}
+.input-group-text{
+    padding:5px;
+
+}
+#register{
+    background-color:#e9ecef;
+    border-top: solid 3px #ced4da;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    padding-top:30px;
+    padding-bottom: 30px;
+
+}

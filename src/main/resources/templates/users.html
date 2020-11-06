@@ -23,13 +23,8 @@
                 </tr>
             </table>
         </div>
-            <!--<div class="btn-group" role="group">
-                <button ng-click="vm.prevPage(vm.pageNum)" type="button" class="btn btn-secondary">&laquo</button>
-            <span class="align-middle" style="font-size:x-large; width:200px; text-align:center;">{{vm.pageNum}}</span>
-            <button ng-click="vm.nextPage(vm.pageNum)" type="button" class="btn btn-secondary">&raquo</button>
-                <mat-paginator></mat-paginator>
-            </div> -->
-            <footer class="footer">
+
+            <div id="controls">
             <div class="text-center">
                 <div class="btn-group" role="group" id="leftg">
                 <button class="btn btn-primary" ng-disabled="vm.pageNum <=1" ng-click="vm.prevPage(vm.pageNum)">&laquo</button>
@@ -41,7 +36,7 @@
                     <button class="btn btn-primary" ng-click="vm.goTo(name)">Go</button>
                 </div>
             </div>
-            </footer>
+            </div>
 
 
     </body>

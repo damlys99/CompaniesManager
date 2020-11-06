@@ -3,20 +3,24 @@ html,body{
     height:100%;
     min-height: 100vh;
     overflow: hidden;
+
 }
-footer{
+#controls{
     clear:both;
     position: relative;
     bottom:0;
     left:0;
-    height:100px;
+    height:200px;
     width:100%;
-    padding-bottom: 2rem;
+    padding-bottom: 1rem;
 }
 #cont{
     clear:both;
     position:relative;
     height:80%;
+}
+.container{
+    background-color: #ffffff;
 }
 #leftg{
     padding-right:1rem;
