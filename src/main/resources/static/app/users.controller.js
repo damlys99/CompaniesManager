@@ -61,14 +61,17 @@
         }
 
         function goTo(page){
-            var url = '/api/users';
-            var usersPromise = $http.get(url, {
-                params: {page: page}
-            });
-            usersPromise.then(function(response){
-                vm.users = response.data;
-                vm.pageNum = page;
-            }).catch(function(err){});
+            if(page) {
+                var url = '/api/users';
+                var usersPromise = $http.get(url, {
+                    params: {page: page}
+                });
+                usersPromise.then(function (response) {
+                    vm.users = response.data;
+                    vm.pageNum = page;
+                }).catch(function (err) {
+                });
+            }
         }
 
 

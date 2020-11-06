@@ -1,11 +1,15 @@
 package com.example.uniprogramming;
 
 
+import com.example.uniprogramming.security.MyUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,6 +59,10 @@ import java.util.Optional;
         @RequestMapping(value = "/count", method = RequestMethod.GET)
         public long getCount(){
             return usersRepository.countByIsDeletedIsFalse();
+        }
+        @RequestMapping("/logged")
+        public Optional<User> logged(@CurrentSecurityContext(expression = "authentication.principal") Principal principal) {
+            return usersRepository.findByUserName(principal.getName());
         }
 
 }

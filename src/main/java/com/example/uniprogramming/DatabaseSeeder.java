@@ -1,4 +1,4 @@
-/*package com.example.uniprogramming;
+package com.example.uniprogramming;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -22,7 +22,7 @@ public class DatabaseSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        List<User> users = new ArrayList<>();
+/*        List<User> users = new ArrayList<>();
         Random generator = new Random();
         for(int i = 0; i<=100; i++){
             users.add(new User(
@@ -37,6 +37,11 @@ public class DatabaseSeeder implements CommandLineRunner {
         }
         System.out.println();
         usersRepository.saveAll(users);
+
+     List<User> users = new ArrayList<>();
+    users.add(new User("Damian", "Łyszkiewicz", Date.valueOf("1999-12-14"), "admin", "admin", "ROLE_ADMIN, ROLE_USER"));
+    usersRepository.saveAll(users);]
+
+ */
     }
 }
-*/
