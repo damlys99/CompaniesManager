@@ -14,7 +14,7 @@ html,body {
     background-color:#f8f9fa;
     text-align: center;
     padding-top:15px;
-    border-radius:15px;
+    border-radius:5px;
     box-shadow: 0 15px 20px 12px grey;
 }
 .input-group{
@@ -29,9 +29,9 @@ html,body {
 #register{
     background-color:#e9ecef;
     border-top: solid 3px #ced4da;
-    border-bottom-left-radius: 15px;
-    border-bottom-right-radius: 15px;
-    padding-top:30px;
-    padding-bottom: 30px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    padding-top:25px;
+    padding-bottom: 25px;
 
 }
