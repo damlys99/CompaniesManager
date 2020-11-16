@@ -1,43 +1,61 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-    <head>
-        <meta charset="UTF-8">
-        <title>Users</title>
-        <link rel="stylesheet" href="../static/bootstrap.css" th:href="@{/bootstrap.css}" />
-        <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}" />
-        <script type="text/javascript" src="../static/angular.min.js" th:src="@{/angular.min.js}" ></script>
-        <script type="text/javascript" src="../static/app/app.module.js" th:src="@{/app/app.module.js}"></script>
-        <script type="text/javascript" src="../static/app/users.controller.js" th:src="@{/app/users.controller.js}"></script>
-    </head>
-    <body ng-app="app" ng-controller="UsersController as vm">
-    <div th:insert="fragments :: header"></div>
-        <div class="container" id="cont">
-            <table class="table table-sm">
-                <tr class="d-flex">
-                    <th class="col-4">Name</th><th class="col-4">Surname</th><th class="col-4">Date of Birth</th>
-                </tr>
-                <tr class="d-flex" ng-repeat="user in vm.users">
-                    <td class="col-4"><div sec:authorize="hasRole('ROLE_ADMIN')">{{user.name}}</div></td>
-                    <td class="col-4"><div sec:authorize="hasRole('ROLE_MODERATOR')">{{user.surname}}</div></td>
-                    <td class="col-4">{{user.dateOfBirth}}</td>
-                </tr>
-            </table>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+    <link rel="stylesheet" href="../static/bootstrap.css" th:href="@{/bootstrap.css}"/>
+    <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}"/>
+    <script type="text/javascript" src="../static/angular.min.js" th:src="@{/angular.min.js}"></script>
+    <script type="text/javascript" src="../static/app/app.module.js" th:src="@{/app/app.module.js}"></script>
+    <script type="text/javascript" src="../static/app/users.controller.js"
+            th:src="@{/app/users.controller.js}"></script>
+</head>
+<body ng-app="app" ng-controller="UsersController as vm">
+<div th:insert="fragments :: header"></div>
+<div class="container" id="cont">
+    <table class="table table-sm">
+        <thead>
+        <tr>
+            <th> </th>
+            <th scope="col" sec:authorize="hasRole('ROLE_ADMIN')">Roles</th>
+            <th scope="col" sec:authorize="hasRole('ROLE_ADMIN')">Username</th>
+            <th scope="col">Name</th>
+            <th scope="col">Surname</th>
+            <th scope="col">Date of Birth</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="user in vm.users">
+            <th scope="row">{{(vm.pageNum-1)*10 + $index+1}}</th>
+            <td sec:authorize="hasRole('ROLE_ADMIN')">{{user.roles}}</td>
+            <td sec:authorize="hasRole('ROLE_ADMIN')">{{user.userName}}</td>
+            <td>{{user.name}}</td>
+            <td>{{user.surname}}</td>
+            <td>{{user.dateOfBirth}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div id="controls">
+    <div class="text-center">
+        <div class="btn-group" role="group" id="leftg">
+            <button class="btn btn-primary" ng-disabled="vm.pageNum <=1" ng-click="vm.prevPage(vm.pageNum)">&laquo
+            </button>
+            <button id="pagenum" disabled="true" type="text" class="btn">{{vm.pageNum}}</button>
+            <button class="btn btn-primary" ng-disabled="vm.pageNum >= vm.pages" ng-click="vm.nextPage(vm.pageNum)">
+                &raquo
+            </button>
         </div>
-
-            <div id="controls">
-            <div class="text-center">
-                <div class="btn-group" role="group" id="leftg">
-                <button class="btn btn-primary" ng-disabled="vm.pageNum <=1" ng-click="vm.prevPage(vm.pageNum)">&laquo</button>
-                    <button id="pagenum" disabled="true" type="text" class="btn">{{vm.pageNum}}</button>
-                <button class="btn btn-primary" ng-disabled="vm.pageNum >= vm.pages"  ng-click="vm.nextPage(vm.pageNum)">&raquo</button>
-                </div>
-                <div class="btn-group" role="group" id="rightg">
-                <input type="number" class="form-control" id="goto" style="color:#6c757d" ng-model="name" maxlength="3"  min="1" max="{{vm.pages}}">
-                    <button class="btn btn-primary" ng-click="vm.goTo(name)">Go</button>
-                </div>
-            </div>
-            </div>
+        <div class="btn-group" role="group" id="rightg">
+            <input type="number" class="form-control" id="goto" style="color:#6c757d" ng-model="name" maxlength="3"
+                   min="1" max="{{vm.pages}}">
+            <button class="btn btn-primary" ng-click="vm.goTo(name)">Go</button>
+        </div>
+    </div>
+</div>
 
 
-    </body>
+</body>
 </html>

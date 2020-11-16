@@ -13,6 +13,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
 
+
+
     private String name;
     private String surname;
     private Date dateOfBirth;
@@ -64,6 +66,29 @@ public class User {
 
     public boolean getIsDeleted(){
         return this.isDeleted;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setRoles(String roles) {
+        this.roles = roles;
     }
 
     public void delete(){

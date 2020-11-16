@@ -1,0 +1,46 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link href="../static/bootstrap.css" rel="stylesheet" th:href="@{/bootstrap.css}" />
+    <link href="../static/style-login.css" rel="stylesheet" th:href="@{/style-login.css}" />
+    <title>Register</title>
+</head>
+<body onload='document.login.username.focus();'>
+<div id="login-cont">
+    <div id="form">
+        <h3>Register</h3>
+
+        <form action="/register" id="loginform" method='POST' name='login' th:action="@{/register}" th:object="${userDTO}">
+            <div class="input-group form-group row">
+                <input class="form-control" name='username' placeholder="username" type='text' th:value="*{username}" th:errorClass="is-invalid"/>
+                <div th:if="${#fields.hasErrors('username')}" th:errors ="*{username}" class="invalid-feedback"></div>
+            </div>
+            <div class="input-group form-group row">
+                <input class='form-control' name='password'placeholder="password" type='password' th:value="*{password}" th:errorClass="is-invalid"/>
+                <div th:if="${#fields.hasErrors('password')}" th:errors ="*{password}" class="invalid-feedback"></div>
+            </div>
+            <div class="input-group form-group row">
+                <input class='form-control' name='repassword'placeholder="re-enter password" type='password' th:value="*{repassword}"  th:errorClass="is-invalid"/>
+                <div th:if="${#fields.hasErrors('repassword')}" th:errors ="*{repassword}" class="invalid-feedback"></div>
+            </div>
+            <div class="input-group form-group row">
+                <input class='form-control' name='name'placeholder="first name" type='text' th:value="*{name}" th:errorClass="is-invalid"/>
+                <div th:if="${#fields.hasErrors('name')}" th:errors ="*{name}" class="invalid-feedback"></div>
+            </div>
+            <div class="input-group form-group row">
+                <input class='form-control' name='surname'placeholder="last name" type='text' th:value="*{surname}" th:errorClass="is-invalid"/>
+                <div th:if="${#fields.hasErrors('surname')}" th:errors ="*{surname}" class="invalid-feedback"></div>
+            </div>
+            <div class="input-group form-group row">
+                <input class='form-control' name='dateOfBirth'placeholder="date of birth" type='date' th:field="*{dateOfBirth}" th:errorClass="is-invalid"/>
+                <div th:if="${#fields.hasErrors('dateOfBirth')}" th:errors ="*{dateOfBirth}" class="invalid-feedback"></div>
+            </div>
+            <input class="btn btn-primary" name="submit" type="submit" value="Register" style="width:130px;" />
+            <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}" />
+        </form>
+    </div>
+    <div id="register">
+        <a href="/login">Already have an account?</a>
+    </div>
+</div>
+</body>
+</html>
