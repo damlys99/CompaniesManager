@@ -28,7 +28,12 @@
         <tbody>
         <tr ng-repeat="user in vm.users">
             <th scope="row">{{(vm.pageNum-1)*10 + $index+1}}</th>
-            <td sec:authorize="hasRole('ROLE_ADMIN')"><span style="text-align:center"><img style="padding-left:2px; padding-right: 2px" ng-repeat="role in user.roles | orderBy: 'name'" alt='{{role.name == "ROLE_USER" ? "u" : (role.name == "ROLE_ADMIN" ? "a" : "m")}}' src='images/{{role.name == "ROLE_USER" ? "u" : (role.name == "ROLE_ADMIN" ? "a" : "m")}}.png'></span>
+            <td sec:authorize="hasRole('ROLE_ADMIN')">
+                <span ng-repeat="role in user.roles | orderBy: 'name'" ng-switch="role.name">
+                    <img ng-switch-when="ROLE_ADMIN" style="padding-left:2px; padding-right: 2px" alt="A" src="images/a.png">
+                    <img ng-switch-when="ROLE_MODERATOR" style="padding-left:2px; padding-right: 2px" alt="M" src="images/m.png">
+                    <img ng-switch-when="ROLE_USER" style="padding-left:2px; padding-right: 2px" alt="U" src="images/u.png">
+                </span>
             </td>
             <td sec:authorize="hasRole('ROLE_ADMIN')">{{user.userName}}</td>
             <td>{{user.name}}</td>

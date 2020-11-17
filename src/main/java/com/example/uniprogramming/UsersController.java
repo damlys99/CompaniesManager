@@ -40,6 +40,11 @@ import java.util.Optional;
             return usersRepository.findAllByIsDeletedIsFalse();
         }
 
+        @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+        public User getUser(@PathVariable long id){
+            return usersRepository.findById(id);
+        }
+
 
         @RequestMapping(value = "/delete/{idToDelete}", method = RequestMethod.PUT)
         public List<User> delUser(@PathVariable int idToDelete){
