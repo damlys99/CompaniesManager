@@ -17,7 +17,7 @@
     <table class="table table-sm">
         <thead>
         <tr>
-            <th> </th>
+            <th></th>
             <th scope="col" sec:authorize="hasRole('ROLE_ADMIN')">Roles</th>
             <th scope="col" sec:authorize="hasRole('ROLE_ADMIN')">Username</th>
             <th scope="col">Name</th>
@@ -28,7 +28,8 @@
         <tbody>
         <tr ng-repeat="user in vm.users">
             <th scope="row">{{(vm.pageNum-1)*10 + $index+1}}</th>
-            <td sec:authorize="hasRole('ROLE_ADMIN')">{{user.roles}}</td>
+            <td sec:authorize="hasRole('ROLE_ADMIN')"><span style="text-align:center"><img style="padding-left:2px; padding-right: 2px" ng-repeat="role in user.roles | orderBy: 'name'" alt='{{role.name == "ROLE_USER" ? "u" : (role.name == "ROLE_ADMIN" ? "a" : "m")}}' src='images/{{role.name == "ROLE_USER" ? "u" : (role.name == "ROLE_ADMIN" ? "a" : "m")}}.png'></span>
+            </td>
             <td sec:authorize="hasRole('ROLE_ADMIN')">{{user.userName}}</td>
             <td>{{user.name}}</td>
             <td>{{user.surname}}</td>

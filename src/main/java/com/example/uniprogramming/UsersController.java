@@ -1,11 +1,11 @@
 package com.example.uniprogramming;
 
 
-import com.example.uniprogramming.security.MyUserDetails;
+import com.example.uniprogramming.models.User;
+import com.example.uniprogramming.models.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.web.bind.annotation.*;
 

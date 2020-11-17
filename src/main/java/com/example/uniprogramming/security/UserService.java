@@ -1,24 +1,28 @@
 package com.example.uniprogramming.security;
 
-import com.example.uniprogramming.User;
-import com.example.uniprogramming.UsersRepository;
+import com.example.uniprogramming.models.Role;
+import com.example.uniprogramming.models.RolesRepository;
+import com.example.uniprogramming.models.User;
+import com.example.uniprogramming.models.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.sql.Date;
+import java.util.Set;
 
 @Service
 public class UserService {
 
     private final UsersRepository usersRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final RolesRepository rolesRepository;
 
     @Autowired
-    public UserService(UsersRepository usersRepository, BCryptPasswordEncoder passwordEncoder) {
+    public UserService(UsersRepository usersRepository, BCryptPasswordEncoder passwordEncoder, RolesRepository rolesRepository) {
         this.usersRepository = usersRepository;
         this.passwordEncoder = passwordEncoder;
+        this.rolesRepository = rolesRepository;
 
     }
 
@@ -38,7 +42,7 @@ public class UserService {
         user.setUserName(userDTO.getUsername());
         user.setPassword(userDTO.getPassword());
         user.setDateOfBirth(Date.valueOf(userDTO.getDateOfBirth()));
-        user.setRoles("ROLE_USER");
+        user.addToRoles(rolesRepository.findByName("ROLE_USER"));
 
         return save(user);
     }

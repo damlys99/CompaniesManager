@@ -1,47 +1,45 @@
 package com.example.uniprogramming.security;
 
-import com.example.uniprogramming.User;
+import com.example.uniprogramming.models.Role;
+import com.example.uniprogramming.models.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class MyUserDetails implements UserDetails {
 
-    private String userName;
-    private String password;
-    private boolean isDeleted;
-    private List<GrantedAuthority> authorities;
+    private User user;
+    Collection<Role> roles;
 
     public MyUserDetails(User user){
-        this.userName = user.getUserName();
-        this.password = user.getPassword();
-        this.isDeleted = user.getIsDeleted();
-        this.authorities = Arrays.stream(user.getRoles().split(","))
-                    .map(SimpleGrantedAuthority::new)
-                    .collect(Collectors.toList());
+        this.user = user;
     }
 
-    public MyUserDetails(){}
+
 
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
+        Collection<Role> roles = user.getRoles();
+        for(Role role : roles){
+            authorities.add(new SimpleGrantedAuthority(role.toString()));
+        }
         return authorities;
     }
 
     @Override
     public String getPassword() {
-        return  password;
+        return this.user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return userName;
+        return this.user.getUserName();
     }
 
     @Override
@@ -61,6 +59,6 @@ public class MyUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return !isDeleted;
+        return !this.user.getIsDeleted();
     }
 }

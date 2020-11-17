@@ -1,10 +1,13 @@
-package com.example.uniprogramming;
+package com.example.uniprogramming.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import org.hibernate.engine.internal.Cascade;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.persistence.*;
 import java.sql.Date;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class User {
@@ -13,25 +16,31 @@ public class User {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
 
-
-
     private String name;
     private String surname;
     private Date dateOfBirth;
 
     private String userName;
     private String password;
-    private String roles;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade=CascadeType.MERGE)
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(
+                    name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "role_id", referencedColumnName = "id"))
+    private Set<Role> roles = new HashSet<>();
+
 
     private boolean isDeleted;
 
-    public User(String name, String surname, Date dateOfBirth, String userName, String password, String roles){
+    public User(String name, String surname, Date dateOfBirth, String userName, String password){
         this.name = name;
         this.surname = surname;
         this.dateOfBirth = dateOfBirth;
         this.userName = userName;
         this.password = password;
-        this.roles = roles;
         this.isDeleted = false;
     }
 
@@ -60,7 +69,7 @@ public class User {
         return password;
     }
 
-    public String getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
@@ -87,10 +96,9 @@ public class User {
         this.password = password;
     }
 
-    public void setRoles(String roles) {
-        this.roles = roles;
+    public void addToRoles(Role role){
+        this.roles.add(role);
     }
-
     public void delete(){
         this.isDeleted = true;
     }

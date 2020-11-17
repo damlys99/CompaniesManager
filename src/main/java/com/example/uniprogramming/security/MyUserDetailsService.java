@@ -1,14 +1,13 @@
 package com.example.uniprogramming.security;
 
-import com.example.uniprogramming.User;
-import com.example.uniprogramming.UsersRepository;
+import com.example.uniprogramming.models.User;
+import com.example.uniprogramming.models.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @Service
