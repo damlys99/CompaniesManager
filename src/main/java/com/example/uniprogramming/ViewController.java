@@ -2,6 +2,7 @@ package com.example.uniprogramming;
 
 import com.example.uniprogramming.models.UsersRepository;
 import com.example.uniprogramming.security.MyUserDetails;
+import com.example.uniprogramming.security.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +29,11 @@ public class ViewController {
     public String index(
             Model model,
             @RequestParam("page") Optional<Integer> page,
-            @RequestParam("size") Optional<Integer> size){
+            @RequestParam("size") Optional<Integer> size
+            ){
                 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
                 MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
                 model.addAttribute("loggedUser", usersRepository.findByUserName(userDetails.getUsername()).orElse(null));
-
                 return "users";
     }
 

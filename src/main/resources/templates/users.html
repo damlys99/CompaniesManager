@@ -6,6 +6,7 @@
     <title>Users</title>
     <link rel="stylesheet" href="../static/bootstrap.css" th:href="@{/bootstrap.css}"/>
     <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}"/>
+    <script defer src="../static/fontawesome/js/all.js" th:src="@{/fontawesome/js/all.js}"></script> <!--load all styles -->
     <script type="text/javascript" src="../static/angular.min.js" th:src="@{/angular.min.js}"></script>
     <script type="text/javascript" src="../static/app/app.module.js" th:src="@{/app/app.module.js}"></script>
     <script type="text/javascript" src="../static/app/users.controller.js"
@@ -13,6 +14,16 @@
 </head>
 <body ng-app="app" ng-controller="UsersController as vm">
 <div th:insert="fragments :: header"></div>
+
+<!-- Alert -->
+<div class='alert alert-{{vm.alert.type}} alert-dismissible fade show {{vm.alert.type? "" : "d-none"}} fixed-top'
+     role="alert">
+    {{vm.alert.message}}
+    <button type="button" class="close" ng-click="vm.clearAlert()">
+        <span>&times;</span>
+    </button>
+</div>
+
 <div class="container" id="cont">
     <table class="table table-sm">
         <thead>
@@ -23,6 +34,7 @@
             <th scope="col">Name</th>
             <th scope="col">Surname</th>
             <th scope="col">Date of Birth</th>
+            <th scope="col" sec:authorize="hasRole('ROLE_MODERATOR')"></th>
         </tr>
         </thead>
         <tbody>
@@ -30,20 +42,37 @@
             <th scope="row">{{(vm.pageNum-1)*10 + $index+1}}</th>
             <td sec:authorize="hasRole('ROLE_ADMIN')">
                 <span ng-repeat="role in user.roles | orderBy: 'name'" ng-switch="role.name">
-                    <img ng-switch-when="ROLE_ADMIN" style="padding-left:2px; padding-right: 2px" alt="A" src="images/a.png">
-                    <img ng-switch-when="ROLE_MODERATOR" style="padding-left:2px; padding-right: 2px" alt="M" src="images/m.png">
-                    <img ng-switch-when="ROLE_USER" style="padding-left:2px; padding-right: 2px" alt="U" src="images/u.png">
+                    <img ng-switch-when="ROLE_ADMIN" style="padding-left:2px; padding-right: 2px" alt="A"
+                         src="images/a.png">
+                    <img ng-switch-when="ROLE_MODERATOR" style="padding-left:2px; padding-right: 2px" alt="M"
+                         src="images/m.png">
+                    <img ng-switch-when="ROLE_USER" style="padding-left:2px; padding-right: 2px" alt="U"
+                         src="images/u.png">
                 </span>
             </td>
             <td sec:authorize="hasRole('ROLE_ADMIN')">{{user.userName}}</td>
             <td>{{user.name}}</td>
             <td>{{user.surname}}</td>
             <td>{{user.dateOfBirth}}</td>
+            <td sec:authorize="hasRole('ROLE_MODERATOR')" style="padding: 1px ">
+                <button class="btn btn-primary shadow-none btn-sm mod-btn">
+                    <i class="fas fa-pen"></i>
+                </button>
+                <button class="btn btn-danger shadow-none btn-sm mod-btn" sec:authorize="hasRole('ROLE_ADMIN')">
+                    <i class="fas fa-minus"></i>
+                </button>
+            </td>
         </tr>
         </tbody>
     </table>
+    <!-- Button trigger add user modal -->
+    <button sec:authorize="hasRole('ROLE_ADMIN')" type="button" class="btn btn-success" data-toggle="modal"
+            data-target="#addUserModal">
+        Add new user
+    </button>
 </div>
 
+<!-- pagination controls -->
 <div id="controls">
     <div class="text-center">
         <div class="btn-group" role="group" id="leftg">
@@ -58,6 +87,53 @@
             <input type="number" class="form-control" id="goto" style="color:#6c757d" ng-model="name" maxlength="3"
                    min="1" max="{{vm.pages}}">
             <button class="btn btn-primary" ng-click="vm.goTo(name)">Go</button>
+        </div>
+    </div>
+</div>
+
+
+<!-- adding user modal -->
+<div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUserModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addUserModalLabel">Add User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/users" method="POST" name="login">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input ng-model="newuser.userName" id="username" type="text" class="form-control"
+                               name="username">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input ng-model="newuser.password" id="password" type="text" class="form-control"
+                               name="password">
+                    </div>
+                    <div class="form-group">
+                        <label for="name">First Name</label>
+                        <input ng-model="newuser.name" id="name" type="text" class="form-control" name="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="surname">Last Name</label>
+                        <input ng-model="newuser.surname" id="surname" type="text" class="form-control" name="surname">
+                    </div>
+                    <div class="form-group">
+                        <label for="dateOfBirth">Date of birth</label>
+                        <input ng-model="newuser.dateOfBirth" id="dateOfBirth" type="date" class="form-control"
+                               name="dateOfBirth">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" ng-click="vm.addUser(newuser, vm.pageNum)">Add User
+                </button>
+            </div>
         </div>
     </div>
 </div>

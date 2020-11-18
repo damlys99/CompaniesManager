@@ -103,4 +103,8 @@ public class User {
         this.isDeleted = true;
     }
 
+    @Override
+    public String toString() {
+        return  name + " " + surname;
+    }
 }

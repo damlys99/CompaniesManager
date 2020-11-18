@@ -3,7 +3,6 @@ package com.example.uniprogramming.security;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.sql.Date;
 
 public class UserDTO {
     @NotBlank(message = "Enter your username")

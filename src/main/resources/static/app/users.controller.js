@@ -14,8 +14,14 @@
         vm.nextPage = nextPage;
         vm.prevPage = prevPage;
         vm.goTo = goTo;
+        vm.addUser = addUser;
+        vm.clearAlert = clearAlert;
         vm.pageNum = 1;
         vm.pages = 0;
+        vm.alert = {
+            type: "",
+            message: ""
+        };
 
         init();
 
@@ -78,6 +84,29 @@
             }
         }
 
+        function addUser(user, currPage) {
+            var url = '/api/users';
+            var usersPromise = $http.post(url + "/add", user);
+            usersPromise.then(function (suc) {
+                vm.alert.message = suc.data.result;
+                vm.alert.type = "success";
+                $http.get(url, {
+                        params: {page: currPage}
+                    }
+                ).then(function (response) {
+                    vm.users = response.data;
+                });
+            }).catch(function (err, status, headers, config) {
+                vm.alert.type = "danger";
+                vm.alert.message = "Couldn't add new user";
+            });
+
+        }
+
+        function clearAlert() {
+            vm.alert.type = "";
+            vm.alert.message = "";
+        }
 
     }
 })();
