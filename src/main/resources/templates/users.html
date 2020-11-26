@@ -6,7 +6,8 @@
     <title>Users</title>
     <link rel="stylesheet" href="../static/bootstrap.css" th:href="@{/bootstrap.css}"/>
     <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}"/>
-    <script defer src="../static/fontawesome/js/all.js" th:src="@{/fontawesome/js/all.js}"></script> <!--load all styles -->
+    <script defer src="../static/fontawesome/js/all.js" th:src="@{/fontawesome/js/all.js}"></script>
+    <!--load all styles -->
     <script type="text/javascript" src="../static/angular.min.js" th:src="@{/angular.min.js}"></script>
     <script type="text/javascript" src="../static/app/app.module.js" th:src="@{/app/app.module.js}"></script>
     <script type="text/javascript" src="../static/app/users.controller.js"
@@ -14,33 +15,34 @@
 </head>
 <body ng-app="app" ng-controller="UsersController as vm">
 <div th:insert="fragments :: header"></div>
+<div id="for-at-least-mod" sec:authorize="hasRole('ROLE_MODERATOR')">
 
-<!-- Alert -->
-<div class='alert alert-{{vm.alert.type}} alert-dismissible fade show {{vm.alert.type? "" : "d-none"}} fixed-top'
-     role="alert">
-    {{vm.alert.message}}
-    <button type="button" class="close" ng-click="vm.clearAlert()">
-        <span>&times;</span>
-    </button>
-</div>
+    <!-- Alert -->
+    <div class='alert alert-{{vm.alert.type}} alert-dismissible fade show {{vm.alert.type? "" : "d-none"}} fixed-top'
+         role="alert">
+        {{vm.alert.message}}
+        <button type="button" class="close" ng-click="vm.clearAlert()">
+            <span>&times;</span>
+        </button>
+    </div>
 
-<div class="container" id="cont">
-    <table class="table table-sm">
-        <thead>
-        <tr>
-            <th></th>
-            <th scope="col" sec:authorize="hasRole('ROLE_ADMIN')">Roles</th>
-            <th scope="col" sec:authorize="hasRole('ROLE_ADMIN')">Username</th>
-            <th scope="col">Name</th>
-            <th scope="col">Surname</th>
-            <th scope="col">Date of Birth</th>
-            <th scope="col" sec:authorize="hasRole('ROLE_MODERATOR')"></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="user in vm.users">
-            <th scope="row">{{(vm.pageNum-1)*10 + $index+1}}</th>
-            <td sec:authorize="hasRole('ROLE_ADMIN')">
+    <div class="container" id="cont">
+        <table class="table table-sm">
+            <thead>
+            <tr>
+                <th></th>
+                <th scope="col">Roles</th>
+                <th scope="col">Username</th>
+                <th scope="col">Name</th>
+                <th scope="col">Surname</th>
+                <th scope="col">Date of Birth</th>
+                <th scope="col" sec:authorize="hasRole('ROLE_ADMIN')"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="user in vm.users">
+                <th scope="row">{{(vm.pageNum-1)*10 + $index+1}}</th>
+                <td sec:authorize="hasRole('ROLE_ADMIN')">
                 <span ng-repeat="role in user.roles | orderBy: 'name'" ng-switch="role.name">
                     <img ng-switch-when="ROLE_ADMIN" style="padding-left:2px; padding-right: 2px" alt="A"
                          src="images/a.png">
@@ -49,95 +51,129 @@
                     <img ng-switch-when="ROLE_USER" style="padding-left:2px; padding-right: 2px" alt="U"
                          src="images/u.png">
                 </span>
-            </td>
-            <td sec:authorize="hasRole('ROLE_ADMIN')">{{user.userName}}</td>
-            <td>{{user.name}}</td>
-            <td>{{user.surname}}</td>
-            <td>{{user.dateOfBirth}}</td>
-            <td sec:authorize="hasRole('ROLE_MODERATOR')" style="padding: 1px ">
-                <button class="btn btn-primary shadow-none btn-sm mod-btn">
-                    <i class="fas fa-pen"></i>
-                </button>
-                <button class="btn btn-danger shadow-none btn-sm mod-btn" sec:authorize="hasRole('ROLE_ADMIN')">
-                    <i class="fas fa-minus"></i>
-                </button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <!-- Button trigger add user modal -->
-    <button sec:authorize="hasRole('ROLE_ADMIN')" type="button" class="btn btn-success" data-toggle="modal"
-            data-target="#addUserModal">
-        Add new user
-    </button>
-</div>
-
-<!-- pagination controls -->
-<div id="controls">
-    <div class="text-center">
-        <div class="btn-group" role="group" id="leftg">
-            <button class="btn btn-primary" ng-disabled="vm.pageNum <=1" ng-click="vm.prevPage(vm.pageNum)">&laquo
-            </button>
-            <button id="pagenum" disabled="true" type="text" class="btn">{{vm.pageNum}}</button>
-            <button class="btn btn-primary" ng-disabled="vm.pageNum >= vm.pages" ng-click="vm.nextPage(vm.pageNum)">
-                &raquo
-            </button>
-        </div>
-        <div class="btn-group" role="group" id="rightg">
-            <input type="number" class="form-control" id="goto" style="color:#6c757d" ng-model="name" maxlength="3"
-                   min="1" max="{{vm.pages}}">
-            <button class="btn btn-primary" ng-click="vm.goTo(name)">Go</button>
-        </div>
+                </td>
+                <td>{{user.userName}}</td>
+                <td>{{user.name}}</td>
+                <td>{{user.surname}}</td>
+                <td>{{user.dateOfBirth}}</td>
+                <td style="padding: 1px ">
+                    <button class="btn btn-primary shadow-none btn-sm mod-btn" sec:authorize="hasRole('ROLE_ADMIN')">
+                        <i class="fas fa-pen"></i>
+                    </button>
+                    <button class="btn btn-danger shadow-none btn-sm mod-btn" sec:authorize="hasRole('ROLE_ADMIN')">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <!-- Button trigger add user modal -->
+        <button sec:authorize="hasRole('ROLE_ADMIN')" type="button" class="btn btn-success" data-toggle="modal"
+                data-target="#addUserModal">
+            Add new user
+        </button>
     </div>
-</div>
 
-
-<!-- adding user modal -->
-<div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUserModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addUserModalLabel">Add User</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+    <!-- pagination controls -->
+    <div id="controls">
+        <div class="text-center">
+            <div class="btn-group" role="group" id="leftg">
+                <button class="btn btn-primary" ng-disabled="vm.pageNum <=1" ng-click="vm.prevPage(vm.pageNum)">&laquo
+                </button>
+                <button id="pagenum" disabled="true" type="text" class="btn">{{vm.pageNum}}</button>
+                <button class="btn btn-primary" ng-disabled="vm.pageNum >= vm.pages" ng-click="vm.nextPage(vm.pageNum)">
+                    &raquo
                 </button>
             </div>
-            <div class="modal-body">
-                <form action="/users" method="POST" name="login">
-                    <div class="form-group">
-                        <label for="username">Username</label>
-                        <input ng-model="newuser.userName" id="username" type="text" class="form-control"
-                               name="username">
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input ng-model="newuser.password" id="password" type="text" class="form-control"
-                               name="password">
-                    </div>
-                    <div class="form-group">
-                        <label for="name">First Name</label>
-                        <input ng-model="newuser.name" id="name" type="text" class="form-control" name="name">
-                    </div>
-                    <div class="form-group">
-                        <label for="surname">Last Name</label>
-                        <input ng-model="newuser.surname" id="surname" type="text" class="form-control" name="surname">
-                    </div>
-                    <div class="form-group">
-                        <label for="dateOfBirth">Date of birth</label>
-                        <input ng-model="newuser.dateOfBirth" id="dateOfBirth" type="date" class="form-control"
-                               name="dateOfBirth">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-success" ng-click="vm.addUser(newuser, vm.pageNum)">Add User
-                </button>
+            <div class="btn-group" role="group" id="rightg">
+                <input type="number" class="form-control" id="goto" style="color:#6c757d" ng-model="name" maxlength="3"
+                       min="1" max="{{vm.pages}}">
+                <button class="btn btn-primary" ng-click="vm.goTo(name)">Go</button>
             </div>
         </div>
     </div>
-</div>
 
+
+    <!-- adding user modal -->
+    <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUserModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addUserModalLabel">Add User</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="adduserForm" action="/users" method="POST" name="login">
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input ng-model="newuser.userName" id="username" type="text" class="form-control"
+                                   name="username">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input ng-model="newuser.password" id="password" type="text" class="form-control"
+                                   name="password">
+                        </div>
+                        <div class="form-group">
+                            <label for="name">First Name</label>
+                            <input ng-model="newuser.name" id="name" type="text" class="form-control" name="name">
+                        </div>
+                        <div class="form-group">
+                            <label for="surname">Last Name</label>
+                            <input ng-model="newuser.surname" id="surname" type="text" class="form-control"
+                                   name="surname">
+                        </div>
+                        <div class="form-group">
+                            <label for="dateOfBirth">Date of birth</label>
+                            <input ng-model="newuser.dateOfBirth" id="dateOfBirth" type="date" class="form-control"
+                                   name="dateOfBirth">
+                        </div>
+                        <div>
+                            <h3>Roles</h3>
+                            <div class="form-check form-check-inline">
+                                <label for="role-user" class="form-check-label">User</label>
+                                <input ng-model="roles.user" ng-true-value="'ROLE_USER'" id="role-user" type="checkbox"
+                                       class="form-check-input"
+                                       name="roles[]" value="ROLE_USER" checked>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <label for="role-moderator" class="form-check-label">Moderator</label>
+                                <input ng-model="roles.moderator" ng-true-value="'ROLE_MODERATOR'" id="role-moderator" type="checkbox"
+                                       class="form-check-input"
+                                       name="roles[]" value="ROLE_MODERATOR">
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <label for="role-admin" class="form-check-label">Admin</label>
+                                <input ng-model="roles.admin" ng-true-value="'ROLE_ADMIN'" id="role-admin" type="checkbox"
+                                       class="form-check-input"
+                                       name="roles[]" value="ROLE_ADMIN"
+                                        >
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal"
+                            ng-click="vm.addUser(newuser, roles, vm.pageNum)">Add User
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="for-users-only" sec:authorize="!hasRole('ROLE_MODERATOR')">
+    <div class="container">
+        <h3>Username</h3>
+        <span th:text="${loggedUser.userName}">Anonymous</span>
+        <h3>First Name</h3>
+        <span th:text="${loggedUser.name}">Anonymous</span>
+
+    </div>
+</div>
 
 </body>
 </html>

@@ -46,6 +46,7 @@ public class User {
 
     public User(){}
 
+
     public long getId(){
         return this.id;
     }
@@ -94,6 +95,10 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setRoles(Set<Role> roles){
+        this.roles = roles;
     }
 
     public void addToRoles(Role role){

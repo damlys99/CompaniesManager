@@ -1,6 +1,7 @@
 package com.example.uniprogramming.api;
 
 
+import com.example.uniprogramming.models.Role;
 import com.example.uniprogramming.models.RolesRepository;
 import com.example.uniprogramming.models.User;
 import com.example.uniprogramming.models.UsersRepository;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/users")
@@ -64,12 +66,21 @@ public class UsersController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseEntity<String> addUser(@RequestBody User user) {
-        user.addToRoles(rolesRepository.findByName("ROLE_USER"));
+    public User addUser(@RequestBody User user) {
+        //user.addToRoles(rolesRepository.findByName("ROLE_USER"));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         usersRepository.save(user);
-        String result = "User " + user.toString() + " has been successfully added.";
-        return new ResponseEntity<String> ("{\"result\":\""+result + "\"}", HttpStatus.OK);
+        return user;
+    }
+
+    @RequestMapping(value = "/{id}/setroles", method = RequestMethod.POST)
+    public User setRoles(@RequestBody Set<String> roles, @PathVariable int id){
+        User user = usersRepository.findById(id);
+        for(String role: roles){
+            user.addToRoles(rolesRepository.findByName(role));
+        }
+        usersRepository.save(user);
+        return user;
     }
 
     @RequestMapping(value = "/count", method = RequestMethod.GET)

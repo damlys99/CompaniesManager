@@ -84,22 +84,36 @@
             }
         }
 
-        function addUser(user, currPage) {
-            var url = '/api/users';
+        function addUser(user, roles, currPage) {
+            var rolesarr = [];
+            for(let key in roles){
+                rolesarr.push(roles[key]);
+            }
+            rolesarr = JSON.stringify(rolesarr);
+           var url = '/api/users';
             var usersPromise = $http.post(url + "/add", user);
             usersPromise.then(function (suc) {
-                vm.alert.message = suc.data.result;
+                vm.alert.message = "User " + suc.data.name + " " + suc.data.surname + " has been successfully added.";
                 vm.alert.type = "success";
+                $http.post(url + "/" + suc.data.id + "/setroles", rolesarr).then(function (ok){
+
+                }).catch(function (err){
+                    console.log(err);
+                });
                 $http.get(url, {
                         params: {page: currPage}
                     }
                 ).then(function (response) {
                     vm.users = response.data;
+                    getCount();
                 });
             }).catch(function (err, status, headers, config) {
                 vm.alert.type = "danger";
                 vm.alert.message = "Couldn't add new user";
+            }).finally(function (){
+                document.getElementById("adduserForm").reset();
             });
+
 
         }
 
