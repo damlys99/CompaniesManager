@@ -57,12 +57,12 @@ public class UsersController {
     }
 
 
-    @RequestMapping(value = "/delete/{idToDelete}", method = RequestMethod.PUT)
-    public List<User> delUser(@PathVariable int idToDelete) {
+    @RequestMapping(value = "/{idToDelete}/delete", method = RequestMethod.PUT)
+    public User delUser(@PathVariable int idToDelete) {
         User userGettingDeleted = usersRepository.findById(idToDelete);
         userGettingDeleted.delete();
         usersRepository.save(userGettingDeleted);
-        return usersRepository.findAllByIsDeletedIsFalse();
+        return userGettingDeleted;
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
@@ -73,7 +73,7 @@ public class UsersController {
         return user;
     }
 
-    @RequestMapping(value = "/{id}/setroles", method = RequestMethod.POST)
+    @RequestMapping(value = "/{id}/setroles", method = RequestMethod.PUT)
     public User setRoles(@RequestBody Set<String> roles, @PathVariable int id){
         User user = usersRepository.findById(id);
         for(String role: roles){

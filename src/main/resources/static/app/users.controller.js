@@ -16,6 +16,7 @@
         vm.goTo = goTo;
         vm.addUser = addUser;
         vm.clearAlert = clearAlert;
+        vm.delUser = delUser;
         vm.pageNum = 1;
         vm.pages = 0;
         vm.alert = {
@@ -36,29 +37,11 @@
         }
 
         function nextPage(currPage) {
-
-            var url = '/api/users';
-            var usersPromise = $http.get(url, {
-                params: {page: (currPage + 1)}
-            });
-            usersPromise.then(function (response) {
-                vm.users = response.data;
-            }).catch(function (err) {
-            });
-            vm.pageNum += 1;
+            goTo(currPage + 1);
         }
 
         function prevPage(currPage) {
-
-            var url = '/api/users';
-            var usersPromise = $http.get(url, {
-                params: {page: (currPage - 1)}
-            });
-            usersPromise.then(function (response) {
-                vm.users = response.data;
-            }).catch(function (err) {
-            });
-            vm.pageNum -= 1;
+            goTo(currPage -1);
         }
 
         function getCount() {
@@ -69,6 +52,7 @@
                 vm.pages = parseInt((response.data - 1) / 10 + 1);
             });
         }
+
 
         function goTo(page) {
             if (page) {
@@ -86,35 +70,42 @@
 
         function addUser(user, roles, currPage) {
             var rolesarr = [];
-            for(let key in roles){
+            for (let key in roles) {
                 rolesarr.push(roles[key]);
             }
             rolesarr = JSON.stringify(rolesarr);
-           var url = '/api/users';
+            var url = '/api/users';
             var usersPromise = $http.post(url + "/add", user);
             usersPromise.then(function (suc) {
-                vm.alert.message = "User " + suc.data.name + " " + suc.data.surname + " has been successfully added.";
+                vm.alert.message = `User ${suc.data.name} ${suc.data.surname} has been successfully added`;
                 vm.alert.type = "success";
-                $http.post(url + "/" + suc.data.id + "/setroles", rolesarr).then(function (ok){
+                $http.put(url + "/" + suc.data.id + "/setroles", rolesarr).then(function (ok) {
 
-                }).catch(function (err){
+                }).catch(function (err) {
                     console.log(err);
                 });
-                $http.get(url, {
-                        params: {page: currPage}
-                    }
-                ).then(function (response) {
-                    vm.users = response.data;
-                    getCount();
-                });
+                goTo(currPage);
             }).catch(function (err, status, headers, config) {
                 vm.alert.type = "danger";
                 vm.alert.message = "Couldn't add new user";
-            }).finally(function (){
+            }).finally(function () {
                 document.getElementById("adduserForm").reset();
             });
 
 
+        }
+
+        function delUser(user, currPage) {
+            var url = `api/users/${user.id}/delete`;
+            var usersPromise = $http.put(url);
+            usersPromise.then(function (response) {
+                vm.alert.type = "success";
+                vm.alert.message = `User ${user.name} ${user.surname} has been successfully deleted`;
+                goTo(currPage);
+            }).catch(function (err) {
+                vm.alert.type = "danger";
+                vm.alert.message = "Couldn't delete user";
+            })
         }
 
         function clearAlert() {
