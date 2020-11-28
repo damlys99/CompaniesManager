@@ -61,48 +61,48 @@
                     <form name="addUserForm" id="addUserForm"  novalidate
                           ng-submit="vm.addUser(newuser, role, vm.pageNum, addUserForm)">
                         <div class="form-group">
-                            <label for="username">Username</label>
-                            <input ng-model="newuser.userName" id="username" type="text" class="form-control"
+                            <label for="modusername">Username</label>
+                            <input ng-model="newuser.userName" id="modusername" type="text" class="form-control"
                                    name="username" ng-required="true"
                                    ng-class="{'is-invalid' : addUserForm.username.$invalid && !addUserForm.username.$pristine}">
                             <span class="invalid-feedback"
                                   ng-show="addUserForm.username.$invalid && !addUserForm.username.$pristine">Username cannot be empty</span>
                         </div>
                         <div class="form-group">
-                            <label for="password">Password</label>
-                            <input ng-model="newuser.password" id="password" type="text" class="form-control"
+                            <label for="modpassword">Password</label>
+                            <input ng-model="newuser.password" id="modpassword" type="text" class="form-control"
                                    name="password" ng-required="true"
                                    ng-class="{'is-invalid' : addUserForm.password.$invalid && !addUserForm.password.$pristine}">
                             <span class="invalid-feedback"
                                   ng-show="addUserForm.password.$invalid && !addUserForm.password.$pristine">Password cannot be empty.</span>
                         </div>
                         <div class="form-group">
-                            <label for="name">First Name</label>
-                            <input ng-model="newuser.name" id="name" type="text" class="form-control" name="name"
+                            <label for="modname">First Name</label>
+                            <input ng-model="newuser.name" id="modname" type="text" class="form-control" name="name"
                                    ng-required="true"
                                    ng-class="{'is-invalid' : addUserForm.name.$invalid && !addUserForm.name.$pristine}">
                             <span class="invalid-feedback"
                                   ng-show="addUserForm.name.$invalid && !addUserForm.name.$pristine">First name cannot be empty.</span>
                         </div>
                         <div class="form-group">
-                            <label for="surname">Last Name</label>
-                            <input ng-model="newuser.surname" id="surname" type="text" class="form-control"
+                            <label for="modsurname">Last Name</label>
+                            <input ng-model="newuser.surname" id="modsurname" type="text" class="form-control"
                                    name="surname" ng-required="true"
                                    ng-class="{'is-invalid' : addUserForm.surname.$invalid && !addUserForm.surname.$pristine}">
                             <span class="invalid-feedback"
                                   ng-show="addUserForm.surname.$invalid && !addUserForm.surname.$pristine">Surname cannot be empty.</span>
                         </div>
                         <div class="form-group">
-                            <label for="dateOfBirth">Date of birth</label>
-                            <input ng-model="newuser.dateOfBirth" id="dateOfBirth" type="date" class="form-control"
+                            <label for="moddateOfBirth">Date of birth</label>
+                            <input ng-model="newuser.dateOfBirth" id="moddateOfBirth" type="date" class="form-control"
                                    name="dateOfBirth" ng-required="true"
                                    ng-class="{'is-invalid' : addUserForm.dateOfBirth.$invalid && !addUserForm.dateOfBirth.$pristine}">
                             <span class="invalid-feedback"
                                   ng-show="addUserForm.dateOfBirth.$invalid && !addUserForm.dateOfBirth.$pristine">Date of birth cannot be empty.</span>
                         </div>
                         <div class="form-group">
-                            <label for="selectrole">Role</label>
-                        <select id="selectrole" ng-model="role" class="custom-select">
+                            <label for="modselectrole">Role</label>
+                        <select id="modselectrole" ng-model="role" class="custom-select">
                             <option selected>User</option>
                             <option>Moderator</option>
                             <option>Admin</option>
@@ -122,6 +122,74 @@
     </div>
 </div>
 
+<div th:fragment="modifyUserModal">
+    <div class="modal fade" id="modifyUserModal" tabindex="-1" role="dialog" aria-labelledby="modifyUserModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modifyUserModalLabel">Modify User</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form name="modifyUserForm" id="modifyUserForm"  novalidate
+                          ng-submit="modifyUserModal.hide(); vm.modifyUser(userModel, role, vm.pageNum, modifyUserForm)">
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input ng-model="userModel.userName" id="username" type="text" class="form-control"
+                                   name="username" ng-required="true" value="vm.user.userName"
+                                   ng-class="{'is-invalid' : modifyUserForm.username.$invalid && !modifyUserForm.username.$pristine}">
+                            <span class="invalid-feedback"
+                                  ng-show="modifyUserForm.username.$invalid && !modifyUserForm.username.$pristine">Username cannot be empty</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="name">First Name</label>
+                            <input ng-model="userModel.name" id="name" type="text" class="form-control" name="name"
+                                   ng-required="true" value="vm.user.name"
+                                   ng-class="{'is-invalid' : modifyUserForm.name.$invalid && !modifyUserForm.name.$pristine}">
+                            <span class="invalid-feedback"
+                                  ng-show="modifyUserForm.name.$invalid && !modifyUserForm.name.$pristine">First name cannot be empty.</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="surname">Last Name</label>
+                            <input ng-model="userModel.surname" id="surname" type="text" class="form-control"
+                                   name="surname" ng-required="true" value="vm.user.surname"
+                                   ng-class="{'is-invalid' : modifyUserForm.surname.$invalid && !modifyUserForm.surname.$pristine}">
+                            <span class="invalid-feedback"
+                                  ng-show="modifyUserForm.surname.$invalid && !modifyUserForm.surname.$pristine">Surname cannot be empty.</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="dateOfBirth">Date of birth</label>
+                            <input ng-model="userModel.dateOfBirth" id="dateOfBirth" type="date" class="form-control"
+                                   name="dateOfBirth" ng-required="true"
+                                   ng-class="{'is-invalid' : modifyUserForm.dateOfBirth.$invalid && !modifyUserForm.dateOfBirth.$pristine}">
+                            <span class="invalid-feedback"
+                                  ng-show="modifyUserForm.dateOfBirth.$invalid && !modifyUserForm.dateOfBirth.$pristine">Date of birth cannot be empty.</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="selectrole">Role</label>
+                            <select id="selectrole" ng-model="role" class="custom-select">
+                                <option>User</option>
+                                <option>Moderator</option>
+                                <option>Admin</option>
+                            </select>
+
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" form="modifyUserForm" class="btn btn-success" ng-disabled="modifyUserForm.$invalid || modifyUserForm.$untouched">
+                        Modify User
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 <div th:fragment="deleteUserDialog">
     <div class="modal fade" id="deleteUserDialog" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -137,13 +205,14 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-dismiss="modal"
-                            ng-click="vm.delUser(vm.user, vm.pageNum)">Yes
+                            ng-click="vm.delUser(userModel, vm.pageNum)">Yes
                     </button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 </body>
 </html>

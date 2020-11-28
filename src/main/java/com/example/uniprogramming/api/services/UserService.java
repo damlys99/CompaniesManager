@@ -3,9 +3,11 @@ package com.example.uniprogramming.api.services;
 import com.example.uniprogramming.models.RolesRepository;
 import com.example.uniprogramming.models.User;
 import com.example.uniprogramming.models.UsersRepository;
+import com.example.uniprogramming.security.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +20,13 @@ public class UserService {
     private final UsersRepository usersRepository;
     private final RolesRepository rolesRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final MyUserDetailsService userDetailsService;
     @Autowired
-    public UserService(UsersRepository usersRepository, RolesRepository rolesRepository, BCryptPasswordEncoder passwordEncoder){
+    public UserService(UsersRepository usersRepository, RolesRepository rolesRepository, BCryptPasswordEncoder passwordEncoder, MyUserDetailsService userDetailsService){
         this.usersRepository = usersRepository;
         this.rolesRepository = rolesRepository;
         this.passwordEncoder = passwordEncoder;
+        this.userDetailsService = userDetailsService;
     }
 
     public List<User> getAll(){
@@ -33,8 +37,8 @@ public class UserService {
         return usersRepository.findById(id);
     }
 
-    public User getLoggedUser(Principal principal){
-        return usersRepository.findByUserName(principal.getName()).get();
+    public User getLoggedUser(){
+        return usersRepository.findByUserName(userDetailsService.getLoggedUser().getUsername()).get();
     }
 
     public Long count(){
@@ -42,6 +46,7 @@ public class UserService {
     }
 
     public User deleteUser(int id){
+
         User userGettingDeleted = usersRepository.findById(id);
         userGettingDeleted.setDeleted(true);
         usersRepository.save(userGettingDeleted);
@@ -59,7 +64,6 @@ public class UserService {
         userGettingModified.setName(user.getName());
         userGettingModified.setSurname(user.getSurname());
         userGettingModified.setUserName(user.getUserName());
-        userGettingModified.setPassword(passwordEncoder.encode(user.getPassword()));
         userGettingModified.setDateOfBirth(user.getDateOfBirth());
         usersRepository.save(userGettingModified);
         return userGettingModified;

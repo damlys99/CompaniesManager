@@ -15,14 +15,15 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.security.Security;
+import java.util.Optional;
 
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final BCryptPasswordEncoder passwordEncoder;
-    private final UserDetailsService userDetailsService;
+    private final MyUserDetailsService userDetailsService;
 
     @Autowired
-    public SecurityConfiguration(UserDetailsService userDetailsService, BCryptPasswordEncoder passwordEncoder){
+    public SecurityConfiguration(MyUserDetailsService userDetailsService, BCryptPasswordEncoder passwordEncoder){
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
     }
@@ -38,10 +39,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception{
         http.httpBasic()
                 .and().authorizeRequests()
-                .antMatchers("/api/**", "/register").permitAll()
+                .antMatchers("/api/users/add", "/api/users/{\\d+}/**").authenticated()
+                .antMatchers("/api/users/all").hasAnyRole("ADMIN", "MODERATOR")
                 .antMatchers("/api/users").hasAnyRole("ADMIN", "MODERATOR")
-                .antMatchers("/api/users/add", "/api/users/{id}/delete").hasRole("ADMIN")
-                .antMatchers("/users/**").hasAnyRole("ADMIN", "MODERATOR", "USER")
+                .antMatchers("/register").permitAll()
+                .antMatchers("/users/**").authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")

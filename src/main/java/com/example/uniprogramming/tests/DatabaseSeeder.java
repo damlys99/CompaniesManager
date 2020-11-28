@@ -1,9 +1,7 @@
 package com.example.uniprogramming.tests;
 
-import com.example.uniprogramming.ViewController;
-import com.example.uniprogramming.models.Role;
+import com.example.uniprogramming.controllers.ViewController;
 import com.example.uniprogramming.models.RolesRepository;
-import com.example.uniprogramming.models.User;
 import com.example.uniprogramming.models.UsersRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,11 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
-
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.sql.Date;
-import java.util.*;
 
 @Component
 public class DatabaseSeeder implements CommandLineRunner {

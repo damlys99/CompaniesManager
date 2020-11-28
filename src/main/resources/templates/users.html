@@ -57,7 +57,7 @@
                 <td>{{user.surname}}</td>
                 <td>{{user.dateOfBirth}}</td>
                 <td sec:authorize="hasRole('ROLE_ADMIN')" style="padding: 1px ">
-                    <button class="btn btn-primary shadow-none btn-sm mod-btn" ng-click="vm.setUserVar(user); vm.modalType = 'modify';" data-toggle="modal" data-target="#addUserModal">
+                    <button class="btn btn-primary shadow-none btn-sm mod-btn" ng-click="vm.setUserVar(user);" data-toggle="modal" data-target="#modifyUserModal">
                         <i class="fas fa-pen"></i>
                     </button>
                     <button class="btn btn-danger shadow-none btn-sm mod-btn" ng-click = "vm.setUserVar(user)"  data-toggle="modal" data-target="#deleteUserDialog">
@@ -69,8 +69,8 @@
             </tbody>
         </table>
         <!-- Button trigger add user modal -->
-        <button sec:authorize="hasRole('ROLE_ADMIN')" type="button" class="btn btn-success" data-toggle="modal"
-                data-target="#addUserModal" ng-click="vm.modalType = 'add';">
+        <button sec:authorize="hasRole('ROLE_ADMIN')" type="button" class="btn btn-success" data-toggle="modal" ng-click="role = User; userModel = '' "
+                data-target="#addUserModal">
             Add new user
         </button>
     </div>
@@ -96,6 +96,7 @@
 
     <div sec:authorize="hasRole('ROLE_ADMIN')" th:insert="fragments :: addUserModal"></div>
     <div sec:authorize="hasRole('ROLE_ADMIN')" th:insert="fragments :: deleteUserDialog"></div>
+    <div sec:authorize="hasRole('ROLE_ADMIN')" th:insert="fragments :: modifyUserModal"></div>
 
 </div>
 <div id="for-users-only" sec:authorize="!hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')">

@@ -15,6 +15,7 @@
         vm.prevPage = prevPage;
         vm.goTo = goTo;
         vm.addUser = addUser;
+        vm.modifyUser = modifyUser;
         vm.clearAlert = clearAlert;
         vm.delUser = delUser;
         vm.setUserVar = setUserVar;
@@ -91,12 +92,35 @@
             }).finally(function () {
                 //document.getElementById("addUserForm").reset();
                 formReset(form);
+                getCount();
                 goTo(currPage);
             });
 
-
         }
 
+            function modifyUser(user, role, currPage, form) {
+                role = JSON.stringify(`ROLE_${role.toUpperCase()}`);
+                console.log(role);
+                var url = '/api/users';
+                var usersPromise = $http.put(url + `/${user.id}/modify`, user);
+                usersPromise.then(function (suc) {
+                    vm.alert.message = `User ${suc.data.name} ${suc.data.surname} has been successfully modified`;
+                    vm.alert.type = "success";
+                    $http.put(url + "/" + suc.data.id + "/setrole", role).then(function (ok) {
+
+                    }).catch(function (err) {
+                        console.log(err);
+                    });
+                }).catch(function (err, status, headers, config) {
+                    vm.alert.type = "danger";
+                    vm.alert.message = "Couldn't modify user";
+                }).finally(function () {
+                    $("#modifyUserModal").modal('hide');
+                    getCount();
+                    goTo(currPage);
+                });
+
+            }
         function delUser(user, currPage) {
             var url = `api/users/${user.id}/delete`;
             var usersPromise = $http.put(url);
@@ -131,7 +155,11 @@
 
 
             function setUserVar(user){
-            vm.user = angular.copy(user);
+            $scope.userModel = angular.copy(user);
+            $scope.userModel.dateOfBirth = new Date($scope.userModel.dateOfBirth);
+            $scope.role = user.role.name.replace("ROLE_", "");
+            $scope.role = $scope.role.charAt(0).toUpperCase() + $scope.role.slice(1).toLowerCase();
+            console.log($scope.role);
         }
 
 

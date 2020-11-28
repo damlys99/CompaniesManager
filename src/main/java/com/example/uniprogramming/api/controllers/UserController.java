@@ -3,10 +3,13 @@ package com.example.uniprogramming.api.controllers;
 
 import com.example.uniprogramming.api.services.UserService;
 import com.example.uniprogramming.models.User;
+import com.example.uniprogramming.security.MyUserDetailsService;
 import com.fasterxml.jackson.databind.node.TextNode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
 import java.util.List;
@@ -21,7 +24,7 @@ public class UserController {
     private final UserService userService;
 
     @Autowired
-    public UserController(UserService userService){
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
@@ -43,13 +46,23 @@ public class UserController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public User getUser(@PathVariable int id) {
+
+        if (!(logged().getRole().getName().equals("ROLE_ADMIN") || logged().getRole().getName().equals("ROLE_MODERATOR")) && !(logged().getId() == id)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "You can't do that!");
+        }
         return userService.getUser(id);
     }
 
 
     @RequestMapping(value = "/{id}/delete", method = RequestMethod.PUT)
     public User deleteUser(@PathVariable int id) {
-       return userService.deleteUser(id);
+        if (id < 4 || id > count() - 3) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found!");
+        }
+        if (!logged().getRole().getName().equals("ROLE_ADMIN") && !(logged().getId() == id)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "You can't do that!");
+        }
+        return userService.deleteUser(id);
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
@@ -58,12 +71,24 @@ public class UserController {
     }
 
     @RequestMapping(value = "/{id}/setrole", method = RequestMethod.PUT)
-    public User setRoles(@RequestBody TextNode role, @PathVariable int id){
+    public User setRoles(@RequestBody TextNode role, @PathVariable int id) {
+        if (id < 4 || id > count() - 3) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found!");
+        }
+        if (!logged().getRole().getName().equals("ROLE_ADMIN") && !(logged().getId() == id)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "You can't do that!");
+        }
         return userService.setRole(id, role.asText());
     }
 
     @RequestMapping(value = "/{id}/modify", method = RequestMethod.PUT)
-    public User setRoles(@RequestBody User user, @PathVariable int id){
+    public User setRoles(@RequestBody User user, @PathVariable int id) {
+        if (id < 4 || id > count() - 3) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found!");
+        }
+        if (!logged().getRole().getName().equals("ROLE_ADMIN") && !(logged().getId() == id)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "You can't do that!");
+        }
         return userService.modifyUser(id, user);
     }
 
@@ -73,8 +98,8 @@ public class UserController {
     }
 
     @RequestMapping("/logged")
-    public User logged(@CurrentSecurityContext(expression = "authentication.principal") Principal principal) {
-        return userService.getLoggedUser(principal);
+    public User logged() {//@CurrentSecurityContext(expression = "authentication.principal") Principal principal) {
+        return userService.getLoggedUser();
     }
 
 

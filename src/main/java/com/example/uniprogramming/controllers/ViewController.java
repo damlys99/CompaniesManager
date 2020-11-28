@@ -1,4 +1,4 @@
-package com.example.uniprogramming;
+package com.example.uniprogramming.controllers;
 
 import com.example.uniprogramming.api.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +20,10 @@ public class ViewController {
 
     @RequestMapping(value="/users")
     public String index(
-            Model model,
-            @CurrentSecurityContext(expression = "authentication.principal") Principal principal
+            Model model
+            //@CurrentSecurityContext(expression = "authentication.principal") Principal principal
             ){
-                model.addAttribute("loggedUser", userService.getLoggedUser(principal));
+                model.addAttribute("loggedUser", userService.getLoggedUser());
                 return "users";
     }
 
