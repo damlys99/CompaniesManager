@@ -3,41 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <title>Users</title>
-    <link rel="stylesheet" href="../static/bootstrap.css" th:href="@{/bootstrap.css}" />
-    <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}" />
-    <script type="text/javascript" src="../static/angular.min.js" th:src="@{/angular.min.js}" ></script>
+    <link rel="stylesheet" href="../static/bootstrap.css" th:href="@{/bootstrap.css}"/>
+    <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}"/>
+    <script type="text/javascript" src="../static/angular.min.js" th:src="@{/angular.min.js}"></script>
     <script type="text/javascript" src="../static/app/app.module.js" th:src="@{/app/app.module.js}"></script>
-    <script type="text/javascript" src="../static/app/users.controller.js" th:src="@{/app/users.controller.js}"></script>
+    <script type="text/javascript" src="../static/app/users.controller.js"
+            th:src="@{/app/users.controller.js}"></script>
 </head>
 <body>
-<div  th:fragment="header">
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarText">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="/users">Users<span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Companies</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Contacts</a>
-            </li>
-        </ul>
-        <span class="navbar-text">Logged as <b><span th:text="${loggedUser.name} + ' ' + ${loggedUser.surname}">Anonymous</span></b>
+<div th:fragment="header">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+                aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/users">Users<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Companies</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contacts</a>
+                </li>
+            </ul>
+            <span class="navbar-text">Logged as <b><span th:text="${loggedUser.name} + ' ' + ${loggedUser.surname}">Anonymous</span></b>
     </span>
-    </div>
-</nav>
+        </div>
+    </nav>
 
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+            integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+            integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+            crossorigin="anonymous"></script>
 </div>
 
-<div th:fragment="add-user-modal">
+<div th:fragment="addUserModal">
     <!-- adding user modal -->
     <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUserModalLabel"
          aria-hidden="true">
@@ -50,63 +58,88 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="adduserForm" action="/users" method="POST" name="login">
+                    <form name="addUserForm" id="addUserForm"  novalidate
+                          ng-submit="vm.addUser(newuser, role, vm.pageNum, addUserForm)">
                         <div class="form-group">
                             <label for="username">Username</label>
                             <input ng-model="newuser.userName" id="username" type="text" class="form-control"
-                                   name="username">
+                                   name="username" ng-required="true"
+                                   ng-class="{'is-invalid' : addUserForm.username.$invalid && !addUserForm.username.$pristine}">
+                            <span class="invalid-feedback"
+                                  ng-show="addUserForm.username.$invalid && !addUserForm.username.$pristine">Username cannot be empty</span>
                         </div>
                         <div class="form-group">
                             <label for="password">Password</label>
                             <input ng-model="newuser.password" id="password" type="text" class="form-control"
-                                   name="password">
+                                   name="password" ng-required="true"
+                                   ng-class="{'is-invalid' : addUserForm.password.$invalid && !addUserForm.password.$pristine}">
+                            <span class="invalid-feedback"
+                                  ng-show="addUserForm.password.$invalid && !addUserForm.password.$pristine">Password cannot be empty.</span>
                         </div>
                         <div class="form-group">
                             <label for="name">First Name</label>
-                            <input ng-model="newuser.name" id="name" type="text" class="form-control" name="name">
+                            <input ng-model="newuser.name" id="name" type="text" class="form-control" name="name"
+                                   ng-required="true"
+                                   ng-class="{'is-invalid' : addUserForm.name.$invalid && !addUserForm.name.$pristine}">
+                            <span class="invalid-feedback"
+                                  ng-show="addUserForm.name.$invalid && !addUserForm.name.$pristine">First name cannot be empty.</span>
                         </div>
                         <div class="form-group">
                             <label for="surname">Last Name</label>
                             <input ng-model="newuser.surname" id="surname" type="text" class="form-control"
-                                   name="surname">
+                                   name="surname" ng-required="true"
+                                   ng-class="{'is-invalid' : addUserForm.surname.$invalid && !addUserForm.surname.$pristine}">
+                            <span class="invalid-feedback"
+                                  ng-show="addUserForm.surname.$invalid && !addUserForm.surname.$pristine">Surname cannot be empty.</span>
                         </div>
                         <div class="form-group">
                             <label for="dateOfBirth">Date of birth</label>
                             <input ng-model="newuser.dateOfBirth" id="dateOfBirth" type="date" class="form-control"
-                                   name="dateOfBirth">
+                                   name="dateOfBirth" ng-required="true"
+                                   ng-class="{'is-invalid' : addUserForm.dateOfBirth.$invalid && !addUserForm.dateOfBirth.$pristine}">
+                            <span class="invalid-feedback"
+                                  ng-show="addUserForm.dateOfBirth.$invalid && !addUserForm.dateOfBirth.$pristine">Date of birth cannot be empty.</span>
                         </div>
-                        <div id="checkboxes-div">
-                            <div class="form-check form-check-inline">
+                        <div class="form-group">
+                            <label for="selectrole">Role</label>
+                        <select id="selectrole" ng-model="role" class="custom-select">
+                            <option selected>User</option>
+                            <option>Moderator</option>
+                            <option>Admin</option>
+                        </select>
 
-                                <input ng-model="roles.user" ng-true-value="'ROLE_USER'" id="role-user" type="checkbox"
-                                       class="form-check-input"
-                                       name="roles[]" value="ROLE_USER" checked>
-                                <label for="role-user" class="form-check-label">User</label>
-
-                            </div>
-                            <div class="form-check form-check-inline">
-
-                                <input ng-model="roles.moderator" ng-true-value="'ROLE_MODERATOR'" id="role-moderator" type="checkbox"
-                                       class="form-check-input"
-                                       name="roles[]" value="ROLE_MODERATOR">
-                                <label for="role-moderator" class="form-check-label">Moderator</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-
-                                <input ng-model="roles.admin" ng-true-value="'ROLE_ADMIN'" id="role-admin" type="checkbox"
-                                       class="form-check-input"
-                                       name="roles[]" value="ROLE_ADMIN"
-                                >
-                                <label for="role-admin" class="form-check-label">Admin</label>
-                            </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success" data-dismiss="modal"
-                            ng-click="vm.addUser(newuser, roles, vm.pageNum)">Add User
+                    <button type="submit" form="addUserForm" class="btn btn-success" ng-disabled="addUserForm.$invalid">
+                        Add User
                     </button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="deleteUserDialog">
+    <div class="modal fade" id="deleteUserDialog" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteUserTitle">Delete User</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete {{vm.user.name}} {{vm.user.surname}}?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal"
+                            ng-click="vm.delUser(vm.user, vm.pageNum)">Yes
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
         </div>

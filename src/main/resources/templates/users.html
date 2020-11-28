@@ -8,14 +8,14 @@
     <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}"/>
     <script defer src="../static/fontawesome/js/all.js" th:src="@{/fontawesome/js/all.js}"></script>
     <!--load all styles -->
-    <script type="text/javascript" src="../static/angular.min.js" th:src="@{/angular.min.js}"></script>
+    <script type="text/javascript" src="../static/angular.min.js" th:src="@{/angular.js}"></script>
     <script type="text/javascript" src="../static/app/app.module.js" th:src="@{/app/app.module.js}"></script>
     <script type="text/javascript" src="../static/app/users.controller.js"
             th:src="@{/app/users.controller.js}"></script>
 </head>
 <body ng-app="app" ng-controller="UsersController as vm">
 <div th:insert="fragments :: header"></div>
-<div id="for-at-least-mod" sec:authorize="hasRole('ROLE_MODERATOR')">
+<div id="for-at-least-mod" sec:authorize="hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')">
 
     <!-- Alert -->
     <div class='alert alert-{{vm.alert.type}} alert-dismissible fade show {{vm.alert.type? "" : "d-none"}} fixed-top'
@@ -43,7 +43,7 @@
             <tr ng-repeat="user in vm.users">
                 <th scope="row">{{(vm.pageNum-1)*10 + $index+1}}</th>
                 <td sec:authorize="hasRole('ROLE_ADMIN')">
-                <span ng-repeat="role in user.roles | orderBy: 'name'" ng-switch="role.name">
+                <span ng-switch="user.role.name">
                     <img ng-switch-when="ROLE_ADMIN" style="padding-left:2px; padding-right: 2px" alt="A"
                          src="images/a.png">
                     <img ng-switch-when="ROLE_MODERATOR" style="padding-left:2px; padding-right: 2px" alt="M"
@@ -56,12 +56,13 @@
                 <td>{{user.name}}</td>
                 <td>{{user.surname}}</td>
                 <td>{{user.dateOfBirth}}</td>
-                <td style="padding: 1px ">
-                    <button class="btn btn-primary shadow-none btn-sm mod-btn" sec:authorize="hasRole('ROLE_ADMIN')">
+                <td sec:authorize="hasRole('ROLE_ADMIN')" style="padding: 1px ">
+                    <button class="btn btn-primary shadow-none btn-sm mod-btn" ng-click="vm.setUserVar(user); vm.modalType = 'modify';" data-toggle="modal" data-target="#addUserModal">
                         <i class="fas fa-pen"></i>
                     </button>
-                    <button class="btn btn-danger shadow-none btn-sm mod-btn" sec:authorize="hasRole('ROLE_ADMIN')" ng-click="vm.delUser(user, vm.pageNum)">
+                    <button class="btn btn-danger shadow-none btn-sm mod-btn" ng-click = "vm.setUserVar(user)"  data-toggle="modal" data-target="#deleteUserDialog">
                         <i class="fas fa-minus"></i>
+                        <!--ng-click="vm.delUser(user, vm.pageNum)" -->
                     </button>
                 </td>
             </tr>
@@ -69,7 +70,7 @@
         </table>
         <!-- Button trigger add user modal -->
         <button sec:authorize="hasRole('ROLE_ADMIN')" type="button" class="btn btn-success" data-toggle="modal"
-                data-target="#addUserModal">
+                data-target="#addUserModal" ng-click="vm.modalType = 'add';">
             Add new user
         </button>
     </div>
@@ -93,10 +94,11 @@
         </div>
     </div>
 
-<div th:insert="fragments :: add-user-modal"></div>
+    <div sec:authorize="hasRole('ROLE_ADMIN')" th:insert="fragments :: addUserModal"></div>
+    <div sec:authorize="hasRole('ROLE_ADMIN')" th:insert="fragments :: deleteUserDialog"></div>
 
 </div>
-<div id="for-users-only" sec:authorize="!hasRole('ROLE_MODERATOR')">
+<div id="for-users-only" sec:authorize="!hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')">
     <div class="container">
         <h3>Username</h3>
         <span th:text="${loggedUser.userName}">Anonymous</span>
@@ -105,6 +107,7 @@
 
     </div>
 </div>
+
 
 </body>
 </html>

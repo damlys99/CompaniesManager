@@ -1,39 +1,29 @@
 package com.example.uniprogramming;
 
-import com.example.uniprogramming.models.UsersRepository;
-import com.example.uniprogramming.security.MyUserDetails;
-import com.example.uniprogramming.security.UserDTO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.example.uniprogramming.api.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
+import java.security.Principal;
 
 @Controller
 public class ViewController {
-    UsersRepository usersRepository;
 
-    private static final Logger log = LoggerFactory.getLogger(ViewController.class);
+    private final UserService userService;
 
     @Autowired
-    public ViewController(UsersRepository usersRepository){
-        this.usersRepository = usersRepository;
+    public ViewController(UserService userService){
+        this.userService = userService;
     }
 
     @RequestMapping(value="/users")
     public String index(
             Model model,
-            @RequestParam("page") Optional<Integer> page,
-            @RequestParam("size") Optional<Integer> size
+            @CurrentSecurityContext(expression = "authentication.principal") Principal principal
             ){
-                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-                MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
-                model.addAttribute("loggedUser", usersRepository.findByUserName(userDetails.getUsername()).orElse(null));
+                model.addAttribute("loggedUser", userService.getLoggedUser(principal));
                 return "users";
     }
 

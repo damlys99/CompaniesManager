@@ -1,9 +1,5 @@
 package com.example.uniprogramming.security;
 
-import com.example.uniprogramming.models.UsersRepository;
-import com.example.uniprogramming.ViewController;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.security.core.Authentication;
@@ -23,15 +19,12 @@ import javax.validation.Valid;
 
 @Controller
 public class AccountController {
-    UsersRepository usersRepository;
 
-    private static final Logger log = LoggerFactory.getLogger(ViewController.class);
-    private final UserService userService;
+    private final UserDTOService userDTOService;
 
     @Autowired
-    public AccountController(UsersRepository usersRepository, UserService userService){
-        this.usersRepository = usersRepository;
-        this.userService = userService;
+    public AccountController(UserDTOService userDTOService){
+        this.userDTOService = userDTOService;
     }
 
     @InitBinder
@@ -73,7 +66,7 @@ public class AccountController {
     @PostMapping(value="/register")
     public String save(@Valid UserDTO userDTO, BindingResult bindingResult, RedirectAttributes ra){
 
-        if(userService.userExists(userDTO.getUsername())){
+        if(userDTOService.userExists(userDTO.getUsername())){
             bindingResult.addError(new FieldError("userDTO", "username",
                     "User with that username already exists"));
         }
@@ -87,7 +80,7 @@ public class AccountController {
             return "register";
         }
         ra.addFlashAttribute("message", "Your account has been created! You can now log in.");
-        userService.register(userDTO);
+        userDTOService.register(userDTO);
         return "redirect:/login";
     }
 }

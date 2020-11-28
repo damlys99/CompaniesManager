@@ -12,14 +12,14 @@ import java.sql.Date;
 import java.util.Set;
 
 @Service
-public class UserService {
+public class UserDTOService {
 
     private final UsersRepository usersRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final RolesRepository rolesRepository;
 
     @Autowired
-    public UserService(UsersRepository usersRepository, BCryptPasswordEncoder passwordEncoder, RolesRepository rolesRepository) {
+    public UserDTOService(UsersRepository usersRepository, BCryptPasswordEncoder passwordEncoder, RolesRepository rolesRepository) {
         this.usersRepository = usersRepository;
         this.passwordEncoder = passwordEncoder;
         this.rolesRepository = rolesRepository;
@@ -42,7 +42,7 @@ public class UserService {
         user.setUserName(userDTO.getUsername());
         user.setPassword(userDTO.getPassword());
         user.setDateOfBirth(Date.valueOf(userDTO.getDateOfBirth()));
-        user.addToRoles(rolesRepository.findByName("ROLE_USER"));
+        user.setRole(rolesRepository.findByName("ROLE_USER"));
 
         return save(user);
     }

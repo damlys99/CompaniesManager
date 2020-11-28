@@ -18,14 +18,12 @@ import java.security.Security;
 
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-    private final UserService userService;
     private final BCryptPasswordEncoder passwordEncoder;
     private final UserDetailsService userDetailsService;
 
     @Autowired
-    public SecurityConfiguration(UserDetailsService userDetailsService, UserService userService, BCryptPasswordEncoder passwordEncoder){
+    public SecurityConfiguration(UserDetailsService userDetailsService, BCryptPasswordEncoder passwordEncoder){
         this.userDetailsService = userDetailsService;
-        this.userService = userService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -41,6 +39,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.httpBasic()
                 .and().authorizeRequests()
                 .antMatchers("/api/**", "/register").permitAll()
+                .antMatchers("/api/users").hasAnyRole("ADMIN", "MODERATOR")
+                .antMatchers("/api/users/add", "/api/users/{id}/delete").hasRole("ADMIN")
                 .antMatchers("/users/**").hasAnyRole("ADMIN", "MODERATOR", "USER")
                 .and()
                 .formLogin()

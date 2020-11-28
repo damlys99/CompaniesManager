@@ -34,10 +34,15 @@ public class DatabaseSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-/*    User user = usersRepository.findByUserName("admin").get();
-    user.addToRoles(rolesRepository.findByName("ROLE_USER"));
-    user.addToRoles(rolesRepository.findByName("ROLE_MODERATOR"));
-    usersRepository.save(user);*/
+
+     /*   User user = usersRepository.findByUserName("admin").get();
+        user.setRole(rolesRepository.findByName("ROLE_ADMIN"));
+        usersRepository.save(user);
+        */
+
+
+
+
 /*
 
         Random generator = new Random();
@@ -52,17 +57,23 @@ public class DatabaseSeeder implements CommandLineRunner {
                     (generator.nextInt(12) + 1) + '-' + (generator.nextInt(28) + 1));
             String username = name + surname.substring(0, 3) + dateOfBirth.toString().substring(2, 4);
             User user = new User(name, surname, dateOfBirth, username, passwordEncoder.encode(username));
-            user.addToRoles(rolesRepository.findByName("ROLE_USER"));
+            user.setRole(rolesRepository.findByName("ROLE_USER"));
             users.add(user);
         }
         usersRepository.saveAll(users);
 
 
-*/
 
-    /*List<User> users = new ArrayList<>();
-    users.add(new User("Damian", "Łyszkiewicz", Date.valueOf("1999-12-14"), "admin", "admin", "ROLE_ADMIN, ROLE_USER"));
-    usersRepository.saveAll(users);]*/
+
+ /*   rolesRepository.save(new Role("ROLE_USER"));
+    rolesRepository.save(new Role("ROLE_MODERATOR"));
+    rolesRepository.save(new Role("ROLE_ADMIN"));
+    List<User> users = new ArrayList<>();
+    users.add(new User("Damian", "Łyszkiewicz", Date.valueOf("1999-12-14"), "admin", passwordEncoder.encode("admin")));
+    usersRepository.saveAll(users);
+    usersRepository.findByUserName("admin").get().setRole(rolesRepository.findByName("ROLE_ADMIN"));
+    usersRepository.saveAll(users);
+  */
 
 
     }

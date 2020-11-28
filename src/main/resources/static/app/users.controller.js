@@ -5,10 +5,10 @@
         .module('app')
         .controller('UsersController', UsersController);
 
-    UsersController.$inject = ['$http'];
+    UsersController.$inject = ['$http', '$scope'];
 
 
-    function UsersController($http) {
+    function UsersController($http, $scope) {
         var vm = this;
         vm.users = [];
         vm.nextPage = nextPage;
@@ -17,8 +17,12 @@
         vm.addUser = addUser;
         vm.clearAlert = clearAlert;
         vm.delUser = delUser;
+        vm.setUserVar = setUserVar;
+        vm.user = undefined;
+        vm.modalType = "";
         vm.pageNum = 1;
         vm.pages = 0;
+        $scope.role = 'User';
         vm.alert = {
             type: "",
             message: ""
@@ -68,28 +72,26 @@
             }
         }
 
-        function addUser(user, roles, currPage) {
-            var rolesarr = [];
-            for (let key in roles) {
-                rolesarr.push(roles[key]);
-            }
-            rolesarr = JSON.stringify(rolesarr);
+        function addUser(user, role, currPage, form) {
+            role = JSON.stringify(`ROLE_${role.toUpperCase()}`);
+            console.log(role);
             var url = '/api/users';
             var usersPromise = $http.post(url + "/add", user);
             usersPromise.then(function (suc) {
                 vm.alert.message = `User ${suc.data.name} ${suc.data.surname} has been successfully added`;
                 vm.alert.type = "success";
-                $http.put(url + "/" + suc.data.id + "/setroles", rolesarr).then(function (ok) {
+                $http.put(url + "/" + suc.data.id + "/setrole", role).then(function (ok) {
 
                 }).catch(function (err) {
                     console.log(err);
                 });
-                goTo(currPage);
             }).catch(function (err, status, headers, config) {
                 vm.alert.type = "danger";
                 vm.alert.message = "Couldn't add new user";
             }).finally(function () {
-                document.getElementById("adduserForm").reset();
+                //document.getElementById("addUserForm").reset();
+                formReset(form);
+                goTo(currPage);
             });
 
 
@@ -101,7 +103,13 @@
             usersPromise.then(function (response) {
                 vm.alert.type = "success";
                 vm.alert.message = `User ${user.name} ${user.surname} has been successfully deleted`;
+                getCount();
+                if(vm.pages <= vm.pageNum && vm.pages > 0){
+                    goTo(currPage-1);
+                }
+                else
                 goTo(currPage);
+
             }).catch(function (err) {
                 vm.alert.type = "danger";
                 vm.alert.message = "Couldn't delete user";
@@ -112,6 +120,20 @@
             vm.alert.type = "";
             vm.alert.message = "";
         }
+
+        function formReset(form){
+            form.$invalid = "true";
+            form.$pristine = "true";
+            form.$untouched = "true";
+            document.getElementsByName(form.$name)[0].reset();
+        }
+
+
+
+            function setUserVar(user){
+            vm.user = angular.copy(user);
+        }
+
 
     }
 })();

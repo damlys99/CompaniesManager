@@ -23,14 +23,14 @@ public class User {
     private String userName;
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade=CascadeType.MERGE)
+    @ManyToOne(fetch = FetchType.EAGER, cascade=CascadeType.MERGE)
     @JoinTable(
-            name = "users_roles",
+            name = "user_role",
             joinColumns = @JoinColumn(
                     name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(
                     name = "role_id", referencedColumnName = "id"))
-    private Set<Role> roles = new HashSet<>();
+    private Role role;
 
 
     private boolean isDeleted;
@@ -70,8 +70,8 @@ public class User {
         return password;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    public Role getRole() {
+        return role;
     }
 
     public boolean getIsDeleted(){
@@ -97,16 +97,17 @@ public class User {
         this.password = password;
     }
 
-    public void setRoles(Set<Role> roles){
-        this.roles = roles;
+    public void setRole(Role role){
+        this.role = role;
     }
 
-    public void addToRoles(Role role){
+    public void setDeleted(boolean isDeleted){
+        this.isDeleted = isDeleted;
+    }
+
+/*    public void addToRoles(Role role){
         this.roles.add(role);
-    }
-    public void delete(){
-        this.isDeleted = true;
-    }
+    }*/
 
     @Override
     public String toString() {

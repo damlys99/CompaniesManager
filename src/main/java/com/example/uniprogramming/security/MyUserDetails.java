@@ -25,10 +25,7 @@ public class MyUserDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
-        Collection<Role> roles = user.getRoles();
-        for(Role role : roles){
-            authorities.add(new SimpleGrantedAuthority(role.toString()));
-        }
+        authorities.add(new SimpleGrantedAuthority(user.getRole().toString()));
         return authorities;
     }
 
