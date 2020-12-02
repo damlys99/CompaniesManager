@@ -59,7 +59,7 @@
                 </div>
                 <div class="modal-body">
                     <form name="addUserForm" id="addUserForm"  novalidate
-                          ng-submit="vm.addUser(newuser, role, vm.pageNum, addUserForm)">
+                          ng-submit="addUser(newuser, role, addUserForm)">
                         <div class="form-group">
                             <label for="modusername">Username</label>
                             <input ng-model="newuser.userName" id="modusername" type="text" class="form-control"
@@ -135,11 +135,11 @@
                 </div>
                 <div class="modal-body">
                     <form name="modifyUserForm" id="modifyUserForm"  novalidate
-                          ng-submit="modifyUserModal.hide(); vm.modifyUser(userModel, role, vm.pageNum, modifyUserForm)">
+                          ng-submit="modifyUser(userModel, role)">
                         <div class="form-group">
                             <label for="username">Username</label>
                             <input ng-model="userModel.userName" id="username" type="text" class="form-control"
-                                   name="username" ng-required="true" value="vm.user.userName"
+                                   name="username" ng-required="true"
                                    ng-class="{'is-invalid' : modifyUserForm.username.$invalid && !modifyUserForm.username.$pristine}">
                             <span class="invalid-feedback"
                                   ng-show="modifyUserForm.username.$invalid && !modifyUserForm.username.$pristine">Username cannot be empty</span>
@@ -148,7 +148,7 @@
                         <div class="form-group">
                             <label for="name">First Name</label>
                             <input ng-model="userModel.name" id="name" type="text" class="form-control" name="name"
-                                   ng-required="true" value="vm.user.name"
+                                   ng-required="true"
                                    ng-class="{'is-invalid' : modifyUserForm.name.$invalid && !modifyUserForm.name.$pristine}">
                             <span class="invalid-feedback"
                                   ng-show="modifyUserForm.name.$invalid && !modifyUserForm.name.$pristine">First name cannot be empty.</span>
@@ -156,7 +156,7 @@
                         <div class="form-group">
                             <label for="surname">Last Name</label>
                             <input ng-model="userModel.surname" id="surname" type="text" class="form-control"
-                                   name="surname" ng-required="true" value="vm.user.surname"
+                                   name="surname" ng-required="true"]
                                    ng-class="{'is-invalid' : modifyUserForm.surname.$invalid && !modifyUserForm.surname.$pristine}">
                             <span class="invalid-feedback"
                                   ng-show="modifyUserForm.surname.$invalid && !modifyUserForm.surname.$pristine">Surname cannot be empty.</span>
@@ -201,11 +201,11 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    Are you sure you want to delete {{vm.user.name}} {{vm.user.surname}}?
+                    Are you sure you want to delete {{userModel.name}} {{userModel.surname}}?
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-dismiss="modal"
-                            ng-click="vm.delUser(userModel, vm.pageNum)">Yes
+                            ng-click="delUser(userModel)">Yes
                     </button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 </div>

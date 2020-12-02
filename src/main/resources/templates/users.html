@@ -18,10 +18,10 @@
 <div id="for-at-least-mod" sec:authorize="hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')">
 
     <!-- Alert -->
-    <div class='alert alert-{{vm.alert.type}} alert-dismissible fade show {{vm.alert.type? "" : "d-none"}} fixed-top'
+    <div class='alert alert-{{alert.type}} alert-dismissible fade show {{alert.type? "" : "d-none"}} fixed-top'
          role="alert">
-        {{vm.alert.message}}
-        <button type="button" class="close" ng-click="vm.clearAlert()">
+        {{alert.message}}
+        <button type="button" class="close" ng-click="clearAlert()">
             <span>&times;</span>
         </button>
     </div>
@@ -40,8 +40,8 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="user in vm.users">
-                <th scope="row">{{(vm.pageNum-1)*10 + $index+1}}</th>
+            <tr ng-repeat="user in users">
+                <th scope="row">{{(pageNum-1)*10 + $index+1}}</th>
                 <td sec:authorize="hasRole('ROLE_ADMIN')">
                 <span ng-switch="user.role.name">
                     <img ng-switch-when="ROLE_ADMIN" style="padding-left:2px; padding-right: 2px" alt="A"
@@ -57,12 +57,12 @@
                 <td>{{user.surname}}</td>
                 <td>{{user.dateOfBirth}}</td>
                 <td sec:authorize="hasRole('ROLE_ADMIN')" style="padding: 1px ">
-                    <button class="btn btn-primary shadow-none btn-sm mod-btn" ng-click="vm.setUserVar(user);" data-toggle="modal" data-target="#modifyUserModal">
+                    <button class="btn btn-primary shadow-none btn-sm mod-btn" ng-click="setUserVar(user);" data-toggle="modal" data-target="#modifyUserModal">
                         <i class="fas fa-pen"></i>
                     </button>
-                    <button class="btn btn-danger shadow-none btn-sm mod-btn" ng-click = "vm.setUserVar(user)"  data-toggle="modal" data-target="#deleteUserDialog">
+                    <button class="btn btn-danger shadow-none btn-sm mod-btn" ng-click = "setUserVar(user);"  data-toggle="modal" data-target="#deleteUserDialog">
                         <i class="fas fa-minus"></i>
-                        <!--ng-click="vm.delUser(user, vm.pageNum)" -->
+                        <!--ng-click="delUser(user, pageNum)" -->
                     </button>
                 </td>
             </tr>
@@ -79,17 +79,17 @@
     <div id="controls">
         <div class="text-center">
             <div class="btn-group" role="group" id="leftg">
-                <button class="btn btn-primary" ng-disabled="vm.pageNum <=1" ng-click="vm.prevPage(vm.pageNum)">&laquo
+                <button class="btn btn-primary" ng-disabled="pageNum <=1" ng-click="prevPage(pageNum)">&laquo
                 </button>
-                <button id="pagenum" disabled="true" type="text" class="btn">{{vm.pageNum}}</button>
-                <button class="btn btn-primary" ng-disabled="vm.pageNum >= vm.pages" ng-click="vm.nextPage(vm.pageNum)">
+                <button id="pagenum" disabled="true" type="text" class="btn">{{pageNum}}</button>
+                <button class="btn btn-primary" ng-disabled="pageNum >= pages" ng-click="nextPage(pageNum)">
                     &raquo
                 </button>
             </div>
             <div class="btn-group" role="group" id="rightg">
                 <input type="number" class="form-control" id="goto" style="color:#6c757d" ng-model="name" maxlength="3"
-                       min="1" max="{{vm.pages}}">
-                <button class="btn btn-primary" ng-click="vm.goTo(name)">Go</button>
+                       min="1" max="{{pages}}">
+                <button class="btn btn-primary" ng-click="goTo(name)">Go</button>
             </div>
         </div>
     </div>

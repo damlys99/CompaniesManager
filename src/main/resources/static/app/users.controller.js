@@ -9,22 +9,11 @@
 
 
     function UsersController($http, $scope) {
-        var vm = this;
-        vm.users = [];
-        vm.nextPage = nextPage;
-        vm.prevPage = prevPage;
-        vm.goTo = goTo;
-        vm.addUser = addUser;
-        vm.modifyUser = modifyUser;
-        vm.clearAlert = clearAlert;
-        vm.delUser = delUser;
-        vm.setUserVar = setUserVar;
-        vm.user = undefined;
-        vm.modalType = "";
-        vm.pageNum = 1;
-        vm.pages = 0;
+        $scope.users = [];
+        $scope.pageNum = 1;
+        $scope.pages = 0;
         $scope.role = 'User';
-        vm.alert = {
+        $scope.alert = {
             type: "",
             message: ""
         };
@@ -32,21 +21,21 @@
         init();
 
         function init() {
-            var url = '/api/users';
-            var usersPromise = $http.get(url);
-            usersPromise.then(function (response) {
-                vm.users = response.data;
-            });
+            getData($scope.pageNum);
             getCount();
-
         }
-
-        function nextPage(currPage) {
-            goTo(currPage + 1);
-        }
-
-        function prevPage(currPage) {
-            goTo(currPage - 1);
+        function getData(page){
+            if (page) {
+                var url = '/api/users';
+                var usersPromise = $http.get(url, {
+                    params: {page: page}
+                });
+                usersPromise.then(function (response) {
+                    $scope.users = response.data;
+                    $scope.pageNum = page;
+                }).catch(function (err) {
+                });
+            }
         }
 
         function getCount() {
@@ -54,98 +43,97 @@
             var url = 'api/users/count';
             var usersPromise = $http.get(url);
             usersPromise.then(function (response) {
-                vm.pages = parseInt((response.data - 1) / 10 + 1);
+                $scope.pages = parseInt((response.data - 1) / 10 + 1);
             });
         }
+        
+        $scope.goTo = function(page){
+            getData(page);
+        };
 
+        $scope.nextPage = function(){
+            $scope.pageNum++;
+            getData($scope.pageNum);
+        };
 
-        function goTo(page) {
-            if (page) {
-                var url = '/api/users';
-                var usersPromise = $http.get(url, {
-                    params: {page: page}
-                });
-                usersPromise.then(function (response) {
-                    vm.users = response.data;
-                    vm.pageNum = page;
-                }).catch(function (err) {
-                });
-            }
-        }
+        $scope.prevPage = function() {
+            $scope.pageNum--;
+            getData($scope.pageNum);
+        };
 
-        function addUser(user, role, currPage, form) {
+        $scope.addUser = function(user, role, form) {
             role = JSON.stringify(`ROLE_${role.toUpperCase()}`);
             console.log(role);
             var url = '/api/users';
             var usersPromise = $http.post(url + "/add", user);
             usersPromise.then(function (suc) {
-                vm.alert.message = `User ${suc.data.name} ${suc.data.surname} has been successfully added`;
-                vm.alert.type = "success";
+                $scope.alert.message = `User ${suc.data.name} ${suc.data.surname} has been successfully added`;
+                $scope.alert.type = "success";
                 $http.put(url + "/" + suc.data.id + "/setrole", role).then(function (ok) {
 
                 }).catch(function (err) {
                     console.log(err);
                 });
             }).catch(function (err, status, headers, config) {
-                vm.alert.type = "danger";
-                vm.alert.message = "Couldn't add new user";
+                $scope.alert.type = "danger";
+                $scope.alert.message = "Couldn't add new user";
             }).finally(function () {
                 //document.getElementById("addUserForm").reset();
                 formReset(form);
                 getCount();
-                goTo(currPage);
+                getData($scope.pageNum);
             });
 
-        }
+        };
 
-        function modifyUser(user, role, currPage, form) {
+        $scope.modifyUser = function(user, role) {
             role = JSON.stringify(`ROLE_${role.toUpperCase()}`);
             console.log(role);
             var url = '/api/users';
             var usersPromise = $http.put(url + `/${user.id}/modify`, user);
             usersPromise.then(function (suc) {
-                vm.alert.message = `User ${suc.data.name} ${suc.data.surname} has been successfully modified`;
-                vm.alert.type = "success";
+                $scope.alert.message = `User ${suc.data.name} ${suc.data.surname} has been successfully modified`;
+                $scope.alert.type = "success";
                 $http.put(url + "/" + suc.data.id + "/setrole", role).then(function (ok) {
                 }).then(function (resp) {
-                    goTo(currPage);
+                    getData($scope.pageNum);
                 })
                     .catch(function (err) {
                         console.log(err);
                     });
             }).catch(function (err, status, headers, config) {
-                vm.alert.type = "danger";
-                vm.alert.message = "Couldn't modify user";
+                $scope.alert.type = "danger";
+                $scope.alert.message = "Couldn't modify user";
             }).finally(function () {
                 $("#modifyUserModal").modal('hide');
                 $scope.role = 'User';
-                //goTo(currPage);
             });
 
-        }
+        };
 
-        function delUser(user, currPage) {
+        $scope.delUser = function(user) {
             var url = `api/users/${user.id}/delete`;
             var usersPromise = $http.put(url);
             usersPromise.then(function (response) {
-                vm.alert.type = "success";
-                vm.alert.message = `User ${user.name} ${user.surname} has been successfully deleted`;
+                $scope.alert.type = "success";
+                $scope.alert.message = `User ${user.name} ${user.surname} has been successfully deleted`;
                 getCount();
-                if (vm.pages <= vm.pageNum && vm.pages > 0) {
-                    goTo(currPage - 1);
+                if ($scope.pages <= $scope.pageNum && $scope.pages > 0) {
+                    $scope.pageNum--;
+                    getData($scope.pageNum);
                 } else
-                    goTo(currPage);
+                    getData($scope.pageNum);
 
             }).catch(function (err) {
-                vm.alert.type = "danger";
-                vm.alert.message = "Couldn't delete user";
+                $scope.alert.type = "danger";
+                $scope.alert.message = "Couldn't delete user";
             })
-        }
+        };
 
-        function clearAlert() {
-            vm.alert.type = "";
-            vm.alert.message = "";
-        }
+        $scope.clearAlert = function() {
+            $scope.alert.type = "";
+            $scope.alert.message = "";
+        };
 
         function formReset(form) {
             form.$invalid = "true";
@@ -155,13 +143,13 @@
         }
 
 
-        function setUserVar(user) {
+        $scope.setUserVar = function(user) {
             $scope.userModel = angular.copy(user);
             $scope.userModel.dateOfBirth = new Date($scope.userModel.dateOfBirth);
             $scope.role = user.role.name.replace("ROLE_", "");
             $scope.role = $scope.role.charAt(0).toUpperCase() + $scope.role.slice(1).toLowerCase();
             console.log($scope.role);
-        }
+        };
 
         $scope.setRole = function () {
             $scope.role = "User";
