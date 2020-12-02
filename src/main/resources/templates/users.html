@@ -31,7 +31,7 @@
             <thead>
             <tr>
                 <th></th>
-                <th scope="col">Roles</th>
+                <th scope="col" sec:authorize="hasRole('ROLE_ADMIN')">Roles</th>
                 <th scope="col">Username</th>
                 <th scope="col">Name</th>
                 <th scope="col">Surname</th>
@@ -69,7 +69,7 @@
             </tbody>
         </table>
         <!-- Button trigger add user modal -->
-        <button sec:authorize="hasRole('ROLE_ADMIN')" type="button" class="btn btn-success" data-toggle="modal" ng-click="role = User; userModel = '' "
+        <button sec:authorize="hasRole('ROLE_ADMIN')" type="button" class="btn btn-success" data-toggle="modal" ng-click="setRole(); userModel = '' "
                 data-target="#addUserModal">
             Add new user
         </button>

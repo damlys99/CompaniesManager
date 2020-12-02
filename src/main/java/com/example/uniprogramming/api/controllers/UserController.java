@@ -46,7 +46,6 @@ public class UserController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public User getUser(@PathVariable int id) {
-
         if (!(logged().getRole().getName().equals("ROLE_ADMIN") || logged().getRole().getName().equals("ROLE_MODERATOR")) && !(logged().getId() == id)) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "You can't do that!");
         }
@@ -72,9 +71,6 @@ public class UserController {
 
     @RequestMapping(value = "/{id}/setrole", method = RequestMethod.PUT)
     public User setRoles(@RequestBody TextNode role, @PathVariable int id) {
-        if (id < 4 || id > count() - 3) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found!");
-        }
         if (!logged().getRole().getName().equals("ROLE_ADMIN") && !(logged().getId() == id)) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "You can't do that!");
         }
