@@ -7,11 +7,10 @@
     <link rel="stylesheet" href="../static/bootstrap.css" th:href="@{/bootstrap.css}"/>
     <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}"/>
     <script defer src="../static/fontawesome/js/all.js" th:src="@{/fontawesome/js/all.js}"></script>
-    <!--load all styles -->
-    <script type="text/javascript" src="../static/angular.min.js" th:src="@{/angular.js}"></script>
-    <script type="text/javascript" src="../static/app/app.module.js" th:src="@{/app/app.module.js}"></script>
+    <script type="text/javascript" src="../static/app/angular.js" th:src="@{/app/angular.js}"></script>
     <script type="text/javascript" src="../static/app/users.controller.js"
             th:src="@{/app/users.controller.js}"></script>
+    <script src="../static/app/ui.bootstrap.js" th:src="@{/app/ui.bootstrap.js}"></script>
 </head>
 <body ng-app="app" ng-controller="UsersController as vm">
 <div th:insert="fragments :: header"></div>
@@ -44,11 +43,11 @@
                 <th scope="row">{{(pageNum-1)*10 + $index+1}}</th>
                 <td sec:authorize="hasRole('ROLE_ADMIN')">
                 <span ng-switch="user.role.name">
-                    <img ng-switch-when="ROLE_ADMIN" style="padding-left:2px; padding-right: 2px" alt="A"
+                    <img tooltip-placement="top" uib-tooltip="Admin" ng-switch-when="ROLE_ADMIN" style="padding-left:2px; padding-right: 2px" alt="A"
                          src="images/a.png">
-                    <img ng-switch-when="ROLE_MODERATOR" style="padding-left:2px; padding-right: 2px" alt="M"
+                    <img tooltip-placement="top" uib-tooltip="Moderator" ng-switch-when="ROLE_MODERATOR" style="padding-left:2px; padding-right: 2px" alt="M"
                          src="images/m.png">
-                    <img ng-switch-when="ROLE_USER" style="padding-left:2px; padding-right: 2px" alt="U"
+                    <img tooltip-placement="top" uib-tooltip="User" ng-switch-when="ROLE_USER" style="padding-left:2px; padding-right: 2px" alt="U"
                          src="images/u.png">
                 </span>
                 </td>
@@ -57,10 +56,12 @@
                 <td>{{user.surname}}</td>
                 <td>{{user.dateOfBirth}}</td>
                 <td sec:authorize="hasRole('ROLE_ADMIN')" style="padding: 1px ">
-                    <button class="btn btn-primary shadow-none btn-sm mod-btn" ng-click="setUserVar(user);" data-toggle="modal" data-target="#modifyUserModal">
+                    <button class="btn btn-primary shadow-none btn-sm mod-btn" ng-click="setUserVar(user);"
+                            data-toggle="modal" data-target="#modifyUserModal">
                         <i class="fas fa-pen"></i>
                     </button>
-                    <button class="btn btn-danger shadow-none btn-sm mod-btn" ng-click = "setUserVar(user);"  data-toggle="modal" data-target="#deleteUserDialog">
+                    <button class="btn btn-danger shadow-none btn-sm mod-btn" ng-click="setUserVar(user);"
+                            data-toggle="modal" data-target="#deleteUserDialog">
                         <i class="fas fa-minus"></i>
                         <!--ng-click="delUser(user, pageNum)" -->
                     </button>
@@ -69,29 +70,18 @@
             </tbody>
         </table>
         <!-- Button trigger add user modal -->
-        <button sec:authorize="hasRole('ROLE_ADMIN')" type="button" class="btn btn-success" data-toggle="modal" ng-click="setRole(); userModel = '' "
+        <button sec:authorize="hasRole('ROLE_ADMIN')" type="button" class="btn btn-success" data-toggle="modal"
+                ng-click="setRole(); userModel = '' "
                 data-target="#addUserModal">
             Add new user
         </button>
     </div>
 
     <!-- pagination controls -->
-    <div id="controls">
-        <div class="text-center">
-            <div class="btn-group" role="group" id="leftg">
-                <button class="btn btn-primary" ng-disabled="pageNum <=1" ng-click="prevPage(pageNum)">&laquo
-                </button>
-                <button id="pagenum" disabled="true" type="text" class="btn">{{pageNum}}</button>
-                <button class="btn btn-primary" ng-disabled="pageNum >= pages" ng-click="nextPage(pageNum)">
-                    &raquo
-                </button>
-            </div>
-            <div class="btn-group" role="group" id="rightg">
-                <input type="number" class="form-control" id="goto" style="color:#6c757d" ng-model="name" maxlength="3"
-                       min="1" max="{{pages}}">
-                <button class="btn btn-primary" ng-click="goTo(name)">Go</button>
-            </div>
-        </div>
+    <div id="controls" class="text-center">
+    <ul uib-pagination style="justify-content: center" max-size="5" rotate="true" boundary-link-numbers="true" total-items="usersCount" ng-model="pageNum" ng-change=goTo(pageNum) class="pagination"
+                    previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;"
+                    last-text="&raquo;"></ul>
     </div>
 
     <div sec:authorize="hasRole('ROLE_ADMIN')" th:insert="fragments :: addUserModal"></div>

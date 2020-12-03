@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('app', [])
+        .module('app', ['ui.bootstrap'])
         .controller('UsersController', UsersController);
 
     UsersController.$inject = ['$http', '$scope'];
@@ -11,7 +11,7 @@
     function UsersController($http, $scope) {
         $scope.users = [];
         $scope.pageNum = 1;
-        $scope.pages = 0;
+        $scope.usersCount = 0;
         $scope.role = 'User';
         $scope.alert = {
             type: "",
@@ -43,7 +43,7 @@
             var url = 'api/users/count';
             var usersPromise = $http.get(url);
             usersPromise.then(function (response) {
-                $scope.pages = parseInt((response.data - 1) / 10 + 1);
+                $scope.usersCount = response.data;
             });
         }
         
