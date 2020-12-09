@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${loggedUser.name} + ' ' + ${loggedUser.surname}">User</title>
+    <link rel="stylesheet" href="../static/bootstrap.css" th:href="@{/bootstrap.css}"/>
+    <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}"/>
+    <script src="../static/app/ui.bootstrap.js" th:src="@{/app/ui.bootstrap.js}"></script>
+</head>
+<body>
+<div th:insert="fragments :: header('')"></div>
+<div class="container">
+    <div class="row">
+        <div class="col">
+    <h3>Username</h3>
+    <span th:text="${user.userName}">username</span>
+        </div>
+        <div class="col">
+            <h3>Password</h3>
+            <span>*******</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h3>Name</h3>
+            <span th:text="${user.name}">name</span>
+        </div>
+        <div class="col">
+            <h3>Surname</h3>
+            <span th:text="${user.surname}">surname</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h3>Date of Birth</h3>
+            <span th:text="${user.dateOfBirth}">dateofbirth</span>
+        </div>
+        <div class="col">
+            <h3>Role</h3>
+            <span th:text="${user.role.getNameWithoutPrefix()}">role</span>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

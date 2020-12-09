@@ -105,10 +105,6 @@ public class User {
         this.isDeleted = isDeleted;
     }
 
-/*    public void addToRoles(Role role){
-        this.roles.add(role);
-    }*/
-
     @Override
     public String toString() {
         return  name + " " + surname;

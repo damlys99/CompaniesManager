@@ -7,11 +7,9 @@ import com.example.uniprogramming.security.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
 import java.util.*;
 
 @Service
@@ -31,6 +29,10 @@ public class UserService {
 
     public List<User> getAll(){
         return usersRepository.findAllByIsDeletedIsFalse();
+    }
+
+    public Optional<User> getUser(String username){
+        return usersRepository.findByUserName(username);
     }
 
     public User getUser(int id){

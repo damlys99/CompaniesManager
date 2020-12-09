@@ -8,13 +8,15 @@
     <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}"/>
     <script defer src="../static/fontawesome/js/all.js" th:src="@{/fontawesome/js/all.js}"></script>
     <script type="text/javascript" src="../static/app/angular.js" th:src="@{/app/angular.js}"></script>
-    <script type="text/javascript" src="../static/app/users.controller.js"
-            th:src="@{/app/users.controller.js}"></script>
+    <script type="text/javascript" src="../static/app/app.config.js" th:src="@{/app/app.config.js}"></script>
+    <script type="text/javascript" src="../static/app/angular-route.min.js" th:src="@{/app/angular-route.min.js}"></script>
+    <script type="text/javascript" src="../static/app/controllers/users.controller.js" th:src="@{/app/controllers/users.controller.js}"></script>
+<!--    <script type="text/javascript" src="../static/app/users.controller.js"-->
+<!--            th:src="@{/app/users.controller.js}"></script>-->
     <script src="../static/app/ui.bootstrap.js" th:src="@{/app/ui.bootstrap.js}"></script>
 </head>
-<body ng-app="app" ng-controller="UsersController as vm">
-<div th:insert="fragments :: header"></div>
-<div id="for-at-least-mod" sec:authorize="hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')">
+<body ng-app="app" ng-controller="UsersController">
+<div th:insert="fragments :: header('users')"></div>
 
     <!-- Alert -->
     <div class='alert alert-{{alert.type}} alert-dismissible fade show {{alert.type? "" : "d-none"}} fixed-top'
@@ -30,7 +32,7 @@
             <thead>
             <tr>
                 <th></th>
-                <th scope="col" sec:authorize="hasRole('ROLE_ADMIN')">Roles</th>
+                <th scope="col">Roles</th>
                 <th scope="col">Username</th>
                 <th scope="col">Name</th>
                 <th scope="col">Surname</th>
@@ -41,7 +43,7 @@
             <tbody>
             <tr ng-repeat="user in users">
                 <th scope="row">{{(pageNum-1)*10 + $index+1}}</th>
-                <td sec:authorize="hasRole('ROLE_ADMIN')">
+                <td>
                 <span ng-switch="user.role.name">
                     <img tooltip-placement="top" uib-tooltip="Admin" ng-switch-when="ROLE_ADMIN" style="padding-left:2px; padding-right: 2px" alt="A"
                          src="images/a.png">
@@ -51,7 +53,7 @@
                          src="images/u.png">
                 </span>
                 </td>
-                <td>{{user.userName}}</td>
+                <td><a ng-href="#/user/{{user.id}}" >{{user.userName}}</a></td>
                 <td>{{user.name}}</td>
                 <td>{{user.surname}}</td>
                 <td>{{user.dateOfBirth}}</td>
@@ -87,17 +89,6 @@
     <div sec:authorize="hasRole('ROLE_ADMIN')" th:insert="fragments :: addUserModal"></div>
     <div sec:authorize="hasRole('ROLE_ADMIN')" th:insert="fragments :: deleteUserDialog"></div>
     <div sec:authorize="hasRole('ROLE_ADMIN')" th:insert="fragments :: modifyUserModal"></div>
-
-</div>
-<div id="for-users-only" sec:authorize="!hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')">
-    <div class="container">
-        <h3>Username</h3>
-        <span th:text="${loggedUser.userName}">Anonymous</span>
-        <h3>First Name</h3>
-        <span th:text="${loggedUser.name}">Anonymous</span>
-
-    </div>
-</div>
 
 
 </body>

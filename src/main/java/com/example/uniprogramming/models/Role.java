@@ -28,6 +28,12 @@ public class Role {
         return name;
     }
 
+    public String getNameWithoutPrefix(){
+        String _name  = name.substring(5);
+        _name = _name.substring(0,1) + _name.substring(1).toLowerCase();
+        return _name;
+    }
+
     public void setName(String name) {
         this.name = name;
     }

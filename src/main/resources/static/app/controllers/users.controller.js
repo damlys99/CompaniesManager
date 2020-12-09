@@ -1,9 +1,5 @@
-(function () {
-    'use strict';
 
-    angular
-        .module('app', ['ui.bootstrap'])
-        .controller('UsersController', UsersController);
+    app.controller('UsersController', UsersController);
 
     UsersController.$inject = ['$http', '$scope'];
 
@@ -51,7 +47,7 @@
             getData(page);
         };
 
-        $scope.nextPage = function(){
+/*        $scope.nextPage = function(){
             $scope.pageNum++;
             getData($scope.pageNum);
         };
@@ -59,31 +55,27 @@
         $scope.prevPage = function() {
             $scope.pageNum--;
             getData($scope.pageNum);
-        };
+        };*/
 
         $scope.addUser = function(user, role, form) {
             role = JSON.stringify(`ROLE_${role.toUpperCase()}`);
-            console.log(role);
+            //console.log(role);
             var url = '/api/users';
             var usersPromise = $http.post(url + "/add", user);
             usersPromise.then(function (suc) {
                 $scope.alert.message = `User ${suc.data.name} ${suc.data.surname} has been successfully added`;
                 $scope.alert.type = "success";
+                formReset(form);
+                getCount();
+                getData($scope.pageNum);
                 $http.put(url + "/" + suc.data.id + "/setrole", role).then(function (ok) {
 
                 }).catch(function (err) {
                     console.log(err);
                 });
             }).catch(function (err, status, headers, config) {
-                $scope.alert.type = "danger";
-                $scope.alert.message = "Couldn't add new user";
-            }).finally(function () {
-                //document.getElementById("addUserForm").reset();
-                formReset(form);
-                getCount();
-                getData($scope.pageNum);
-            });
-
+                $scope.addUserForm.username.$setValidity("userexists", false);
+            })
         };
 
         $scope.modifyUser = function(user, role) {
@@ -94,6 +86,8 @@
             usersPromise.then(function (suc) {
                 $scope.alert.message = `User ${suc.data.name} ${suc.data.surname} has been successfully modified`;
                 $scope.alert.type = "success";
+                $scope.role = "User";
+                $("#modifyUserModal").modal('hide');
                 $http.put(url + "/" + suc.data.id + "/setrole", role).then(function (ok) {
                 }).then(function (resp) {
                     getData($scope.pageNum);
@@ -102,12 +96,8 @@
                         console.log(err);
                     });
             }).catch(function (err, status, headers, config) {
-                $scope.alert.type = "danger";
-                $scope.alert.message = "Couldn't modify user";
-            }).finally(function () {
-                $("#modifyUserModal").modal('hide');
-                $scope.role = 'User';
-            });
+                $scope.modifyUserForm.username.$setValidity("userexists", false);
+            })
 
         };
 
@@ -139,7 +129,7 @@
             form.$invalid = "true";
             form.$pristine = "true";
             form.$untouched = "true";
-            document.getElementsByName(form.$name)[0].reset();
+            form.reset();
         }
 
 
@@ -148,11 +138,10 @@
             $scope.userModel.dateOfBirth = new Date($scope.userModel.dateOfBirth);
             $scope.role = user.role.name.replace("ROLE_", "");
             $scope.role = $scope.role.charAt(0).toUpperCase() + $scope.role.slice(1).toLowerCase();
-            console.log($scope.role);
+            //console.log($scope.role);
         };
 
         $scope.setRole = function () {
             $scope.role = "User";
         }
     }
-})();
