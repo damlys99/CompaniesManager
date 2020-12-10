@@ -1,8 +1,12 @@
 package com.example.uniprogramming.tests;
 
 import com.example.uniprogramming.controllers.ViewController;
-import com.example.uniprogramming.models.RolesRepository;
-import com.example.uniprogramming.models.UsersRepository;
+import com.example.uniprogramming.models.Company;
+import com.example.uniprogramming.models.Industry;
+import com.example.uniprogramming.repositories.CompaniesRepository;
+import com.example.uniprogramming.repositories.IndustriesRepository;
+import com.example.uniprogramming.repositories.RolesRepository;
+import com.example.uniprogramming.repositories.UsersRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,23 +14,34 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class DatabaseSeeder implements CommandLineRunner {
     private final UsersRepository usersRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final RolesRepository rolesRepository;
+    private final CompaniesRepository companiesRepository;
+    private final IndustriesRepository industriesRepository;
 
     private static final Logger log = LoggerFactory.getLogger(ViewController.class);
 
     @Autowired
-    public DatabaseSeeder(UsersRepository usersRepository, BCryptPasswordEncoder passwordEncoder, RolesRepository rolesRepository) {
+    public DatabaseSeeder(UsersRepository usersRepository, IndustriesRepository industriesRepository, CompaniesRepository companiesRepository, BCryptPasswordEncoder passwordEncoder, RolesRepository rolesRepository) {
         this.usersRepository = usersRepository;
         this.passwordEncoder = passwordEncoder;
         this.rolesRepository = rolesRepository;
+        this.companiesRepository = companiesRepository;
+        this.industriesRepository = industriesRepository;
     }
 
     @Override
     public void run(String... args) throws Exception {
+/*        List<Industry> industries= new ArrayList<>();
+        industries.add(new Industry("Technology"));
+        industriesRepository.saveAll(industries);*/
+
 
      /*   User user = usersRepository.findByUserName("admin").get();
         user.setRole(rolesRepository.findByName("ROLE_ADMIN"));

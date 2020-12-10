@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content= "width=device-width, user-scalable=no">
+    <title>Companies</title>
+    <link rel="stylesheet" href="../static/bootstrap.css" th:href="@{/bootstrap.css}"/>
+    <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}"/>
+    <script defer src="../static/fontawesome/js/all.js" th:src="@{/fontawesome/js/all.js}"></script>
+    <script type="text/javascript" src="../static/app/angular.js" th:src="@{/app/angular.js}"></script>
+    <script type="text/javascript" src="../static/app/app.config.js" th:src="@{/app/app.config.js}"></script>
+    <script type="text/javascript" src="../static/app/controllers/companies.controller.js" th:src="@{/app/controllers/companies.controller.js}"></script>
+    <script src="../static/app/ui.bootstrap.js" th:src="@{/app/ui.bootstrap.js}"></script>
+</head>
+<body ng-app="app" ng-controller="CompaniesController">
+<div th:insert="fragments/main :: header('companies')"></div>
+
+<!-- Alert -->
+<div class='alert alert-{{alert.type}} alert-dismissible fade show {{alert.type? "" : "d-none"}} fixed-top'
+     role="alert">
+    {{alert.message}}
+    <button type="button" class="close" ng-click="clearAlert()">
+        <span>&times;</span>
+    </button>
+</div>
+
+<div class="container" id="cont">
+    <table class="table table-sm">
+        <thead>
+        <tr>
+            <th> </th>
+            <th scope="col">Industry</th>
+            <th scope="col">Name</th>
+            <th scope="col">Address</th>
+            <th scope="col">City</th>
+            <th scope="col">Added by</th>
+            <th scope="col">Date added</th>
+            <th scope="col" sec:authorize="hasRole('ROLE_ADMIN')"> </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="company in companies">
+            <th scope="row">{{(pageNum-1)*10 + $index+1}}</th>
+            <td>
+                {{company.industry.name}}
+            </td>
+            <td><a href="/companies/{{company.id}}" >{{company.name}}</a></td>
+            <td>{{company.address}}</td>
+            <td>{{company.city}}</td>
+            <td><a href="/users/{{company.user.id}}">{{company.user.name}} {{company.user.surname}}</a></td>
+            <td>{{company.added}}</td>
+            <td sec:authorize="hasRole('ROLE_ADMIN')" style="padding: 1px ">
+                <button class="btn btn-primary shadow-none btn-sm mod-btn" ng-click="setCompanyVar(company);"
+                        data-toggle="modal" data-target="#modifyCompanyModal">
+                    <i class="fas fa-pen"> </i>
+                </button>
+                <button class="btn btn-danger shadow-none btn-sm mod-btn" ng-click="setCompanyVar(company);"
+                        data-toggle="modal" data-target="#deleteCompanyDialog">
+                    <i class="fas fa-minus"> </i>
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <button sec:authorize="hasRole('ROLE_ADMIN')" type="button" class="btn btn-success" data-toggle="modal"
+            ng-click="industry='Technology'; companyModel = '' "
+            data-target="#addCompanyModal">
+        Add new company
+    </button>
+</div>
+
+<!-- pagination controls -->
+<div id="controls" class="text-center">
+    <ul uib-pagination style="justify-content: center" max-size="5" rotate="true" boundary-link-numbers="true" total-items="companiesCount" ng-model="pageNum" ng-change=goTo(pageNum) class="pagination"
+        previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;"
+        last-text="&raquo;"> </ul>
+</div>
+
+<div sec:authorize="hasRole('ROLE_ADMIN')" th:insert="fragments/companies :: addCompanyModal"></div>
+<div sec:authorize="hasRole('ROLE_ADMIN')" th:insert="fragments/companies :: deleteCompanyDialog"></div>
+<div sec:authorize="hasRole('ROLE_ADMIN')" th:insert="fragments/companies :: modifyCompanyModal"></div>
+
+
+</body>
+</html>

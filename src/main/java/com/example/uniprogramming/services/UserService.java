@@ -1,9 +1,9 @@
-package com.example.uniprogramming.api.services;
+package com.example.uniprogramming.services;
 
-import com.example.uniprogramming.models.RolesRepository;
+import com.example.uniprogramming.repositories.RolesRepository;
 import com.example.uniprogramming.models.User;
-import com.example.uniprogramming.models.UsersRepository;
-import com.example.uniprogramming.security.MyUserDetailsService;
+import com.example.uniprogramming.repositories.UsersRepository;
+import com.example.uniprogramming.security.services.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

@@ -3,6 +3,7 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content= "width=device-width, user-scalable=no">
     <title>Users</title>
     <link rel="stylesheet" href="../static/bootstrap.css" th:href="@{/bootstrap.css}"/>
     <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}"/>
@@ -16,7 +17,7 @@
     <script src="../static/app/ui.bootstrap.js" th:src="@{/app/ui.bootstrap.js}"></script>
 </head>
 <body ng-app="app" ng-controller="UsersController">
-<div th:insert="fragments :: header('users')"></div>
+<div th:insert="fragments/main :: header('users')"></div>
 
     <!-- Alert -->
     <div class='alert alert-{{alert.type}} alert-dismissible fade show {{alert.type? "" : "d-none"}} fixed-top'
@@ -31,13 +32,13 @@
         <table class="table table-sm">
             <thead>
             <tr>
-                <th></th>
+                <th> </th>
                 <th scope="col">Roles</th>
                 <th scope="col">Username</th>
                 <th scope="col">Name</th>
                 <th scope="col">Surname</th>
                 <th scope="col">Date of Birth</th>
-                <th scope="col" sec:authorize="hasRole('ROLE_ADMIN')"></th>
+                <th scope="col" sec:authorize="hasRole('ROLE_ADMIN')"> </th>
             </tr>
             </thead>
             <tbody>
@@ -53,19 +54,18 @@
                          src="images/u.png">
                 </span>
                 </td>
-                <td><a ng-href="#/user/{{user.id}}" >{{user.userName}}</a></td>
+                <td><a href="/users/{{user.id}}" >{{user.userName}}</a></td>
                 <td>{{user.name}}</td>
                 <td>{{user.surname}}</td>
                 <td>{{user.dateOfBirth}}</td>
                 <td sec:authorize="hasRole('ROLE_ADMIN')" style="padding: 1px ">
                     <button class="btn btn-primary shadow-none btn-sm mod-btn" ng-click="setUserVar(user);"
                             data-toggle="modal" data-target="#modifyUserModal">
-                        <i class="fas fa-pen"></i>
+                        <i class="fas fa-pen"> </i>
                     </button>
                     <button class="btn btn-danger shadow-none btn-sm mod-btn" ng-click="setUserVar(user);"
                             data-toggle="modal" data-target="#deleteUserDialog">
-                        <i class="fas fa-minus"></i>
-                        <!--ng-click="delUser(user, pageNum)" -->
+                        <i class="fas fa-minus"> </i>
                     </button>
                 </td>
             </tr>
@@ -73,7 +73,7 @@
         </table>
         <!-- Button trigger add user modal -->
         <button sec:authorize="hasRole('ROLE_ADMIN')" type="button" class="btn btn-success" data-toggle="modal"
-                ng-click="setRole(); userModel = '' "
+                ng-click="role = 'User'; userModel = '' "
                 data-target="#addUserModal">
             Add new user
         </button>
@@ -83,12 +83,12 @@
     <div id="controls" class="text-center">
     <ul uib-pagination style="justify-content: center" max-size="5" rotate="true" boundary-link-numbers="true" total-items="usersCount" ng-model="pageNum" ng-change=goTo(pageNum) class="pagination"
                     previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;"
-                    last-text="&raquo;"></ul>
+                    last-text="&raquo;"> </ul>
     </div>
 
-    <div sec:authorize="hasRole('ROLE_ADMIN')" th:insert="fragments :: addUserModal"></div>
-    <div sec:authorize="hasRole('ROLE_ADMIN')" th:insert="fragments :: deleteUserDialog"></div>
-    <div sec:authorize="hasRole('ROLE_ADMIN')" th:insert="fragments :: modifyUserModal"></div>
+    <div sec:authorize="hasRole('ROLE_ADMIN')" th:insert="fragments/users :: addUserModal"></div>
+    <div sec:authorize="hasRole('ROLE_ADMIN')" th:insert="fragments/users :: deleteUserDialog"></div>
+    <div sec:authorize="hasRole('ROLE_ADMIN')" th:insert="fragments/users :: modifyUserModal"></div>
 
 
 </body>

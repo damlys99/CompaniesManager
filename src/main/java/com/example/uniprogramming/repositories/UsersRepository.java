@@ -1,4 +1,4 @@
-package com.example.uniprogramming.models;
+package com.example.uniprogramming.repositories;
 
 import com.example.uniprogramming.models.User;
 import org.springframework.data.domain.Pageable;

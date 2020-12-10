@@ -3,43 +3,53 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content= "width=device-width, user-scalable=no">
     <title th:text="${loggedUser.name} + ' ' + ${loggedUser.surname}">User</title>
     <link rel="stylesheet" href="../static/bootstrap.css" th:href="@{/bootstrap.css}"/>
     <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}"/>
-    <script src="../static/app/ui.bootstrap.js" th:src="@{/app/ui.bootstrap.js}"></script>
+    <script src="../static/app/angular.js" th:src="@{/app/angular.js}"></script>
+    <script src="../static/app/user.module.js" th:src="@{/app/user.module.js}"></script>
+    <script src="../static/app/angular-route.min.js" th:src="@{/app/angular-route.min.js}"></script>
 </head>
-<body>
-<div th:insert="fragments :: header('')"></div>
-<div class="container">
-    <div class="row">
-        <div class="col">
-    <h3>Username</h3>
-    <span th:text="${user.userName}">username</span>
+<body ng-app="userApp" ng-controller="navController">
+<div th:insert="fragments/main :: header('')"></div>
+<div class="container-fluid" style="flex-grow:1; padding-left:0">
+    <div id="userdata">
+        <div  id="userpanel" style="padding:0;">
+            <div id="userinfo">
+            <img id="avatar" th:src="@{/images/avatar.svg}" src="../static/images/avatar.svg" class="rounded-circle" alt="avatar">
+            <div class="row userinfo-field">
+                <span id="username" th:text="${user.userName}">username</span>
+            </div>
+            <div class="crow userinfo-field">
+                <th:block th:switch="${user.role.getNameWithoutPrefix()}">
+                    <div th:case="'Admin'">
+                        <span class="badge badge-danger">Admin</span>
+                    </div>
+                    <div th:case="'Moderator'">
+                        <span class="badge badge-primary">Moderator</span>
+                    </div>
+                    <div th:case="'User'">
+                        <span class="badge badge-success">User</span>
+                    </div>
+
+                </th:block>
+            </div>
+            <div class="crow userinfo-field">
+                <span id="name" th:text="${user.name} + ' ' + ${user.surname}">anon anon</span>
+            </div>
+            <div class="crow userinfo-field">
+                <span id="dateOfBirth" th:text="${user.dateOfBirth}">01 dec 2012</span>
+            </div>
+            </div>
+
+            <div class="menu">
+                <a ng-class="getClass('')" href="#">Companies</a>
+                <a ng-class="getClass('/contacts')" href="#!contacts">Contacts</a>
+                <a ng-class="getClass('/notes')" href="#!notes">Notes</a>
+            </div>
         </div>
-        <div class="col">
-            <h3>Password</h3>
-            <span>*******</span>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <h3>Name</h3>
-            <span th:text="${user.name}">name</span>
-        </div>
-        <div class="col">
-            <h3>Surname</h3>
-            <span th:text="${user.surname}">surname</span>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <h3>Date of Birth</h3>
-            <span th:text="${user.dateOfBirth}">dateofbirth</span>
-        </div>
-        <div class="col">
-            <h3>Role</h3>
-            <span th:text="${user.role.getNameWithoutPrefix()}">role</span>
-        </div>
+        <ng-view></ng-view>
     </div>
 </div>
 

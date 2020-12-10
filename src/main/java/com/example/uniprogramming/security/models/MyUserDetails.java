@@ -1,4 +1,4 @@
-package com.example.uniprogramming.security;
+package com.example.uniprogramming.security.models;
 
 import com.example.uniprogramming.models.Role;
 import com.example.uniprogramming.models.User;

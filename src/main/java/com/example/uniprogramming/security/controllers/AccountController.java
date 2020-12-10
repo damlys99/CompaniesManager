@@ -1,5 +1,7 @@
-package com.example.uniprogramming.security;
+package com.example.uniprogramming.security.controllers;
 
+import com.example.uniprogramming.security.models.UserDTO;
+import com.example.uniprogramming.security.services.UserDTOService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.security.core.Authentication;

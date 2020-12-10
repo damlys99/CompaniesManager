@@ -1,22 +1,16 @@
-package com.example.uniprogramming.api.controllers;
+package com.example.uniprogramming.controllers;
 
 
-import com.example.uniprogramming.api.services.UserService;
+import com.example.uniprogramming.services.UserService;
 import com.example.uniprogramming.models.User;
-import com.example.uniprogramming.security.MyUserDetailsService;
 import com.fasterxml.jackson.databind.node.TextNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.security.Principal;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/api/users")

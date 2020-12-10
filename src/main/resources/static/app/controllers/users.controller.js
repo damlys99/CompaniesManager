@@ -86,7 +86,6 @@
             usersPromise.then(function (suc) {
                 $scope.alert.message = `User ${suc.data.name} ${suc.data.surname} has been successfully modified`;
                 $scope.alert.type = "success";
-                $scope.role = "User";
                 $("#modifyUserModal").modal('hide');
                 $http.put(url + "/" + suc.data.id + "/setrole", role).then(function (ok) {
                 }).then(function (resp) {
@@ -138,7 +137,6 @@
             $scope.userModel.dateOfBirth = new Date($scope.userModel.dateOfBirth);
             $scope.role = user.role.name.replace("ROLE_", "");
             $scope.role = $scope.role.charAt(0).toUpperCase() + $scope.role.slice(1).toLowerCase();
-            //console.log($scope.role);
         };
 
         $scope.setRole = function () {

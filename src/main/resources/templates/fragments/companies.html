@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>a</title>
+</head>
+<body>
+<div th:fragment="addCompanyModal">
+    <!-- adding company modal -->
+    <div class="modal fade" id="addCompanyModal" tabindex="-1" role="dialog" aria-labelledby="addCompanyModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addCompanyModalLabel">Add Company</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form name="addCompanyForm" id="addCompanyForm"  novalidate
+                          ng-submit="addCompany(newcompany, addCompanyForm)">
+                        <div class="form-group">
+                            <label for="modname">Name</label>
+                            <input ng-model="newcompany.name" id="modname" type="text" class="form-control"
+                                   name="name" ng-required="true" ng-change="addCompanyForm.name.$setValidity('companyexists','true')"
+                                   ng-class="{'is-invalid' : addCompanyForm.name.$invalid && !addCompanyForm.name.$pristine}">
+                            <span class="invalid-feedback"
+                                  ng-show="addCompanyForm.name.$invalid.required && !addCompanyForm.name.$pristine">Name cannot be empty</span>
+                            <span class="invalid-feedback"
+                                  ng-show="addCompanyForm.name.$error.companyexists">Company with that name already exists!</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="modnip">NIP</label>
+                            <input ng-model="newcompany.nip" id="modnip" type="text" class="form-control"
+                                   name="nip" ng-required="true"
+                                   ng-class="{'is-invalid' : addCompanyForm.nip.$invalid && !addCompanyForm.nip.$pristine}">
+                            <span class="invalid-feedback"
+                                  ng-show="addCompanyForm.nip.$invalid && !addCompanyForm.nip.$pristine">NIP cannot be empty.</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="modname">Address</label>
+                            <input ng-model="newcompany.address" id="modaddress" type="text" class="form-control" name="address"
+                                   ng-required="true"
+                                   ng-class="{'is-invalid' : addCompanyForm.address.$invalid && !addCompanyForm.address.$pristine}">
+                            <span class="invalid-feedback"
+                                  ng-show="addCompanyForm.address.$invalid && !addCompanyForm.address.$pristine">Address cannot be empty.</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="modcity">City</label>
+                            <input ng-model="newcompany.city" id="modcity" type="text" class="form-control"
+                                   name="city" ng-required="true"
+                                   ng-class="{'is-invalid' : addCompanyForm.city.$invalid && !addCompanyForm.city.$pristine}">
+                            <span class="invalid-feedback"
+                                  ng-show="addCompanyForm.city.$invalid && !addCompanyForm.city.$pristine">City cannot be empty.</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="modselectindustry">Industry</label>
+                            <select id="modselectindustry" ng-model="newcompany.industry" class="custom-select" ng-options="industr.name for industr in industries">
+
+                            </select>
+
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" form="addCompanyForm" class="btn btn-success" value="Add Company" ng-disabled="addCompanyForm.$invalid"/>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="modifyCompanyModal">
+    <div class="modal fade" id="modifyCompanyModal" tabindex="-1" role="dialog" aria-labelledby="modifyCompanyModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modifyCompanyModalLabel">Modify Company</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form name="modifyCompanyForm" id="modifyCompanyForm"  novalidate
+                          ng-submit="modifyCompany(companyModel, industry, user)">
+                        <div class="form-group">
+                            <label for="companyname">Companyname</label>
+                            <input ng-model="companyModel.companyName" id="companyname" type="text" class="form-control"
+                                   name="companyname" ng-required="true" ng-change="modifyCompanyForm.companyname.$setValidity('companyexists','true')"
+                                   ng-class="{'is-invalid' : modifyCompanyForm.companyname.$invalid && !modifyCompanyForm.companyname.$pristine}">
+                            <span class="invalid-feedback"
+                                  ng-show="modifyCompanyForm.companyname.$invalid.required && !modifyCompanyForm.companyname.$pristine">Companyname cannot be empty</span>
+                            <span class="invalid-feedback"
+                                  ng-show="modifyCompanyForm.companyname.$error.companyexists">Company with that companyname already exists!</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="name">First Name</label>
+                            <input ng-model="companyModel.name" id="name" type="text" class="form-control" name="name"
+                                   ng-required="true"
+                                   ng-class="{'is-invalid' : modifyCompanyForm.name.$invalid && !modifyCompanyForm.name.$pristine}">
+                            <span class="invalid-feedback"
+                                  ng-show="modifyCompanyForm.name.$invalid && !modifyCompanyForm.name.$pristine">First name cannot be empty.</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="surname">Last Name</label>
+                            <input ng-model="companyModel.surname" id="surname" type="text" class="form-control"
+                                   name="surname" ng-required="true"]
+                                   ng-class="{'is-invalid' : modifyCompanyForm.surname.$invalid && !modifyCompanyForm.surname.$pristine}">
+                            <span class="invalid-feedback"
+                                  ng-show="modifyCompanyForm.surname.$invalid && !modifyCompanyForm.surname.$pristine">Surname cannot be empty.</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="dateOfBirth">Date of birth</label>
+                            <input ng-model="companyModel.dateOfBirth" id="dateOfBirth" type="date" class="form-control"
+                                   name="dateOfBirth" ng-required="true"
+                                   ng-class="{'is-invalid' : modifyCompanyForm.dateOfBirth.$invalid && !modifyCompanyForm.dateOfBirth.$pristine}">
+                            <span class="invalid-feedback"
+                                  ng-show="modifyCompanyForm.dateOfBirth.$invalid && !modifyCompanyForm.dateOfBirth.$pristine">Date of birth cannot be empty.</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="selectrole">Role</label>
+                            <select id="selectrole" ng-model="role" class="custom-select">
+                                <option>Company</option>
+                                <option>Moderator</option>
+                                <option>Admin</option>
+                            </select>
+
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" form="modifyCompanyForm" class="btn btn-success" value="Modify Company" ng-disabled="modifyCompanyForm.$invalid || modifyCompanyForm.$untouched"/>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:fragment="deleteCompanyDialog">
+        <div class="modal fade" id="deleteCompanyDialog" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteCompanyTitle">Delete Company</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to delete {{companyModel.name}} {{companyModel.surname}}?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal"
+                                ng-click="delCompany(companyModel)">Yes
+                        </button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
