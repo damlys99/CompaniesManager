@@ -3,13 +3,22 @@ package com.example.uniprogramming.dto;
 import java.sql.Date;
 
 public class CompanyDTO {
+    private long id;
     private String name;
     private String nip;
     private String address;
     private String city;
-    private String user;
+    private long user;
     private Date added;
     private String industry;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -43,11 +52,11 @@ public class CompanyDTO {
         this.city = city;
     }
 
-    public String getUser() {
+    public long getUser() {
         return user;
     }
 
-    public void setUser(String user) {
+    public void setUser(long user) {
         this.user = user;
     }
 

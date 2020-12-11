@@ -4,11 +4,13 @@
     UsersController.$inject = ['$http', '$scope'];
 
 
+
     function UsersController($http, $scope) {
         $scope.users = [];
         $scope.pageNum = 1;
         $scope.usersCount = 0;
-        $scope.role = 'User';
+        $scope.roles = undefined;
+        $scope.newuser = {};
         $scope.alert = {
             type: "",
             message: ""
@@ -19,6 +21,7 @@
         function init() {
             getData($scope.pageNum);
             getCount();
+            getRoles();
         }
         function getData(page){
             if (page) {
@@ -32,6 +35,13 @@
                 }).catch(function (err) {
                 });
             }
+        }
+
+        function getRoles(){
+            var url = '/api/roles/all';
+            $http.get(url).then(function (succ){
+                $scope.roles = succ.data;
+            });
         }
 
         function getCount() {
@@ -57,45 +67,36 @@
             getData($scope.pageNum);
         };*/
 
-        $scope.addUser = function(user, role, form) {
-            role = JSON.stringify(`ROLE_${role.toUpperCase()}`);
-            //console.log(role);
+        $scope.addUser = function(user, form) {
+            user = angular.toJson(user);
+            console.log(user);
             var url = '/api/users';
-            var usersPromise = $http.post(url + "/add", user);
-            usersPromise.then(function (suc) {
-                $scope.alert.message = `User ${suc.data.name} ${suc.data.surname} has been successfully added`;
-                $scope.alert.type = "success";
-                formReset(form);
-                getCount();
+            $http.post(url + "/add", user).then(function (suc){
                 getData($scope.pageNum);
-                $http.put(url + "/" + suc.data.id + "/setrole", role).then(function (ok) {
-
-                }).catch(function (err) {
-                    console.log(err);
-                });
-            }).catch(function (err, status, headers, config) {
-                $scope.addUserForm.username.$setValidity("userexists", false);
+                formReset(form);
+                $scope.alert.message = `User ${suc.data.name} ${suc.data.surname} has been successfully added!`;
+                $scope.alert.type = "success";
             })
+                .catch(function (err){
+                    form.username.$setValidity("userexists",false);
+                    console.log(err);
+                })
         };
 
-        $scope.modifyUser = function(user, role) {
-            role = JSON.stringify(`ROLE_${role.toUpperCase()}`);
-            console.log(role);
+        $scope.modifyUser = function(user) {
+            let id = user.id;
+            console.log(user.role);
+            console.log(user.role.name);
+            user = angular.toJson(user);
             var url = '/api/users';
-            var usersPromise = $http.put(url + `/${user.id}/modify`, user);
-            usersPromise.then(function (suc) {
+            $http.put(url + `/${id}/modify`, user).then(function (suc) {
                 $scope.alert.message = `User ${suc.data.name} ${suc.data.surname} has been successfully modified`;
                 $scope.alert.type = "success";
                 $("#modifyUserModal").modal('hide');
-                $http.put(url + "/" + suc.data.id + "/setrole", role).then(function (ok) {
-                }).then(function (resp) {
-                    getData($scope.pageNum);
-                })
-                    .catch(function (err) {
-                        console.log(err);
-                    });
-            }).catch(function (err, status, headers, config) {
+                getData($scope.pageNum);
+            }).catch(function (err) {
                 $scope.modifyUserForm.username.$setValidity("userexists", false);
+                console.log(err);
             })
 
         };
@@ -128,18 +129,20 @@
             form.$invalid = "true";
             form.$pristine = "true";
             form.$untouched = "true";
-            form.reset();
+            document.getElementsByName(form.$name)[0].reset();
         }
 
 
         $scope.setUserVar = function(user) {
             $scope.userModel = angular.copy(user);
+            console.log($scope.userModel);
             $scope.userModel.dateOfBirth = new Date($scope.userModel.dateOfBirth);
-            $scope.role = user.role.name.replace("ROLE_", "");
-            $scope.role = $scope.role.charAt(0).toUpperCase() + $scope.role.slice(1).toLowerCase();
+            $scope.userModel.role = $scope.roles.filter(i => i.id === user.role.id)[0];
         };
 
         $scope.setRole = function () {
-            $scope.role = "User";
-        }
+            $scope.newuser.role = $scope.roles.filter(i => i.nameWithoutPrefix === "User")[0];
+        };
+
+
     }

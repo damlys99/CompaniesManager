@@ -22,16 +22,14 @@ public class CompanyDTOService {
         this.companyService = companyService;
     }
 
-    public Company addCompany(CompanyDTO companyDTO){
-        Company company = new Company();
+    public Company modifyCompany(CompanyDTO companyDTO){
+        Company company = companyService.getCompany(companyDTO.getId());
         company.setName(companyDTO.getName());
         company.setNip(companyDTO.getNip());
         company.setAddress(companyDTO.getAddress());
         company.setCity(companyDTO.getCity());
         company.setIndustry(industryService.getIndustry(companyDTO.getIndustry()));
-        company.setAdded(companyDTO.getAdded());
-        company.setUser(userService.getUser(companyDTO.getUser()).get());
-        companyService.addCompany(company);
+        companyService.saveCompany(company);
         return company;
     }
 

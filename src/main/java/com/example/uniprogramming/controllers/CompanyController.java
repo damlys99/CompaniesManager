@@ -22,12 +22,10 @@ public class CompanyController {
 
         private final CompanyService companyService;
         private final UserService userService;
-        private final CompanyDTOService companyDTOService;
 
         @Autowired
-        public CompanyController(CompanyService companyService, UserService userService, CompanyDTOService companyDTOService) {
+        public CompanyController(CompanyService companyService, UserService userService) {
             this.companyService = companyService; this.userService = userService;
-            this.companyDTOService = companyDTOService;
         }
 
 
@@ -55,10 +53,12 @@ public class CompanyController {
         @RequestMapping(value = "/{id}/delete", method = RequestMethod.PUT)
         public Company deleteCompany(@PathVariable int id) {
             User logged = userService.getLoggedUser();
+            Company company = companyService.getCompany(id);
             if (id < 4) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found!");
             }
-            if (!logged.getRole().getName().equals("ROLE_ADMIN")) {
+            if (!logged.getRole().getName().equals("ROLE_ADMIN") && logged.getId() != company.getUser().getId()){
+
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You can't do that!");
             }
             return companyService.deleteCompany(id);
@@ -69,7 +69,7 @@ public class CompanyController {
             if(companyService.getCompany(company.getName()).isPresent()){
                 throw new ResponseStatusException(HttpStatus.FOUND, "Company Already exists");
             }
-            return companyService.addCompany(company);
+            return companyService.saveCompany(company);
         }
 
         @RequestMapping(value = "/{id}/setindustry", method = RequestMethod.PUT)
@@ -87,14 +87,13 @@ public class CompanyController {
             if (id < 4) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found!");
             }
-            if (!logged.getRole().getName().equals("ROLE_ADMIN")) {
+            if (!logged.getRole().getName().equals("ROLE_ADMIN") && logged.getId() != company.getUser().getId()) {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You can't do that!");
             }
-            Optional<Company> optionalCompany = companyService.getCompany(company.getName());
-            if(optionalCompany.isPresent() && optionalCompany.get().getId() != id){
+            if(companyService.companyExists(company.getName()) && company.getId() != id){
                 throw new ResponseStatusException(HttpStatus.FOUND, "Company Already exists");
             }
-            return companyService.modifyCompany(id, company);
+            return companyService.saveCompany(company);
         }
 
         @RequestMapping(value = "/count", method = RequestMethod.GET)

@@ -1,6 +1,7 @@
 package com.example.uniprogramming.controllers;
 
 
+import com.example.uniprogramming.models.Company;
 import com.example.uniprogramming.services.UserService;
 import com.example.uniprogramming.models.User;
 import com.fasterxml.jackson.databind.node.TextNode;
@@ -64,7 +65,7 @@ public class UserController {
         if(userService.getUser(user.getUserName()).isPresent()){
             throw new ResponseStatusException(HttpStatus.FOUND, "User Already exists");
         }
-        return userService.addUser(user);
+        return userService.saveUser(user);
     }
 
     @RequestMapping(value = "/{id}/setrole", method = RequestMethod.PUT)
@@ -76,18 +77,18 @@ public class UserController {
     }
 
     @RequestMapping(value = "/{id}/modify", method = RequestMethod.PUT)
-    public User modifyUser(@RequestBody User user, @PathVariable int id) {
+    public User modifyCompany(@RequestBody User user, @PathVariable int id) {
+        User logged = userService.getLoggedUser();
         if (id < 4) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found!");
         }
-        if (!logged().getRole().getName().equals("ROLE_ADMIN") && !(logged().getId() == id)) {
+        if (!logged.getRole().getName().equals("ROLE_ADMIN") && logged.getId() != user.getId()) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You can't do that!");
         }
-        Optional<User> optionalUser = userService.getUser(user.getUserName());
-        if(optionalUser.isPresent() && optionalUser.get().getId() != id){
-            throw new ResponseStatusException(HttpStatus.FOUND, "User Already exists");
+        if(userService.userExists(user.getName()) && user.getId() != id){
+            throw new ResponseStatusException(HttpStatus.FOUND, "Company Already exists");
         }
-        return userService.modifyUser(id, user);
+        return userService.saveUser(user);
     }
 
     @RequestMapping(value = "/count", method = RequestMethod.GET)

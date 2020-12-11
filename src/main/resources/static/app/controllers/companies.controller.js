@@ -82,32 +82,29 @@ function CompaniesController($http, $scope) {
         $http.post(url + "/add", company).then(function (suc){
             getData($scope.pageNum);
             formReset(form);
+            $scope.alert.message = `Company ${suc.data.name} has been successfully added!`;
+            $scope.alert.type = "success";
         })
             .catch(function (err){
-                form.name.$setValidity(companyexists,false);
+                form.name.$setValidity("companyexists",false);
                 console.log(err);
             })
 
     };
 
-    $scope.modifyCompany = function(company, industry) {
-        industry = JSON.stringify(industry);
-        console.log(industry);
+    $scope.modifyCompany = function(company) {
+        let id = company.id;
+        company = angular.toJson(company);
         var url = '/api/companies';
-        var companiesPromise = $http.put(url + `/${company.id}/modify`, company);
+        var companiesPromise = $http.put(url + `/${id}/modify`, company);
         companiesPromise.then(function (suc) {
             $scope.alert.message = `Company ${suc.data.name} has been successfully modified`;
             $scope.alert.type = "success";
             $("#modifyCompanyModal").modal('hide');
-            $http.put(url + "/" + suc.data.id + "/setindustry", industry).then(function (ok) {
-            }).then(function (resp) {
-                getData($scope.pageNum);
-            })
-                .catch(function (err) {
-                    console.log(err);
-                });
-        }).catch(function (err, status, headers, config) {
+            getData($scope.pageNum);
+        }).catch(function (err) {
             $scope.modifyCompanyForm.name.$setValidity("companyexists", false);
+            console.log(err);
         })
 
     };
@@ -140,13 +137,14 @@ function CompaniesController($http, $scope) {
         form.$invalid = "true";
         form.$pristine = "true";
         form.$untouched = "true";
-        form.reset();
+        document.getElementById(form).reset();
     }
 
 
     $scope.setCompanyVar = function(company) {
-        $scope.companyModel = angular.copy(company);
-        $scope.companyModel.added = new Date($scope.companyModel.added);
+        $scope.companyModel = JSON.parse(angular.toJson(company));
+        $scope.companyModel.industry = $scope.industries.filter(i => i.id === company.industry.id)[0];
+        console.log($scope.companyModel);
     };
 
 

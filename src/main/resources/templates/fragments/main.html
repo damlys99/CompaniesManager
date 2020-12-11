@@ -17,7 +17,7 @@
                     <a class="nav-link" href="/users" sc>Users<span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item" th:classappend="${active == 'companies' ? 'active': ''}">
-                    <a class="nav-link" href="#">Companies</a>
+                    <a class="nav-link" href="/companies">Companies</a>
                 </li>
             </ul>
             <span class="navbar-text">Logged as <a th:href="@{/user/{id}(id=${loggedUser.id})}" href="/user"><b><span id="loggeduser" th:text="${loggedUser.name} + ' ' + ${loggedUser.surname}">Anonymous</span></b></a>

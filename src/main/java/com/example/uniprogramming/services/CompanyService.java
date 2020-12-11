@@ -1,5 +1,7 @@
 package com.example.uniprogramming.services;
 
+import com.example.uniprogramming.dto.CompanyDTO;
+import com.example.uniprogramming.dto.CompanyDTOService;
 import com.example.uniprogramming.repositories.IndustriesRepository;
 import com.example.uniprogramming.models.Company;
 import com.example.uniprogramming.repositories.CompaniesRepository;
@@ -31,7 +33,11 @@ public class CompanyService {
         return companiesRepository.findByName(companyname);
     }
 
-    public Company getCompany(int id){
+    public boolean companyExists(String companyname){
+        return getCompany(companyname).isPresent();
+    }
+
+    public Company getCompany(long id){
         return companiesRepository.findById(id);
     }
 
@@ -47,19 +53,18 @@ public class CompanyService {
         return companyGettingDeleted;
     }
 
-    public Company addCompany(Company company){
+    public Company saveCompany(Company company){
         companiesRepository.save(company);
         return company;
     }
 
-    public Company modifyCompany(int id, Company company){
-        Company companyGettingModified = companiesRepository.findById(id);
-        companyGettingModified.setName(company.getName());
-        companyGettingModified.setAddress(company.getAddress());
-        companyGettingModified.setCity(company.getCity());
-        companiesRepository.save(companyGettingModified);
-        return companyGettingModified;
-    }
+/*    public Company modifyCompany(Company company){
+        Company companyModified = companiesRepository.findById(company.getId());
+        companyModified.setName(company.getName());
+        companyModified.setNip(company.getNip());
+        companyModified.setAddress(company.getAddress());
+        comp
+    }*/
 
     public Company setIndustry(int id, String industry){
         Company company = companiesRepository.findById(id);

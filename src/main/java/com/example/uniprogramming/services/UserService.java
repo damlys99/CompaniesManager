@@ -55,11 +55,7 @@ public class UserService {
         return userGettingDeleted;
     }
 
-    public User addUser(User user){
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        usersRepository.save(user);
-        return user;
-    }
+
 
     public User modifyUser(int id, User user){
         User userGettingModified = usersRepository.findById(id);
@@ -83,4 +79,13 @@ public class UserService {
         return usersRepository.findAllByIsDeletedIsFalse(userPage);
     }
 
+    public boolean userExists(String companyname){
+        return getUser(companyname).isPresent();
+    }
+
+    public User saveUser(User user){
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        usersRepository.save(user);
+        return user;
+    }
 }

@@ -36,7 +36,7 @@
             <th scope="col">City</th>
             <th scope="col">Added by</th>
             <th scope="col">Date added</th>
-            <th scope="col" sec:authorize="hasRole('ROLE_ADMIN')"> </th>
+            <th scope="col"> </th>
         </tr>
         </thead>
         <tbody>
@@ -48,10 +48,10 @@
             <td><a href="/companies/{{company.id}}" >{{company.name}}</a></td>
             <td>{{company.address}}</td>
             <td>{{company.city}}</td>
-            <td><a href="/users/{{company.user.id}}">{{company.user.name}} {{company.user.surname}}</a></td>
+            <td><a href="/users/{{company.user.id}}">{{company.user.userName}}</a></td>
             <td>{{company.added}}</td>
-            <td sec:authorize="hasRole('ROLE_ADMIN')" style="padding: 1px ">
-                <button class="btn btn-primary shadow-none btn-sm mod-btn" ng-click="setCompanyVar(company);"
+            <td style="padding: 1px ">
+                <div ng-if="loggeduser.id == company.user.id || loggeduser.role.name == 'ROLE_ADMIN'"><button class="btn btn-primary shadow-none btn-sm mod-btn" ng-click="setCompanyVar(company)"
                         data-toggle="modal" data-target="#modifyCompanyModal">
                     <i class="fas fa-pen"> </i>
                 </button>
@@ -59,13 +59,13 @@
                         data-toggle="modal" data-target="#deleteCompanyDialog">
                     <i class="fas fa-minus"> </i>
                 </button>
+                </div>
             </td>
         </tr>
         </tbody>
     </table>
 
-    <button sec:authorize="hasRole('ROLE_ADMIN')" type="button" class="btn btn-success" data-toggle="modal"
-            ng-click="industry='Technology'; companyModel = '' "
+    <button  type="button" class="btn btn-success" data-toggle="modal"
             data-target="#addCompanyModal">
         Add new company
     </button>
@@ -78,9 +78,9 @@
         last-text="&raquo;"> </ul>
 </div>
 
-<div sec:authorize="hasRole('ROLE_ADMIN')" th:insert="fragments/companies :: addCompanyModal"></div>
-<div sec:authorize="hasRole('ROLE_ADMIN')" th:insert="fragments/companies :: deleteCompanyDialog"></div>
-<div sec:authorize="hasRole('ROLE_ADMIN')" th:insert="fragments/companies :: modifyCompanyModal"></div>
+<div th:insert="fragments/companies :: addCompanyModal"></div>
+<div th:insert="fragments/companies :: deleteCompanyDialog"></div>
+<div th:insert="fragments/companies :: modifyCompanyModal"></div>
 
 
 </body>

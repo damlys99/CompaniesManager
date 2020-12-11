@@ -73,7 +73,7 @@
         </table>
         <!-- Button trigger add user modal -->
         <button sec:authorize="hasRole('ROLE_ADMIN')" type="button" class="btn btn-success" data-toggle="modal"
-                ng-click="role = 'User'; userModel = '' "
+                ng-click="setRole();"
                 data-target="#addUserModal">
             Add new user
         </button>

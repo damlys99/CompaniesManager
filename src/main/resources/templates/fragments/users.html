@@ -20,7 +20,7 @@
                 </div>
                 <div class="modal-body">
                     <form name="addUserForm" id="addUserForm"  novalidate
-                          ng-submit="addUser(newuser, role, addUserForm)">
+                          ng-submit="addUser(newuser, addUserForm)">
                         <div class="form-group">
                             <label for="modusername">Username</label>
                             <input ng-model="newuser.userName" id="modusername" type="text" class="form-control"
@@ -65,10 +65,7 @@
                         </div>
                         <div class="form-group">
                             <label for="modselectrole">Role</label>
-                            <select id="modselectrole" ng-model="role" class="custom-select">
-                                <option selected>User</option>
-                                <option>Moderator</option>
-                                <option>Admin</option>
+                            <select id="modselectrole" ng-model="newuser.role" class="custom-select" ng-options="rol.nameWithoutPrefix for rol in roles">
                             </select>
 
                         </div>
@@ -134,10 +131,7 @@
                         </div>
                         <div class="form-group">
                             <label for="selectrole">Role</label>
-                            <select id="selectrole" ng-model="role" class="custom-select">
-                                <option>User</option>
-                                <option>Moderator</option>
-                                <option>Admin</option>
+                            <select id="selectrole" ng-model="userModel.role" class="custom-select" ng-options="rol.nameWithoutPrefix for rol in roles">
                             </select>
 
                         </div>
