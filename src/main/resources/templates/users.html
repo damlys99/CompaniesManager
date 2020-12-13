@@ -9,11 +9,9 @@
     <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}"/>
     <script defer src="../static/fontawesome/js/all.js" th:src="@{/fontawesome/js/all.js}"></script>
     <script type="text/javascript" src="../static/app/angular.js" th:src="@{/app/angular.js}"></script>
-    <script type="text/javascript" src="../static/app/app.config.js" th:src="@{/app/app.config.js}"></script>
+    <script type="text/javascript" src="../static/app/modules/main/app.config.js" th:src="@{/app/modules/main/app.config.js}"></script>
     <script type="text/javascript" src="../static/app/angular-route.min.js" th:src="@{/app/angular-route.min.js}"></script>
-    <script type="text/javascript" src="../static/app/controllers/users.controller.js" th:src="@{/app/controllers/users.controller.js}"></script>
-<!--    <script type="text/javascript" src="../static/app/users.controller.js"-->
-<!--            th:src="@{/app/users.controller.js}"></script>-->
+    <script type="text/javascript" src="../static/app/modules/main/controllers/users.controller.js" th:src="@{/app/modules/main/controllers/users.controller.js}"></script>
     <script src="../static/app/ui.bootstrap.js" th:src="@{/app/ui.bootstrap.js}"></script>
 </head>
 <body ng-app="app" ng-controller="UsersController">
@@ -29,7 +27,7 @@
     </div>
 
     <div class="container" id="cont">
-        <table class="table table-sm">
+        <table class="table table-sm table-striped">
             <thead>
             <tr>
                 <th> </th>

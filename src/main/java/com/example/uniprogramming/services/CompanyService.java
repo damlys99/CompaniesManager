@@ -1,7 +1,6 @@
 package com.example.uniprogramming.services;
 
-import com.example.uniprogramming.dto.CompanyDTO;
-import com.example.uniprogramming.dto.CompanyDTOService;
+import com.example.uniprogramming.models.User;
 import com.example.uniprogramming.repositories.IndustriesRepository;
 import com.example.uniprogramming.models.Company;
 import com.example.uniprogramming.repositories.CompaniesRepository;
@@ -22,7 +21,6 @@ public class CompanyService {
     public CompanyService(CompaniesRepository companiesRepository, IndustriesRepository industriesRepository){
         this.companiesRepository = companiesRepository;
         this.industriesRepository = industriesRepository;
-
     }
 
     public List<Company> getAll(){
@@ -76,6 +74,10 @@ public class CompanyService {
     public List<Company> getPage(int currentPage, int pageSize){
         Pageable companyPage = PageRequest.of(currentPage - 1, pageSize);
         return companiesRepository.findAllByIsDeletedIsFalse(companyPage);
+    }
+
+    public List<Company> getByUser(User user){
+        return companiesRepository.findAllByIsDeletedIsFalseAndUser(user);
     }
 
 }

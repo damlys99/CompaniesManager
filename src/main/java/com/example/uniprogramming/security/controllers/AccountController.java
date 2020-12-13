@@ -29,15 +29,11 @@ public class AccountController {
         this.userDTOService = userDTOService;
     }
 
-    @InitBinder
-    public void initBinder(WebDataBinder dataBinder){
-        StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
-        dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
-    }
 
     @RequestMapping(value = "/login")
     public String loginPage(@RequestParam(value = "error", required = false) String error,
                             @RequestParam(value = "logout", required = false) String logout,
+                            @RequestParam(value = "registered", required = false) String registered,
                             Model model) {
         String errorMessge = null;
         if(error != null) {
@@ -45,6 +41,9 @@ public class AccountController {
         }
         if(logout != null) {
             errorMessge = "You have been successfully logged out!";
+        }
+        if(registered != null) {
+            errorMessge = "Your account has been created! You can now log in.";
         }
         model.addAttribute("errorMessge", errorMessge);
         return "login";
@@ -81,8 +80,7 @@ public class AccountController {
         if(bindingResult.hasErrors()){
             return "register";
         }
-        ra.addFlashAttribute("message", "Your account has been created! You can now log in.");
         userDTOService.register(userDTO);
-        return "redirect:/login";
+        return "redirect:/login?registered=true";
     }
 }

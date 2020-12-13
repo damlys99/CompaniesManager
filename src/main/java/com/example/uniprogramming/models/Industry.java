@@ -14,7 +14,7 @@ public class Industry {
     private String name;
 
 
-    public Industry(){};
+    public Industry(){}
     public Industry(String name){
         this.name = name;
     }

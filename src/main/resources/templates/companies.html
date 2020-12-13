@@ -9,14 +9,13 @@
     <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}"/>
     <script defer src="../static/fontawesome/js/all.js" th:src="@{/fontawesome/js/all.js}"></script>
     <script type="text/javascript" src="../static/app/angular.js" th:src="@{/app/angular.js}"></script>
-    <script type="text/javascript" src="../static/app/app.config.js" th:src="@{/app/app.config.js}"></script>
-    <script type="text/javascript" src="../static/app/controllers/companies.controller.js" th:src="@{/app/controllers/companies.controller.js}"></script>
+    <script type="text/javascript" src="../static/app/modules/main/app.config.js" th:src="@{/app/modules/main/app.config.js}"></script>
+    <script type="text/javascript" src="../static/app/modules/main/controllers/companies.controller.js" th:src="@{/app/modules/main/controllers/companies.controller.js}"></script>
     <script src="../static/app/ui.bootstrap.js" th:src="@{/app/ui.bootstrap.js}"></script>
 </head>
 <body ng-app="app" ng-controller="CompaniesController">
 <div th:insert="fragments/main :: header('companies')"></div>
 
-<!-- Alert -->
 <div class='alert alert-{{alert.type}} alert-dismissible fade show {{alert.type? "" : "d-none"}} fixed-top'
      role="alert">
     {{alert.message}}
@@ -26,7 +25,7 @@
 </div>
 
 <div class="container" id="cont">
-    <table class="table table-sm">
+    <table class="table table-sm table-striped">
         <thead>
         <tr>
             <th> </th>

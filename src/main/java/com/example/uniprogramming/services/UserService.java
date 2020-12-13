@@ -35,12 +35,12 @@ public class UserService {
         return usersRepository.findByUserName(username);
     }
 
-    public User getUser(int id){
+    public User getUser(long id){
         return usersRepository.findById(id);
     }
 
     public User getLoggedUser(){
-        return usersRepository.findByUserName(userDetailsService.getLoggedUser().getUsername()).get();
+        return usersRepository.findByUserName(userDetailsService.getLoggedUser().getUsername()).orElseThrow();
     }
 
     public Long count(){
@@ -49,23 +49,11 @@ public class UserService {
 
     public User deleteUser(int id){
 
-        User userGettingDeleted = usersRepository.findById(id);
+        User userGettingDeleted = getUser(id);
         userGettingDeleted.setDeleted(true);
-        usersRepository.save(userGettingDeleted);
-        return userGettingDeleted;
+        return saveUser(userGettingDeleted);
     }
 
-
-
-    public User modifyUser(int id, User user){
-        User userGettingModified = usersRepository.findById(id);
-        userGettingModified.setName(user.getName());
-        userGettingModified.setSurname(user.getSurname());
-        userGettingModified.setUserName(user.getUserName());
-        userGettingModified.setDateOfBirth(user.getDateOfBirth());
-        usersRepository.save(userGettingModified);
-        return userGettingModified;
-    }
 
     public User setRole(int id, String role){
         User user = usersRepository.findById(id);
@@ -79,8 +67,8 @@ public class UserService {
         return usersRepository.findAllByIsDeletedIsFalse(userPage);
     }
 
-    public boolean userExists(String companyname){
-        return getUser(companyname).isPresent();
+    public boolean userExists(String username){
+        return getUser(username).isPresent();
     }
 
     public User saveUser(User user){

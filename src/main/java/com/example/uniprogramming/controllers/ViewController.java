@@ -1,5 +1,6 @@
 package com.example.uniprogramming.controllers;
 
+import com.example.uniprogramming.services.CompanyService;
 import com.example.uniprogramming.services.UserService;
 import com.example.uniprogramming.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +14,18 @@ import org.springframework.web.server.ResponseStatusException;
 public class ViewController {
 
     private final UserService userService;
+    private final CompanyService companyService;
 
     @Autowired
-    public ViewController(UserService userService) {
+    public ViewController(UserService userService, CompanyService companyService) {
         this.userService = userService;
+        this.companyService = companyService;
     }
 
+    @RequestMapping("/")
+    public String index(){
+        return "redirect:/companies";
+    }
     @RequestMapping(value = "/users")
     public String users(
             Model model
@@ -32,10 +39,6 @@ public class ViewController {
     public String user(@PathVariable int id,
                        Model model
     ) {
-        User logged = userService.getLoggedUser();
-        if (!(logged.getRole().getName().equals("ROLE_ADMIN") || logged.getRole().getName().equals("ROLE_MODERATOR")) && !(logged.getId() == id)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You can't do that!");
-        }
         model.addAttribute("loggedUser", userService.getLoggedUser());
         model.addAttribute("user", userService.getUser(id));
         return "user";
@@ -48,5 +51,14 @@ public class ViewController {
     ) {
         model.addAttribute("loggedUser", userService.getLoggedUser());
         return "companies";
+    }
+
+    @RequestMapping(value = "/companies/{id}")
+    public String company(@PathVariable int id,
+                       Model model
+    ) {
+        model.addAttribute("loggedUser", userService.getLoggedUser());
+        model.addAttribute("company", companyService.getCompany(id));
+        return "company";
     }
 }

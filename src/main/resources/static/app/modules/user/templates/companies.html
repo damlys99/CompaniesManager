@@ -1,0 +1,26 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+    <h3>Companies added by user</h3>
+        <table class="table table-sm table-striped" style="overflow-y: auto">
+            <thead>
+            <tr>
+                <th> </th>
+                <th scope="col">Industry</th>
+                <th scope="col">Name</th>
+                <th scope="col">Address</th>
+                <th scope="col">City</th>
+                <th scope="col">Date added</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="company in companies">
+                <th scope="row">{{$index+1}}</th>
+                <td>
+                    {{company.industry.name}}
+                </td>
+                <td><a href="/companies/{{company.id}}" >{{company.name}}</a></td>
+                <td>{{company.address}}</td>
+                <td>{{company.city}}</td>
+                <td>{{company.added}}</td>
+            </tr>
+            </tbody>
+        </table>

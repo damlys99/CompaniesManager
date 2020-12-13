@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content= "width=device-width, user-scalable=no">
+    <title th:text="${company}">Company</title>
+    <link rel="stylesheet" href="../static/bootstrap.css" th:href="@{/bootstrap.css}"/>
+    <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}"/>
+    <script src="../static/app/angular.js" th:src="@{/app/angular.js}"></script>
+    <script src="../static/app/modules/user/user.module.js" th:src="@{/app/modules/company/company.module.js}"></script>
+    <script src="../static/app/angular-route.min.js" th:src="@{/app/angular-route.min.js}"></script>
+
+</head>
+<body ng-app="companyApp" ng-controller="navController">
+<div th:insert="fragments/main :: header('')"></div>
+<div class="container-fluid" style="flex-grow:1; padding-left:0">
+    <div id="data">
+        <div  id="panel" style="padding:0;">
+            <div id="info">
+                <img id="avatar" th:src="@{/images/logo.png}" src="../static/images/logo.png" class="rounded-circle" alt="avatar">
+                <div class="info-field">
+                    <span id="username" th:text="${company.name}">name</span>
+                </div>
+                <div class="info-field">
+                    <span class="badge badge-info" th:text="${company.industry.name}">industry</span>
+                </div>
+                <div class="info-field">
+                    <span th:text="${company.city} + ' ' + ${company.address}">anon anon</span>
+                </div>
+                <div class="info-field">
+                    <span id="dateOfBirth" th:text="${company.added}">01 dec 2012</span>
+                </div>
+            </div>
+
+            <div class="menu">
+                <a ng-class="getClass('')" href="#">Contacts</a>
+                <a ng-class="getClass('/notes')" href="#!notes">Notes</a>
+            </div>
+        </div>
+        <ng-view></ng-view>
+    </div>
+</div>
+
+</body>
+</html>

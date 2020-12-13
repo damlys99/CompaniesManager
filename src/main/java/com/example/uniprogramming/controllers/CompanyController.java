@@ -1,7 +1,5 @@
 package com.example.uniprogramming.controllers;
 
-import com.example.uniprogramming.dto.CompanyDTO;
-import com.example.uniprogramming.dto.CompanyDTOService;
 import com.example.uniprogramming.models.Company;
 import com.example.uniprogramming.models.User;
 import com.example.uniprogramming.services.CompanyService;
@@ -40,7 +38,11 @@ public class CompanyController {
         }
 
         @RequestMapping(value = "/all", method = RequestMethod.GET)
-        public List<Company> getAll() {
+        public List<Company> getAll(@RequestParam("user") Optional<Integer> userId) {
+            if(userId.isPresent()){
+                User user = userService.getUser(userId.get());
+                    return companyService.getByUser(user);
+            }
             return companyService.getAll();
         }
 

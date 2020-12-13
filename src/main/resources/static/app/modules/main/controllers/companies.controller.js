@@ -1,10 +1,5 @@
 
-app.controller('CompaniesController', CompaniesController);
-
-CompaniesController.$inject = ['$http', '$scope'];
-
-
-function CompaniesController($http, $scope) {
+app.controller('CompaniesController', function CompaniesController($http, $scope, $location) {
     $scope.companies = [];
     $scope.pageNum = 1;
     $scope.loggeduser = undefined;
@@ -36,6 +31,8 @@ function CompaniesController($http, $scope) {
             });
         }
     }
+
+
     function getLogged(){
         var url='/api/users/logged';
         $http.get(url).then(function (suc){
@@ -44,7 +41,7 @@ function CompaniesController($http, $scope) {
     }
     function getCount() {
 
-        var url = 'api/companies/count';
+        var url = '/api/companies/count';
         var companiesPromise = $http.get(url);
         companiesPromise.then(function (response) {
             $scope.companiesCount = response.data;
@@ -52,7 +49,7 @@ function CompaniesController($http, $scope) {
     }
 
     function getIndustries(){
-        var url = 'api/industries/all';
+        var url = '/api/industries/all';
         $http.get(url).then(function (response) {
             $scope.industries = response.data;
 
@@ -148,4 +145,4 @@ function CompaniesController($http, $scope) {
     };
 
 
-}
+});

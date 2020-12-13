@@ -1,0 +1,26 @@
+<h3>Contact persons added by user</h3>
+<table class="table table-sm table-striped" style="overflow-y:auto">
+    <thead>
+    <tr>
+        <th></th>
+        <th>Name</th>
+        <th>Surname</th>
+        <th>Phone</th>
+        <th>Email</th>
+        <th>Position</th>
+        <th>Added by</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="contact in contacts">
+        <td>{{$index}}</td>
+        <td>{{contact.name}}</td>
+        <td>{{contact.surname}}</td>
+        <td>{{contact.phone}}</td>
+        <td>{{contact.email}}</td>
+        <td>{{contact.position}}</td>
+        <td>{{contact.user}}</td>
+    </tr>
+    </tbody>
+
+</table>
