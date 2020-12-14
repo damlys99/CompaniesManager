@@ -12,7 +12,7 @@ public class Note {
     private String content;
     private boolean isDeleted;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinTable(
             name = "note_company",
             joinColumns = @JoinColumn(
@@ -21,7 +21,7 @@ public class Note {
                     name = "company_id", referencedColumnName = "id"))
     private Company company;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinTable(
             name = "note_user",
             joinColumns = @JoinColumn(

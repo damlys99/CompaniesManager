@@ -27,6 +27,7 @@ app.controller('CompaniesController', function CompaniesController($http, $scope
             companiesPromise.then(function (response) {
                 $scope.companies = response.data;
                 $scope.pageNum = page;
+                getCount();
             }).catch(function (err) {
             });
         }
@@ -56,19 +57,10 @@ app.controller('CompaniesController', function CompaniesController($http, $scope
         })
     }
 
-    $scope.goTo = function(page){
+    $scope.goTo = function(page) {
         getData(page);
-    };
+    }
 
-    /*        $scope.nextPage = function(){
-                $scope.pageNum++;
-                getData($scope.pageNum);
-            };
-
-            $scope.prevPage = function() {
-                $scope.pageNum--;
-                getData($scope.pageNum);
-            };*/
 
     $scope.addCompany = function(company, form) {
         company.user =  $scope.loggeduser;
@@ -134,14 +126,13 @@ app.controller('CompaniesController', function CompaniesController($http, $scope
         form.$invalid = "true";
         form.$pristine = "true";
         form.$untouched = "true";
-        document.getElementById(form).reset();
+        document.getElementsByName(form.$name)[0].reset();
     }
 
 
     $scope.setCompanyVar = function(company) {
         $scope.companyModel = JSON.parse(angular.toJson(company));
         $scope.companyModel.industry = $scope.industries.filter(i => i.id === company.industry.id)[0];
-        console.log($scope.companyModel);
     };
 
 

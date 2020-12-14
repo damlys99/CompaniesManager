@@ -32,6 +32,7 @@
                 usersPromise.then(function (response) {
                     $scope.users = response.data;
                     $scope.pageNum = page;
+                    getCount();
                 }).catch(function (err) {
                 });
             }
@@ -57,16 +58,6 @@
             getData(page);
         };
 
-/*        $scope.nextPage = function(){
-            $scope.pageNum++;
-            getData($scope.pageNum);
-        };
-
-        $scope.prevPage = function() {
-            $scope.pageNum--;
-            getData($scope.pageNum);
-        };*/
-
         $scope.addUser = function(user, form) {
             user = angular.toJson(user);
             console.log(user);
@@ -85,8 +76,6 @@
 
         $scope.modifyUser = function(user) {
             let id = user.id;
-            console.log(user.role);
-            console.log(user.role.name);
             user = angular.toJson(user);
             var url = '/api/users';
             $http.put(url + `/${id}/modify`, user).then(function (suc) {

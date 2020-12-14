@@ -10,8 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/users")
@@ -97,9 +99,8 @@ public class UserController {
     }
 
     @RequestMapping("/logged")
-    public User logged() {//@CurrentSecurityContext(expression = "authentication.principal") Principal principal) {
+    public User logged() {
         return userService.getLoggedUser();
     }
-
 
 }

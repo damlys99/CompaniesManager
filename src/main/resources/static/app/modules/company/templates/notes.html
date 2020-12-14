@@ -1,10 +1,71 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<h3>Notes</h3>
+<div style="overflow-y: auto; height: 100%">
+    <div id="notes-container">
+        <div ng-repeat="note in notes" class="card text-white bg-warning mb-3 note" style="max-width: 18rem;">
+            <div class="card-header"><a href="/users/{{note.user.id}}">{{note.user.name}} {{note.user.surname}}</a></div>
+            <div class="noteif noteov" ng-if="!edit[$index]">
+            <div class="card-body noteov">
+                <p class="card-text">{{note.content}}</p>
+            </div>
+            <div class="card-footer" ng-if="loggeduser.id == company.user.id || loggeduser.role.name == 'ROLE_ADMIN'"><button class="btn btn-primary shadow-none btn-sm mod-btn" ng-click="setNoteVar(note); revealForm($index)">
+                <i class="fas fa-pen"> </i>
+            </button>
+                <button class="btn btn-danger shadow-none btn-sm mod-btn" ng-click="hideAllForms(); setNoteVar(note);"
+                        data-toggle="modal" data-target="#deleteNoteDialog">
+                    <i class="fas fa-minus"> </i>
+                </button>
+            </div>
+            </div>
+            <div class="noteif" ng-if="edit[$index]">
+                <div class="card-body" style="text-align: center">
+                    <form id="modifyNoteForm" name="modifyNoteForm" ng-submit="(modifyNote(noteModel))" novalidate>
+                        <textarea  name="content" ng-model="noteModel.content" class="form-control" ng-required="true" ng-class="{'is-invalid' : modifyNoteForm.content.$invalid && !modifyNoteForm.content.$pristine}"></textarea>
+                    </form>
+                </div>
+                <div class="card-footer">
+                    <input type="submit" form="modifyNoteForm" class="btn btn-success" ng-disabled="modifyNoteForm.$invalid" value="Modify Note">
+                </div>
+            </div>
+        </div>
 
-</body>
-</html>
+
+
+<div ng-if="loggeduser.id == company.user.id || loggeduser.role.name == 'ROLE_ADMIN'" id="addNote" class="card text-white bg-warning mb-3 note" style="max-width: 18rem;">
+
+    <div class="card-header">
+        {{loggeduser.name}} {{loggeduser.surname}}
+    </div>
+    <div class="card-body" style="text-align: center">
+    <form id="addNoteForm" name="addNoteForm" ng-submit="addNote(newnote, addNoteForm)" novalidate>
+        <textarea  name="content" id="content" ng-model="newnote.content" class="form-control" ng-required="true" ng-class="{'is-invalid' : addNoteForm.content.$invalid && !addNoteForm.content.$pristine}"></textarea>
+    </form>
+    </div>
+    <div class="card-footer">
+        <input type="submit" value="Add Note" form="addNoteForm" class="btn btn-success" ng-disabled="addNoteForm.$invalid">
+    </div>
+</div>
+
+
+<div class="modal fade" id="deleteNoteDialog" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteNoteTitle">Delete Note</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete that note?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal"
+                        ng-click="delNote(noteModel)">Yes
+                </button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>

@@ -8,18 +8,18 @@
         <th>Phone</th>
         <th>Email</th>
         <th>Position</th>
-        <th>Added by</th>
+        <th>Company</th>
     </tr>
     </thead>
     <tbody>
     <tr ng-repeat="contact in contacts">
-        <td>{{$index}}</td>
+        <th scope="row">{{$index + 1}}</th>
         <td>{{contact.name}}</td>
         <td>{{contact.surname}}</td>
         <td>{{contact.phone}}</td>
         <td>{{contact.email}}</td>
         <td>{{contact.position}}</td>
-        <td>{{contact.user}}</td>
+        <td><a href="/companies/{{company.id}}">{{contact.company.name}}</a></td>
     </tr>
     </tbody>
 

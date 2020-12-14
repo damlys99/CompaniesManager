@@ -89,10 +89,23 @@ body{
     border-right: 4px solid cadetblue;
 }
 #notes-container{
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: start;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+    grid-gap: 10px;
+
     height: 100%;
+    width:100%;
+}
+.note{
+    height: 250px;
+}
+.noteif{
+    flex: 1 1 auto;
+    display: flex;
+    flex-flow: column;
+}
+.noteov{
+    overflow-y: auto;
 }
 #leftg{
     padding-right:1rem;

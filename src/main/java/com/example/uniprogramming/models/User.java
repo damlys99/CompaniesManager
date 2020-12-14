@@ -23,7 +23,7 @@ public class User {
     private String userName;
     private String password;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade=CascadeType.MERGE)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(

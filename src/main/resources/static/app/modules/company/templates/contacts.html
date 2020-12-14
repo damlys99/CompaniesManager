@@ -1,10 +1,190 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<h3>Contact persons</h3>
+<table class="table table-sm table-striped" style="overflow-y:auto">
+    <thead>
+    <tr>
+        <th></th>
+        <th>Name</th>
+        <th>Surname</th>
+        <th>Phone</th>
+        <th>Email</th>
+        <th>Position</th>
+        <th>Added by</th>
+        <th> </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="contact in contacts">
+        <th scope="row">{{$index+1}}</th>
+        <td>{{contact.name}}</td>
+        <td>{{contact.surname}}</td>
+        <td>{{contact.phone}}</td>
+        <td>{{contact.email}}</td>
+        <td>{{contact.position}}</td>
+        <td><a href="/users/{{contact.user.id}}">{{contact.user.userName}}</a></td>
+        <td><div ng-if="loggeduser.id == company.user.id || loggeduser.role.name == 'ROLE_ADMIN'"><button class="btn btn-primary shadow-none btn-sm mod-btn" ng-click="setContactVar(contact)"
+                                                                                                          data-toggle="modal" data-target="#modifyContactModal">
+            <i class="fas fa-pen"> </i>
+        </button>
+            <button class="btn btn-danger shadow-none btn-sm mod-btn" ng-click="setContactVar(contact);"
+                    data-toggle="modal" data-target="#deleteContactDialog">
+                <i class="fas fa-minus"> </i>
+            </button>
+        </div></td>
+    </tr>
+    </tbody>
+</table>
+<div ng-if="loggeduser.id == company.user.id || loggeduser.role.name == 'ROLE_ADMIN'">
+    <button class="btn btn-success shadow-none btn-sm mod-btn"
+            data-toggle="modal" data-target="#addContactModal">Add Contact Person
+    </button>
+</div>
 
-</body>
-</html>
+
+
+<div class="modal fade" id="addContactModal" tabindex="-1" role="dialog" aria-labelledby="addContactModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addContactModalLabel">Add Contact</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form name="addContactForm" id="addContactForm"  novalidate
+                      ng-submit="addContact(newcontact, addContactForm)">
+                    <div class="form-group">
+                        <label for="addname">First name</label>
+                        <input ng-model="newcontact.name" id="addname" type="text" class="form-control"
+                               name="name" ng-required="true"
+                               ng-class="{'is-invalid' : addContactForm.name.$invalid && !addContactForm.name.$pristine}">
+                        <span class="invalid-feedback"
+                              ng-show="addContactForm.name.$invalid.required && !addContactForm.name.$pristine">Name cannot be empty</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="addsurname">Surname</label>
+                        <input ng-model="newcontact.surname" id="addsurname" type="text" class="form-control"
+                               name="surname" ng-required="true"
+                               ng-class="{'is-invalid' : addContactForm.surname.$invalid && !addContactForm.surname.$pristine}">
+                        <span class="invalid-feedback"
+                              ng-show="addContactForm.surname.$invalid && !addContactForm.surname.$pristine">Surname cannot be empty.</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="addnumber">Phone Number</label>
+                        <input ng-model="newcontact.phone" id="addnumber" type="text" class="form-control" name="phone"
+                               ng-required="true"
+                               ng-class="{'is-invalid' : addContactForm.phone.$invalid && !addContactForm.phone.$pristine}">
+                        <span class="invalid-feedback"
+                              ng-show="addContactForm.phone.$invalid && !addContactForm.phone.$pristine">Phone number cannot be empty.</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="addemail">E-mail</label>
+                        <input ng-model="newcontact.email" id="addemail" type="text" class="form-control"
+                               name="email" ng-required="true"
+                               ng-class="{'is-invalid' : addContactForm.email.$invalid && !addContactForm.email.$pristine}">
+                        <span class="invalid-feedback"
+                              ng-show="addContactForm.email.$invalid && !addContactForm.email.$pristine">Email cannot be empty.</span>
+                    </div>
+                        <div class="form-group">
+                            <label for="addposition">Position</label>
+                            <input ng-model="newcontact.position" id="addposition" type="text" class="form-control"
+                                   name="position" ng-required="true"
+                                   ng-class="{'is-invalid' : addContactForm.position.$invalid && !addContactForm.position.$pristine}">
+                            <span class="invalid-feedback"
+                                  ng-show="addContactForm.position.$invalid && !addContactForm.position.$pristine">Position cannot be empty.</span>
+                        </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" form="addContactForm" class="btn btn-success" value="Add Contact" ng-disabled="addContactForm.$invalid"/>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modifyContactModal" tabindex="-1" role="dialog" aria-labelledby="modifyContactModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modifyContactModalLabel">Modify Contact</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form name="modifyContactForm" id="modifyContactForm"  novalidate
+                      ng-submit="modifyContact(contactModel)">
+                    <div class="form-group">
+                        <label for="modname">First name</label>
+                        <input ng-model="contactModel.name" id="modname" type="text" class="form-control"
+                               name="name" ng-required="true"
+                               ng-class="{'is-invalid' : modifyContactForm.name.$invalid && !modifyContactForm.name.$pristine}">
+                        <span class="invalid-feedback"
+                              ng-show="modifyContactForm.name.$invalid.required && !modifyContactForm.name.$pristine">Name cannot be empty</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="modsurname">Surname</label>
+                        <input ng-model="contactModel.surname" id="modsurname" type="text" class="form-control"
+                               name="surname" ng-required="true"
+                               ng-class="{'is-invalid' : modifyContactForm.surname.$invalid && !modifyContactForm.surname.$pristine}">
+                        <span class="invalid-feedback"
+                              ng-show="modifyContactForm.surname.$invalid && !modifyContactForm.surname.$pristine">Surname cannot be empty.</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="modnumber">Phone Number</label>
+                        <input ng-model="contactModel.phone" id="modnumber" type="text" class="form-control" name="phone"
+                               ng-required="true"
+                               ng-class="{'is-invalid' : modifyContactForm.phone.$invalid && !modifyContactForm.phone.$pristine}">
+                        <span class="invalid-feedback"
+                              ng-show="modifyContactForm.phone.$invalid && !modifyContactForm.phone.$pristine">Phone number cannot be empty.</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="modemail">E-mail</label>
+                        <input ng-model="contactModel.email" id="modemail" type="text" class="form-control"
+                               name="email" ng-required="true"
+                               ng-class="{'is-invalid' : modifyContactForm.email.$invalid && !modifyContactForm.email.$pristine}">
+                        <span class="invalid-feedback"
+                              ng-show="modifyContactForm.email.$invalid && !modifyContactForm.email.$pristine">Email cannot be empty.</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="modposition">Position</label>
+                        <input ng-model="contactModel.position" id="modposition" type="text" class="form-control"
+                               name="position" ng-required="true"
+                               ng-class="{'is-invalid' : modifyContactForm.position.$invalid && !modifyContactForm.position.$pristine}">
+                        <span class="invalid-feedback"
+                              ng-show="modifyContactForm.position.$invalid && !modifyContactForm.position.$pristine">Position cannot be empty.</span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" form="modifyContactForm" class="btn btn-success" value="Modify Contact" ng-disabled="modifyContactForm.$invalid"/>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteContactDialog" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteContactTitle">Delete Contact</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete {{contactModel.name}} {{contactModel.surname}}?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal"
+                        ng-click="delContact(contactModel)">Yes
+                </button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

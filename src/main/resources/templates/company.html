@@ -4,16 +4,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content= "width=device-width, user-scalable=no">
-    <title th:text="${company}">Company</title>
+    <title th:text="${company.name}">Company</title>
     <link rel="stylesheet" href="../static/bootstrap.css" th:href="@{/bootstrap.css}"/>
     <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}"/>
     <script src="../static/app/angular.js" th:src="@{/app/angular.js}"></script>
+    <script defer src="../static/fontawesome/js/all.js" th:src="@{/fontawesome/js/all.js}"></script>
     <script src="../static/app/modules/user/user.module.js" th:src="@{/app/modules/company/company.module.js}"></script>
     <script src="../static/app/angular-route.min.js" th:src="@{/app/angular-route.min.js}"></script>
+    <script src="../static/app/angular.cookies.js" th:src="@{/app/angular.cookies.js}"></script>
+    <script src="../static/app/modules/company/controllers/company-contacts.controller.js" th:src="@{/app/modules/company/controllers/company-contacts.controller.js}"></script>
+    <script src="../static/app/modules/company/controllers/company-notes.controller.js" th:src="@{/app/modules/company/controllers/company-notes.controller.js}"></script>
+
 
 </head>
 <body ng-app="companyApp" ng-controller="navController">
 <div th:insert="fragments/main :: header('')"></div>
+
+<div class='alert alert-{{alert.type}} alert-dismissible fade show {{alert.type? "" : "d-none"}} fixed-top'
+     role="alert">
+    {{alert.message}}
+    <button type="button" class="close" ng-click="clearAlert()">
+        <span>&times;</span>
+    </button>
+</div>
+
 <div class="container-fluid" style="flex-grow:1; padding-left:0">
     <div id="data">
         <div  id="panel" style="padding:0;">
@@ -32,13 +46,12 @@
                     <span id="dateOfBirth" th:text="${company.added}">01 dec 2012</span>
                 </div>
             </div>
-
             <div class="menu">
                 <a ng-class="getClass('')" href="#">Contacts</a>
                 <a ng-class="getClass('/notes')" href="#!notes">Notes</a>
             </div>
         </div>
-        <ng-view></ng-view>
+        <ng-view style="height: 80vh"></ng-view>
     </div>
 </div>
 

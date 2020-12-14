@@ -15,7 +15,7 @@ public class Contact {
     private String email;
     private String position;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinTable(
             name = "contact_company",
             joinColumns = @JoinColumn(
@@ -24,7 +24,7 @@ public class Contact {
                     name = "company_id", referencedColumnName = "id"))
     private Company company;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinTable(
             name = "contact_user",
             joinColumns = @JoinColumn(

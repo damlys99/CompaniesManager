@@ -61,6 +61,7 @@ public class ContactController {
 
     @RequestMapping(value = "/{id}/modify", method = RequestMethod.PUT)
     public Contact modifyContact(@PathVariable long id, @RequestBody Contact contact){
+        System.out.println(contact.getUser());
         User logged = userService.getLoggedUser();
         if (!logged.getRole().getName().equals("ROLE_ADMIN") && logged.getId() != contact.getUser().getId()) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You can't do that!");

@@ -15,7 +15,7 @@ public class Company {
     private String city;
     private Date added;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinTable(
             name = "company_industry",
             joinColumns = @JoinColumn(

@@ -10,6 +10,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 @Controller
 public class ViewController {
 
@@ -37,8 +41,10 @@ public class ViewController {
 
     @RequestMapping(value = "/users/{id}")
     public String user(@PathVariable int id,
-                       Model model
+                       Model model, HttpServletResponse response
     ) {
+        Cookie cookie = new Cookie("userid", String.valueOf(id));
+        response.addCookie(cookie);
         model.addAttribute("loggedUser", userService.getLoggedUser());
         model.addAttribute("user", userService.getUser(id));
         return "user";
@@ -55,8 +61,10 @@ public class ViewController {
 
     @RequestMapping(value = "/companies/{id}")
     public String company(@PathVariable int id,
-                       Model model
+                       Model model, HttpServletResponse response
     ) {
+        Cookie cookie = new Cookie("companyid", String.valueOf(id));
+        response.addCookie(cookie);
         model.addAttribute("loggedUser", userService.getLoggedUser());
         model.addAttribute("company", companyService.getCompany(id));
         return "company";
