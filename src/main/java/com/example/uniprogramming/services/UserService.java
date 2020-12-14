@@ -1,7 +1,7 @@
 package com.example.uniprogramming.services;
 
-import com.example.uniprogramming.repositories.RolesRepository;
 import com.example.uniprogramming.models.User;
+import com.example.uniprogramming.repositories.RolesRepository;
 import com.example.uniprogramming.repositories.UsersRepository;
 import com.example.uniprogramming.security.services.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {

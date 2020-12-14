@@ -2,6 +2,7 @@ package com.example.uniprogramming.controllers;
 
 import com.example.uniprogramming.models.Company;
 import com.example.uniprogramming.models.User;
+import com.example.uniprogramming.search.CompanyDateOnly;
 import com.example.uniprogramming.services.CompanyService;
 import com.example.uniprogramming.services.UserService;
 import com.fasterxml.jackson.databind.node.TextNode;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,11 +32,17 @@ public class CompanyController {
         @RequestMapping(value = "", method = RequestMethod.GET)
         public List<Company> getPage(
                 @RequestParam("page") Optional<Integer> page,
-                @RequestParam("size") Optional<Integer> size) {
+                @RequestParam("size") Optional<Integer> size,
+                @RequestParam("industries") Optional<List<String>> industriesFilter,
+                @RequestParam("dates") Optional<List<String>> datesFilter) {
             int currentPage = page.orElse(1);
             int pageSize = size.orElse(10);
+            List<String> industries = industriesFilter.orElse(new ArrayList<>());
+            List<String> dates = datesFilter.orElse(new ArrayList<>());
+            System.out.println(industries);
+            System.out.println(dates);
 
-            return companyService.getPage(currentPage, pageSize);
+            return companyService.getPage(currentPage, pageSize, industries, dates);
         }
 
         @RequestMapping(value = "/all", method = RequestMethod.GET)
@@ -103,8 +111,19 @@ public class CompanyController {
             return companyService.count();
         }
 
-
-
+    @RequestMapping(value = "/dates")
+    public List<CompanyDateOnly> getDates() {
+        return companyService.getDates();
     }
+    @RequestMapping(value = "/test")
+    public List<Company> test() {
+        return companyService.test("aaa");
+    }
+
+
+
+
+
+}
 
 

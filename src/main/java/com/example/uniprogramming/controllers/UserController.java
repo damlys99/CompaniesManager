@@ -1,19 +1,16 @@
 package com.example.uniprogramming.controllers;
 
 
-import com.example.uniprogramming.models.Company;
-import com.example.uniprogramming.services.UserService;
 import com.example.uniprogramming.models.User;
+import com.example.uniprogramming.services.UserService;
 import com.fasterxml.jackson.databind.node.TextNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/api/users")

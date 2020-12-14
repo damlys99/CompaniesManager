@@ -1,8 +1,6 @@
 package com.example.uniprogramming.tests;
 
 import com.example.uniprogramming.controllers.ViewController;
-import com.example.uniprogramming.models.Company;
-import com.example.uniprogramming.models.Industry;
 import com.example.uniprogramming.repositories.CompaniesRepository;
 import com.example.uniprogramming.repositories.IndustriesRepository;
 import com.example.uniprogramming.repositories.RolesRepository;
@@ -13,9 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class DatabaseSeeder implements CommandLineRunner {

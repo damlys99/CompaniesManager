@@ -1,15 +1,17 @@
 package com.example.uniprogramming.services;
 
-import com.example.uniprogramming.models.User;
-import com.example.uniprogramming.repositories.IndustriesRepository;
 import com.example.uniprogramming.models.Company;
+import com.example.uniprogramming.models.User;
 import com.example.uniprogramming.repositories.CompaniesRepository;
+import com.example.uniprogramming.repositories.IndustriesRepository;
+import com.example.uniprogramming.search.CompanyDateOnly;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CompanyService {
@@ -71,13 +73,20 @@ public class CompanyService {
         return company;
     }
 
-    public List<Company> getPage(int currentPage, int pageSize){
+    public List<Company> getPage(int currentPage, int pageSize, List<String> industries, List<String> dates){
         Pageable companyPage = PageRequest.of(currentPage - 1, pageSize);
         return companiesRepository.findAllByIsDeletedIsFalse(companyPage);
+    }
+    public List<Company> test(String regex){
+        return companiesRepository.findAllByNameRegex(regex);
     }
 
     public List<Company> getByUser(User user){
         return companiesRepository.findAllByIsDeletedIsFalseAndUser(user);
+    }
+
+    public List<CompanyDateOnly> getDates(){
+        return companiesRepository.findAddedByAddedNotNull();
     }
 
 }

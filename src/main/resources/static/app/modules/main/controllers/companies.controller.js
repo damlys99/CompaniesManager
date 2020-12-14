@@ -5,16 +5,30 @@ app.controller('CompaniesController', function CompaniesController($http, $scope
     $scope.loggeduser = undefined;
     $scope.companiesCount = 0;
     $scope.industries  = [];
+    $scope.dates = [];
+    $scope.industriesFilter = "";
+    $scope.datesFilter = "";
+    $scope.filter = {
+        industries : undefined,
+        dates : undefined
+    };
     $scope.alert = {
         type: "",
         message: ""
     };
+
+    $scope.$watch(function() {
+        $('.industriesfilter').selectpicker('refresh');
+        $('.datesfilter').selectpicker('refresh');
+    });
+
 
     init();
 
     function init() {
         getData($scope.pageNum);
         getIndustries();
+        getDates();
         getCount();
         getLogged();
     }
@@ -22,7 +36,7 @@ app.controller('CompaniesController', function CompaniesController($http, $scope
         if (page) {
             var url = '/api/companies';
             var companiesPromise = $http.get(url, {
-                params: {page: page}
+                params: {page: page, industries: $scope.filter.industries, dates: $scope.filter.dates}
             });
             companiesPromise.then(function (response) {
                 $scope.companies = response.data;
@@ -56,10 +70,17 @@ app.controller('CompaniesController', function CompaniesController($http, $scope
 
         })
     }
+    function getDates(){
+        var url = '/api/companies/dates';
+        $http.get(url).then(function (response) {
+            $scope.dates = response.data;
+
+        })
+    }
 
     $scope.goTo = function(page) {
         getData(page);
-    }
+    };
 
 
     $scope.addCompany = function(company, form) {
@@ -134,6 +155,19 @@ app.controller('CompaniesController', function CompaniesController($http, $scope
         $scope.companyModel = JSON.parse(angular.toJson(company));
         $scope.companyModel.industry = $scope.industries.filter(i => i.id === company.industry.id)[0];
     };
+
+    $scope.filterData = function () {
+        if($scope.industriesFilter.length){
+        $scope.filter.industries = $scope.industriesFilter.map(el => el.name).join();}
+        else{
+            $scope.filter.industries = undefined;}
+        if($scope.datesFilter.length){
+        $scope.filter.dates = $scope.datesFilter.map(el => el.added).join();}
+        else{
+            $scope.filter.dates = undefined;}
+        console.log("aa");
+        getData($scope.pageNum);
+    }
 
 
 });

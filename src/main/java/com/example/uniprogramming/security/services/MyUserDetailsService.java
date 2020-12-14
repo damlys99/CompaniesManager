@@ -1,9 +1,9 @@
 package com.example.uniprogramming.security.services;
 
-import com.example.uniprogramming.services.UserService;
 import com.example.uniprogramming.models.User;
 import com.example.uniprogramming.repositories.UsersRepository;
 import com.example.uniprogramming.security.models.MyUserDetails;
+import com.example.uniprogramming.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;

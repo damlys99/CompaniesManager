@@ -3,14 +3,17 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content= "width=device-width, user-scalable=no">
+    <meta name="viewport" content="width=device-width, user-scalable=no">
     <title>Companies</title>
     <link rel="stylesheet" href="../static/bootstrap.css" th:href="@{/bootstrap.css}"/>
     <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}"/>
     <script defer src="../static/fontawesome/js/all.js" th:src="@{/fontawesome/js/all.js}"></script>
+
     <script type="text/javascript" src="../static/app/angular.js" th:src="@{/app/angular.js}"></script>
-    <script type="text/javascript" src="../static/app/modules/main/app.config.js" th:src="@{/app/modules/main/app.config.js}"></script>
-    <script type="text/javascript" src="../static/app/modules/main/controllers/companies.controller.js" th:src="@{/app/modules/main/controllers/companies.controller.js}"></script>
+    <script type="text/javascript" src="../static/app/modules/main/app.config.js"
+            th:src="@{/app/modules/main/app.config.js}"></script>
+    <script type="text/javascript" src="../static/app/modules/main/controllers/companies.controller.js"
+            th:src="@{/app/modules/main/controllers/companies.controller.js}"></script>
     <script src="../static/app/ui.bootstrap.js" th:src="@{/app/ui.bootstrap.js}"></script>
 </head>
 <body ng-app="app" ng-controller="CompaniesController">
@@ -24,18 +27,30 @@
     </button>
 </div>
 
+
 <div class="container" id="cont">
+    <div id="filters">
+        <select class="selectpicker industriesfilter" data-style="btn-info" data-size="5" title="Industries" multiple data-live-search="true"
+                data-selected-text-format="count" ng-model="industriesFilter"
+                ng-options="industry.name for industry in industries">
+        </select>
+        <select class="selectpicker datesfilter" data-style="btn-info" data-size="5" title="Date Added" multiple data-live-search="true"
+                data-selected-text-format="count" ng-model="datesFilter"
+                ng-options="date.added for date in dates">
+        </select>
+        <button class="btn btn-info" ng-click="filterData()">Filter</button>
+    </div>
     <table class="table table-sm table-striped">
         <thead>
         <tr>
-            <th> </th>
+            <th></th>
             <th scope="col">Industry</th>
             <th scope="col">Name</th>
             <th scope="col">Address</th>
             <th scope="col">City</th>
             <th scope="col">Added by</th>
             <th scope="col">Date added</th>
-            <th scope="col"> </th>
+            <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
@@ -44,37 +59,40 @@
             <td>
                 {{company.industry.name}}
             </td>
-            <td><a href="/companies/{{company.id}}" >{{company.name}}</a></td>
+            <td><a href="/companies/{{company.id}}">{{company.name}}</a></td>
             <td>{{company.address}}</td>
             <td>{{company.city}}</td>
             <td><a href="/users/{{company.user.id}}">{{company.user.userName}}</a></td>
             <td>{{company.added}}</td>
             <td style="padding: 1px ">
-                <div ng-if="loggeduser.id == company.user.id || loggeduser.role.name == 'ROLE_ADMIN'"><button class="btn btn-primary shadow-none btn-sm mod-btn" ng-click="setCompanyVar(company)"
-                        data-toggle="modal" data-target="#modifyCompanyModal">
-                    <i class="fas fa-pen"> </i>
-                </button>
-                <button class="btn btn-danger shadow-none btn-sm mod-btn" ng-click="setCompanyVar(company);"
-                        data-toggle="modal" data-target="#deleteCompanyDialog">
-                    <i class="fas fa-minus"> </i>
-                </button>
+                <div ng-if="loggeduser.id == company.user.id || loggeduser.role.name == 'ROLE_ADMIN'">
+                    <button class="btn btn-primary shadow-none btn-sm mod-btn" ng-click="setCompanyVar(company)"
+                            data-toggle="modal" data-target="#modifyCompanyModal">
+                        <i class="fas fa-pen"> </i>
+                    </button>
+                    <button class="btn btn-danger shadow-none btn-sm mod-btn" ng-click="setCompanyVar(company);"
+                            data-toggle="modal" data-target="#deleteCompanyDialog">
+                        <i class="fas fa-minus"> </i>
+                    </button>
                 </div>
             </td>
         </tr>
         </tbody>
     </table>
 
-    <button  type="button" class="btn btn-success" data-toggle="modal"
+    <button type="button" class="btn btn-success" data-toggle="modal"
             data-target="#addCompanyModal">
         Add new company
     </button>
 </div>
 
+
 <!-- pagination controls -->
 <div id="controls" class="text-center">
-    <ul uib-pagination style="justify-content: center" max-size="5" rotate="true" boundary-link-numbers="true" total-items="companiesCount" ng-model="pageNum" ng-change=goTo(pageNum) class="pagination"
+    <ul uib-pagination style="justify-content: center" max-size="5" rotate="true" boundary-link-numbers="true"
+        total-items="companiesCount" ng-model="pageNum" ng-change=goTo(pageNum) class="pagination"
         previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;"
-        last-text="&raquo;"> </ul>
+        last-text="&raquo;"></ul>
 </div>
 
 <div th:insert="fragments/companies :: addCompanyModal"></div>

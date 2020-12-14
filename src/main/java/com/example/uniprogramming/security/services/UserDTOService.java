@@ -1,7 +1,7 @@
 package com.example.uniprogramming.security.services;
 
-import com.example.uniprogramming.repositories.RolesRepository;
 import com.example.uniprogramming.models.User;
+import com.example.uniprogramming.repositories.RolesRepository;
 import com.example.uniprogramming.repositories.UsersRepository;
 import com.example.uniprogramming.security.models.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;

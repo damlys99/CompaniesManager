@@ -1,9 +1,8 @@
 package com.example.uniprogramming.services;
 
-import com.example.uniprogramming.models.Company;
 import com.example.uniprogramming.models.Contact;
-import com.example.uniprogramming.models.User;
 import com.example.uniprogramming.repositories.ContactsRepository;
+import com.example.uniprogramming.search.CompanyDateOnly;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -51,6 +50,7 @@ public class ContactService {
         contact.setDeleted(true);
         return saveContact(contact);
     }
+
 
 }
 

@@ -1,13 +1,7 @@
 package com.example.uniprogramming.models;
 
-import org.hibernate.engine.internal.Cascade;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import javax.persistence.*;
 import java.sql.Date;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 public class User {

@@ -1,8 +1,6 @@
 package com.example.uniprogramming.services;
 
-import com.example.uniprogramming.models.Company;
 import com.example.uniprogramming.models.Note;
-import com.example.uniprogramming.models.User;
 import com.example.uniprogramming.repositories.NotesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
