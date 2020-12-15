@@ -93,6 +93,7 @@ app.controller('CompaniesController', function CompaniesController($http, $scope
         var url = '/api/companies';
         $http.post(url + "/add", company).then(function (suc){
             getData($scope.pageNum);
+            getDates();
             formReset(form);
             $scope.alert.message = `Company ${suc.data.name} has been successfully added!`;
             $scope.alert.type = "success";

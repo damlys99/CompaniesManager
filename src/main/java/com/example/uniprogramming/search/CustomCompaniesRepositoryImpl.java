@@ -89,7 +89,6 @@ public class CustomCompaniesRepositoryImpl implements CustomCompaniesRepository 
         Predicate finalPredicate = cb.and(deleted, industriesFinal, datesFinal);
 
 
-
         return em.createQuery(cq.select(cb.count(company)).where(finalPredicate)).getSingleResult();
 
 

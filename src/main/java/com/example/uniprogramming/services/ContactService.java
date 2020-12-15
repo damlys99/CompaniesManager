@@ -28,16 +28,8 @@ public class ContactService {
         return contactsRepository.findById(id);
     }
 
-    public List<Contact> getAll(){
-        return contactsRepository.findAllByIsDeletedIsFalse();
-    }
-
-    public List<Contact> getByCompany(long companyid){
-        return contactsRepository.findAllByIsDeletedIsFalseAndCompany(companyService.getCompany(companyid));
-    }
-
-    public List<Contact> getByUser(long userid){
-        return contactsRepository.findAllByIsDeletedIsFalseAndUser(userService.getUser(userid));
+    public List<Contact> getAll(long userId, long companyId, String surname){
+        return contactsRepository.getFiltered(userId,companyId, surname);
     }
 
     public Contact saveContact(Contact contact){

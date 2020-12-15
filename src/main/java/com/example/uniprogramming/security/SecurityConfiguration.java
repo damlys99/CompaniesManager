@@ -29,11 +29,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception{
         http.httpBasic()
+                .authenticationEntryPoint(new NoPopupBasicAuthenticationEntryPoint())
                 .and().authorizeRequests()
                 .antMatchers("/api/users/{\\d+}/**").authenticated()
                 .antMatchers("/api/users/all").hasAnyRole("ADMIN", "MODERATOR")
                 .antMatchers("/api/users").hasAnyRole("ADMIN", "MODERATOR")
                 .antMatchers("/api/companies/**").authenticated()
+                .antMatchers("/api/**").authenticated()
                 .antMatchers("/users").hasAnyRole("ADMIN", "MODERATOR")
                 .antMatchers("/users/**").authenticated()
                 .antMatchers("/companies/**").authenticated()

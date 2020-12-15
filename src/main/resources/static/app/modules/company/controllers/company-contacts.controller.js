@@ -2,6 +2,8 @@ companyApp.controller("CompanyContactsController", function($scope, $http, $q){
 
     $scope.contacts = [];
     $scope.alert = $scope.$parent.alert;
+    $scope.searchInput = "";
+    $scope.filter = undefined;
 
     init();
 
@@ -15,7 +17,7 @@ companyApp.controller("CompanyContactsController", function($scope, $http, $q){
         })
     }
     function getData(){
-        $http.get('/api/contacts/all', {params: {company : $scope.company.id}}).then(function(res){
+        $http.get('/api/contacts/all', {params: {company : $scope.company.id, search: $scope.filter}}).then(function(res){
             $scope.contacts = res.data;
         });
     }
@@ -53,6 +55,15 @@ companyApp.controller("CompanyContactsController", function($scope, $http, $q){
             getData();
             $("#modifyContactModal").modal('hide');
         })
+    };
+    $scope.filterData = function () {
+        if($scope.searchInput.length) {
+            $scope.filter = $scope.searchInput;
+        }
+        else{
+            $scope.filter = undefined;
+        }
+        getData();
     };
 
     $scope.setContactVar = function (contact) {

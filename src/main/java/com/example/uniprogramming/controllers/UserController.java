@@ -41,9 +41,6 @@ public class UserController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public User getUser(@PathVariable int id) {
-        if (!(logged().getRole().getName().equals("ROLE_ADMIN") || logged().getRole().getName().equals("ROLE_MODERATOR")) && !(logged().getId() == id)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You can't do that!");
-        }
         return userService.getUser(id);
     }
 

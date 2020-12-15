@@ -27,7 +27,7 @@ companyApp.controller("CompanyNotesController", function($scope, $http, $q){
         note = angular.toJson(note);
         var url = '/api/notes/add';
         $http.post(url,note).then(function(suc){
-            $scope.alert.message = `Note ${suc.data.name} ${suc.data.surname} has been successfully added`;
+            $scope.alert.message = `Note has been successfully added`;
             $scope.alert.type = 'success';
             getData().then(res => {
                 formReset(form);

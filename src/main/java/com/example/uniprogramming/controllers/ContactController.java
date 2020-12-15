@@ -28,15 +28,22 @@ public class ContactController {
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public List<Contact> getAll(
             @RequestParam("user") Optional<Integer> userid,
-            @RequestParam("company") Optional<Integer> companyid
+            @RequestParam("company") Optional<Integer> companyid,
+            @RequestParam("search") Optional<String> surnameSearch
     ){
+        Integer userId = -1;
+        Integer companyId = -1;
+        String surname = "";
         if(userid.isPresent()){
-            return contactService.getByUser(userid.get());
+            userId = userid.get();
         }
         if(companyid.isPresent()){
-            return contactService.getByCompany(companyid.get());
+            companyId = companyid.get();
         }
-        return contactService.getAll();
+        if(surnameSearch.isPresent()){
+            surname = surnameSearch.get();
+        }
+        return contactService.getAll(userId, companyId, surname);
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
