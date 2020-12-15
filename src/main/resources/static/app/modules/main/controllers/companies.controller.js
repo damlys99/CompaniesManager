@@ -57,9 +57,11 @@ app.controller('CompaniesController', function CompaniesController($http, $scope
     function getCount() {
 
         var url = '/api/companies/count';
-        var companiesPromise = $http.get(url);
+        var companiesPromise = $http.get(url, {
+            params: $scope.filter
+        });
         companiesPromise.then(function (response) {
-            $scope.companiesCount = response.data;
+            $scope.companiesCount = response.data.count;
         });
     }
 
@@ -154,7 +156,7 @@ app.controller('CompaniesController', function CompaniesController($http, $scope
     $scope.setCompanyVar = function(company) {
         $scope.companyModel = JSON.parse(angular.toJson(company));
         $scope.companyModel.industry = $scope.industries.filter(i => i.id === company.industry.id)[0];
-    };
+    }
 
     $scope.filterData = function () {
         if($scope.industriesFilter.length){
@@ -165,7 +167,6 @@ app.controller('CompaniesController', function CompaniesController($http, $scope
         $scope.filter.dates = $scope.datesFilter.map(el => el.added).join();}
         else{
             $scope.filter.dates = undefined;}
-        console.log("aa");
         getData($scope.pageNum);
     }
 

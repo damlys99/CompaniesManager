@@ -10,6 +10,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,8 +43,8 @@ public class CompanyService {
         return companiesRepository.findById(id);
     }
 
-    public Long count(){
-        return companiesRepository.countByIsDeletedIsFalse();
+    public Long count(List<String> industries, List<String> dates){
+        return companiesRepository.getCount(industries,dates);
     }
 
     public Company deleteCompany(int id){
@@ -58,13 +60,6 @@ public class CompanyService {
         return company;
     }
 
-/*    public Company modifyCompany(Company company){
-        Company companyModified = companiesRepository.findById(company.getId());
-        companyModified.setName(company.getName());
-        companyModified.setNip(company.getNip());
-        companyModified.setAddress(company.getAddress());
-        comp
-    }*/
 
     public Company setIndustry(int id, String industry){
         Company company = companiesRepository.findById(id);
@@ -75,18 +70,16 @@ public class CompanyService {
 
     public List<Company> getPage(int currentPage, int pageSize, List<String> industries, List<String> dates){
         Pageable companyPage = PageRequest.of(currentPage - 1, pageSize);
-        return companiesRepository.findAllByIsDeletedIsFalse(companyPage);
+        return companiesRepository.getFiltered(industries, dates, companyPage);
     }
-    public List<Company> test(String regex){
-        return companiesRepository.findAllByNameRegex(regex);
-    }
+
 
     public List<Company> getByUser(User user){
         return companiesRepository.findAllByIsDeletedIsFalseAndUser(user);
     }
 
     public List<CompanyDateOnly> getDates(){
-        return companiesRepository.findAddedByAddedNotNull();
+        return companiesRepository.findDistinctByAddedNotNull();
     }
 
 }
