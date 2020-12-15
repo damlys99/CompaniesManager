@@ -16,7 +16,7 @@
             th:src="@{/app/modules/main/controllers/companies.controller.js}"></script>
     <script src="../static/app/ui.bootstrap.js" th:src="@{/app/ui.bootstrap.js}"></script>
 </head>
-<body ng-app="app" ng-controller="CompaniesController">
+<body ng-app="app" ng-controller="CompaniesController" ng-cloak>
 <div th:insert="fragments/main :: header('companies')"></div>
 
 <div class='alert alert-{{alert.type}} alert-dismissible fade show {{alert.type? "" : "d-none"}} fixed-top'
