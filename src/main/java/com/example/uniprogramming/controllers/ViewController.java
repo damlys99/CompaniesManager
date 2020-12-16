@@ -30,7 +30,6 @@ public class ViewController {
     @RequestMapping(value = "/users")
     public String users(
             Model model
-            //@CurrentSecurityContext(expression = "authentication.principal") Principal principal
     ) {
         model.addAttribute("loggedUser", userService.getLoggedUser());
         return "users";

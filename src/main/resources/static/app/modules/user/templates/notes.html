@@ -2,7 +2,7 @@
 <div style="overflow-y: auto; height: 100%">
     <div id="notes-container">
 
-        <div ng-repeat="note in notes" class="card text-white bg-warning mb-3 note" style="max-width: 18rem;">
+        <div ng-repeat="note in notes | orderBy:'-'" class="card text-white bg-warning mb-3 note" style="max-width: 18rem;">
             <div class="card-header"><a href="/companies/{{note.company.id}}">{{note.company.name}}</a></div>
             <div class="card-body noteov">
                 <p class="card-text">{{note.content}}</p>

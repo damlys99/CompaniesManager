@@ -1,7 +1,22 @@
 <h3>Notes</h3>
 <div style="overflow-y: auto; height: 100%">
     <div id="notes-container">
-        <div ng-repeat="note in notes" class="card text-white bg-warning mb-3 note" style="max-width: 18rem;">
+        <div ng-if="loggeduser.id == company.user.id || loggeduser.role.name == 'ROLE_ADMIN'" id="addNote" class="card text-white bg-warning mb-3 note" style="max-width: 18rem;">
+
+            <div class="card-header">
+                {{loggeduser.name}} {{loggeduser.surname}}
+            </div>
+            <div class="card-body" style="text-align: center">
+                <form id="addNoteForm" name="addNoteForm" ng-submit="addNote(newnote, addNoteForm)" novalidate>
+                    <textarea  name="content" id="content" ng-model="newnote.content" class="form-control" ng-required="true" ng-class="{'is-invalid' : addNoteForm.content.$invalid && !addNoteForm.content.$pristine}"></textarea>
+                </form>
+            </div>
+            <div class="card-footer">
+                <input type="submit" value="Add Note" form="addNoteForm" class="btn btn-success" ng-disabled="addNoteForm.$invalid">
+            </div>
+        </div>
+
+        <div ng-repeat="note in notes | orderBy:'-'" class="card text-white bg-warning mb-3 note" style="max-width: 18rem;">
             <div class="card-header"><a href="/users/{{note.user.id}}">{{note.user.name}} {{note.user.surname}}</a></div>
             <div class="noteif noteov" ng-if="!edit[$index]">
             <div class="card-body noteov">
@@ -30,20 +45,6 @@
 
 
 
-<div ng-if="loggeduser.id == company.user.id || loggeduser.role.name == 'ROLE_ADMIN'" id="addNote" class="card text-white bg-warning mb-3 note" style="max-width: 18rem;">
-
-    <div class="card-header">
-        {{loggeduser.name}} {{loggeduser.surname}}
-    </div>
-    <div class="card-body" style="text-align: center">
-    <form id="addNoteForm" name="addNoteForm" ng-submit="addNote(newnote, addNoteForm)" novalidate>
-        <textarea  name="content" id="content" ng-model="newnote.content" class="form-control" ng-required="true" ng-class="{'is-invalid' : addNoteForm.content.$invalid && !addNoteForm.content.$pristine}"></textarea>
-    </form>
-    </div>
-    <div class="card-footer">
-        <input type="submit" value="Add Note" form="addNoteForm" class="btn btn-success" ng-disabled="addNoteForm.$invalid">
-    </div>
-</div>
 
 
 <div class="modal fade" id="deleteNoteDialog" tabindex="-1" role="dialog" aria-hidden="true">
