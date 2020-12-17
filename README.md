@@ -43,5 +43,8 @@ This project is a web app made as university project for programming classes.
 ### Frontend
   * AngularJS
   * Bootstrap
-  * AngulaJS-UI-Bootstrap
+  * AngularJS-UI-Bootstrap
   * Bootstrap-select
+  * Thymeleaf
+  
+
