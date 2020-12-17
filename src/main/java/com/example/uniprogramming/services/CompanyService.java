@@ -61,13 +61,6 @@ public class CompanyService {
     }
 
 
-    public Company setIndustry(int id, String industry){
-        Company company = companiesRepository.findById(id);
-        company.setIndustry(industriesRepository.findByName(industry));
-        companiesRepository.save(company);
-        return company;
-    }
-
     public List<Company> getPage(int currentPage, int pageSize, List<String> industries, List<String> dates){
         Pageable companyPage = PageRequest.of(currentPage - 1, pageSize);
         return companiesRepository.getFiltered(industries, dates, companyPage);

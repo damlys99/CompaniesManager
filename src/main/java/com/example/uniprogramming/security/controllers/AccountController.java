@@ -34,6 +34,7 @@ public class AccountController {
                             @RequestParam(value = "registered", required = false) String registered,
                             Model model) {
         String errorMessge = null;
+        String loginAlert = null;
         if(error != null) {
             errorMessge = "Username or password is incorrect!";
         }
@@ -41,9 +42,10 @@ public class AccountController {
             errorMessge = "You have been successfully logged out!";
         }
         if(registered != null) {
-            errorMessge = "Your account has been created! You can now log in.";
+            loginAlert = "Your account has been created! You can now log in.";
         }
         model.addAttribute("errorMessge", errorMessge);
+        model.addAttribute("loginAlert", loginAlert);
         return "login";
     }
 

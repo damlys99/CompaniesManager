@@ -27,6 +27,7 @@ public class ViewController {
     public String index(){
         return "redirect:/companies";
     }
+
     @RequestMapping(value = "/users")
     public String users(
             Model model

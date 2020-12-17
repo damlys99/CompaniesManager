@@ -61,9 +61,6 @@ public class CompanyController {
     public Company deleteCompany(@PathVariable int id) {
         User logged = userService.getLoggedUser();
         Company company = companyService.getCompany(id);
-        if (id < 4) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found!");
-        }
         if (!logged.getRole().getName().equals("ROLE_ADMIN") && logged.getId() != company.getUser().getId()) {
 
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You can't do that!");
@@ -79,21 +76,9 @@ public class CompanyController {
         return companyService.saveCompany(company);
     }
 
-    @RequestMapping(value = "/{id}/setindustry", method = RequestMethod.PUT)
-    public Company setRoles(@RequestBody TextNode industry, @PathVariable int id) {
-        User logged = userService.getLoggedUser();
-        if (!logged.getRole().getName().equals("ROLE_ADMIN")) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You can't do that!");
-        }
-        return companyService.setIndustry(id, industry.asText());
-    }
-
     @RequestMapping(value = "/{id}/modify", method = RequestMethod.PUT)
     public Company modifyCompany(@RequestBody Company company, @PathVariable int id) {
         User logged = userService.getLoggedUser();
-        if (id < 4) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found!");
-        }
         if (!logged.getRole().getName().equals("ROLE_ADMIN") && logged.getId() != company.getUser().getId()) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You can't do that!");
         }
@@ -117,10 +102,6 @@ public class CompanyController {
     public List<CompanyDateOnly> getDates() {
         return companyService.getDates();
     }
-/*    @RequestMapping(value = "/test")
-    public List<Company> test() {
-        return companyService.test("aaa");
-    }*/
 
 
 }

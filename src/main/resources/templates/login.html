@@ -11,7 +11,7 @@
         <div th:if="${errorMessge}"><div class="alert alert-danger" th:text="${errorMessge}">Error</div></div>
 
     <form action="/login" id="loginform" method='POST' name='login'>
-        <div th:if="${message}"><div class="alert alert-success" role="alert" th:text="${message}"></div></div>
+        <div th:if="${loginAlert}"><div class="alert alert-success" role="alert" th:text="${loginAlert}"></div></div>
         <div class="input-group form-group row">
             <div class="input-group-prepend">
                 <img alt="username" class="input-group-text" src="../static/images/username.png" style="width:35px" th:src="@{/images/username.png}">
